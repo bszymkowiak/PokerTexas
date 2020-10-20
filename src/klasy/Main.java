@@ -1,5 +1,8 @@
 package klasy;
 
+import klasy.karty.MenuPoczatkowe;
+import klasy.karty.TaliaKart;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -141,12 +144,14 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //        JFrame window = new JFrame("Poker Texas");
-//        window.setVisible(true);
-//        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        window.add(new Stolik());
-//
-//        window.pack();
+        JFrame window = new JFrame("Poker Texas");
+        window.setVisible(true);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.add(new MenuPoczatkowe());
+
+        window.pack();
+
+        TaliaKart talia = new TaliaKart();
 
         Rozgrywka rozgrywka = new Rozgrywka();
 
