@@ -1,4 +1,7 @@
 package klasy.menu;
+
+import klasy.Rozgrywka;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -8,14 +11,23 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class BackgroundPanel extends JPanel {
+public class MenuPoczatkowePanel extends JPanel {
+
 
     private File imageFile;
     private BufferedImage image;
     private JButton graj;
     private MenuPoczatkowe menuPoczatkowe;
+    private int liczbaGraczy = 0;
+    JComboBox iloscPrzeciwnikowCombo;
+    Rozgrywka rozgrywka = new Rozgrywka();
 
-    public BackgroundPanel(MenuPoczatkowe menuPoczatkowe) {
+    public void liczbaGraczySzukaj() {
+
+        dopisac  metode na szukanie graczy
+    }
+
+    public MenuPoczatkowePanel(MenuPoczatkowe menuPoczatkowe) {
 
         super();
         this.menuPoczatkowe = menuPoczatkowe;
@@ -39,7 +51,7 @@ public class BackgroundPanel extends JPanel {
         imieGr.setFont(sansbold20);
         add(imieGr);
 
-        var iloscPrzeciwnikowCombo = new JComboBox<Integer>();
+        iloscPrzeciwnikowCombo = new JComboBox<Integer>();
         iloscPrzeciwnikowCombo.addItem(1);
         iloscPrzeciwnikowCombo.addItem(2);
         iloscPrzeciwnikowCombo.addItem(3);
@@ -51,6 +63,13 @@ public class BackgroundPanel extends JPanel {
         iloscPrzeciwnikowCombo.setBackground(Color.GRAY);
         iloscPrzeciwnikowCombo.setFont(sansbold20);
         add(iloscPrzeciwnikowCombo);
+
+        iloscPrzeciwnikowCombo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                liczbaGraczySzukaj();
+            }
+        });
 
         var iloscZetonowStart = new JComboBox<Integer>();
         iloscZetonowStart.addItem(500);
@@ -123,6 +142,10 @@ public class BackgroundPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 menuPoczatkowe.getWindow().dispose();
                 new Stolik();
+                Rozgrywka rozgrywka = new Rozgrywka();
+                rozgrywka.setLiczbaGraczy(liczbaGraczy);
+                System.out.println(rozgrywka.getLiczbaGraczy());
+
 
             }
         });
@@ -149,5 +172,7 @@ public class BackgroundPanel extends JPanel {
         g.drawImage(red, 1285, 525, null);
         g.drawImage(yellow, 1355, 525, null);
     }
+
+
 }
 

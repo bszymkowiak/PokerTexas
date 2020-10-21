@@ -18,7 +18,7 @@ public class MenuPoczatkowe extends JPanel{
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setPreferredSize(new Dimension(1920, 1080));
 
-        window.add(new BackgroundPanel(me));
+        window.add(new MenuPoczatkowePanel(me));
 
         window.pack();
 

@@ -1,13 +1,16 @@
 package klasy.menu;
+import klasy.Rozgrywka;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class PanelStolik extends JPanel {
-
+public class PanelStolik extends JPanel implements ActionListener{
     private File imageFile;
     private BufferedImage image;
     private Stolik stolik;
@@ -130,5 +133,11 @@ public class PanelStolik extends JPanel {
     }
 
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+
+
+    }
 }
 

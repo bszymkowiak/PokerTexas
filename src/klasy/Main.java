@@ -8,6 +8,8 @@ public class Main {
 
         MenuPoczatkowe menuPoczatkowe = new MenuPoczatkowe();
 
+        System.out.println();
+
 
     }
 }

@@ -12,7 +12,7 @@ public class Rozgrywka extends Gracz {
 
     private TaliaKart taliaKart = new TaliaKart();
     private ArrayList<Gracz> gracze = new ArrayList<>();
-    private int liczbaGraczy = 8;
+    private int liczbaGraczy;
 
     private ArrayList<String> imionaGraczy = new ArrayList<>();
 
