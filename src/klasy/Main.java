@@ -1,8 +1,6 @@
 package klasy;
 
-import klasy.karty.MenuPoczatkowe;
 import klasy.karty.TaliaKart;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;

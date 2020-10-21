@@ -1,4 +1,4 @@
-package klasy.karty;
+package klasy;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -113,6 +113,12 @@ public class MenuPoczatkowe extends JPanel {
         grupa.add(purple);
         grupa.add(red);
         grupa.add(yellow);
+
+
+        JButton graj = new JButton(new ImageIcon("zdjecia\\graj2.jpg"));
+        graj.setBounds(877,683,243,83);
+        add(graj);
+
 
 
 //        var rewersKarty = new Hashtable<Integer, Component>();
