@@ -1,12 +1,16 @@
 package klasy.menu;
 
+import klasy.Gracz;
 import klasy.Rozgrywka;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -18,20 +22,20 @@ public class MenuPoczatkowePanel extends JPanel {
     private BufferedImage image;
     private JButton graj;
     private MenuPoczatkowe menuPoczatkowe;
-    private int liczbaGraczy = 0;
-    JComboBox iloscPrzeciwnikowCombo;
+    private int liczbaGraczy;
+    private int iloscZetonow;
+    JComboBox<Integer> iloscPrzeciwnikowCombo;
     Rozgrywka rozgrywka = new Rozgrywka();
+    JComboBox<Integer> iloscZetonowStart;
 
-    public void liczbaGraczySzukaj() {
 
-        dopisac  metode na szukanie graczy
-    }
 
     public MenuPoczatkowePanel(MenuPoczatkowe menuPoczatkowe) {
 
         super();
         this.menuPoczatkowe = menuPoczatkowe;
         setLayout(null);
+        Border obramowanie = BorderFactory.createEmptyBorder();
 
         imageFile = new File("zdjecia\\tlo.jpg");
 
@@ -49,29 +53,39 @@ public class MenuPoczatkowePanel extends JPanel {
         imieGr.setBackground(Color.GRAY);
         imieGr.setBounds(1005, 209, 300, 25);
         imieGr.setFont(sansbold20);
+        imieGr.setBorder(obramowanie);
         add(imieGr);
 
-        iloscPrzeciwnikowCombo = new JComboBox<Integer>();
+        iloscPrzeciwnikowCombo = new JComboBox<>();
         iloscPrzeciwnikowCombo.addItem(1);
         iloscPrzeciwnikowCombo.addItem(2);
         iloscPrzeciwnikowCombo.addItem(3);
         iloscPrzeciwnikowCombo.addItem(4);
         iloscPrzeciwnikowCombo.addItem(5);
         iloscPrzeciwnikowCombo.addItem(6);
-        iloscPrzeciwnikowCombo.addItem(7);
+        iloscPrzeciwnikowCombo.addItem(7);;
         iloscPrzeciwnikowCombo.setBounds(1005, 285, 40, 30);
         iloscPrzeciwnikowCombo.setBackground(Color.GRAY);
         iloscPrzeciwnikowCombo.setFont(sansbold20);
+        iloscPrzeciwnikowCombo.setBorder(obramowanie);
         add(iloscPrzeciwnikowCombo);
 
-        iloscPrzeciwnikowCombo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                liczbaGraczySzukaj();
-            }
-        });
+        int b  = (int) iloscPrzeciwnikowCombo.getSelectedItem();
 
-        var iloscZetonowStart = new JComboBox<Integer>();
+        iloscPrzeciwnikowCombo.addItemListener( new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED){
+                    int b = (Integer)e.getItemSelectable().getSelectedObjects()[0];
+                    liczbaGraczy = b;
+                }
+            }
+        } );
+
+
+
+
+        iloscZetonowStart = new JComboBox<>();
         iloscZetonowStart.addItem(500);
         iloscZetonowStart.addItem(1000);
         iloscZetonowStart.addItem(1500);
@@ -82,7 +96,21 @@ public class MenuPoczatkowePanel extends JPanel {
         iloscZetonowStart.setBackground(Color.GRAY);
         iloscZetonowStart.setBounds(1005, 360, 100, 30);
         iloscZetonowStart.setFont(sansbold20);
+        iloscZetonowStart.setBorder(obramowanie);
         add(iloscZetonowStart);
+
+
+        int d  = (int) iloscZetonowStart.getSelectedItem();
+
+        iloscZetonowStart.addItemListener( new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent f) {
+                if(f.getStateChange() == ItemEvent.SELECTED){
+                    int d = (Integer)f.getItemSelectable().getSelectedObjects()[0];
+                    iloscZetonow = d;
+                }
+            }
+        } );
 
         var czasCiemnych = new JComboBox<Integer>();
         czasCiemnych.addItem(5);
@@ -92,6 +120,7 @@ public class MenuPoczatkowePanel extends JPanel {
         czasCiemnych.setBackground(Color.GRAY);
         czasCiemnych.setBounds(1005, 448, 50, 30);
         czasCiemnych.setFont(sansbold20);
+        czasCiemnych.setBorder(obramowanie);
         add(czasCiemnych);
 
         ButtonGroup grupa = new ButtonGroup();
@@ -134,7 +163,8 @@ public class MenuPoczatkowePanel extends JPanel {
         grupa.add(yellow);
 
         graj = new JButton(new ImageIcon("zdjecia\\graj2.jpg"));
-        graj.setBounds(877, 683, 243, 83);
+        graj.setBounds(877, 686, 243, 83);
+        graj.setBorder(obramowanie);
         add(graj);
 
         graj.addActionListener(new ActionListener() {
@@ -144,7 +174,8 @@ public class MenuPoczatkowePanel extends JPanel {
                 new Stolik();
                 Rozgrywka rozgrywka = new Rozgrywka();
                 rozgrywka.setLiczbaGraczy(liczbaGraczy);
-                System.out.println(rozgrywka.getLiczbaGraczy());
+                System.out.println(liczbaGraczy);
+                System.out.println(iloscZetonow);
 
 
             }

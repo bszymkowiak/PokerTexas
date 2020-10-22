@@ -3,6 +3,7 @@ import klasy.Rozgrywka;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,13 +15,17 @@ public class PanelStolik extends JPanel implements ActionListener{
     private File imageFile;
     private BufferedImage image;
     private Stolik stolik;
+    private JButton fold;
+    private JButton check;
+    private JButton bet;
 
     public PanelStolik(Stolik stolik) {
         super();
         this.stolik = stolik;
         setLayout(null);
+        Border obramowanie = BorderFactory.createEmptyBorder();
 
-        imageFile = new File("zdjecia\\stol.jpg");
+        imageFile = new File("zdjecia\\stol nowy.jpg");
 
         try {
             image = ImageIO.read(imageFile);
@@ -29,22 +34,25 @@ public class PanelStolik extends JPanel implements ActionListener{
             e.printStackTrace();
         }
 
-        JButton fold = new JButton("FOLD");
+        fold = new JButton(new ImageIcon("zdjecia\\fold.jpg"));
         fold.setBounds(1422, 930, 134, 80);
         fold.setBackground(Color.GRAY);
         fold.setFont(new Font("SansSerif", Font.BOLD, 25));
+        fold.setBorder(obramowanie);
         add(fold);
 
-        JButton check = new JButton("CHECK");
+        check = new JButton( new ImageIcon("zdjecia\\check.jpg"));
         check.setBounds(1576, 930, 134, 80);
         check.setBackground(Color.GRAY);
         check.setFont(new Font("SansSerif", Font.BOLD, 25));
+        check.setBorder(obramowanie);
         add(check);
 
-        JButton bet = new JButton("BET");
+        bet = new JButton( new ImageIcon("zdjecia\\bet.jpg"));
         bet.setBounds(1730, 930, 134, 80);
         bet.setBackground(Color.GRAY);
         bet.setFont(new Font("SansSerif", Font.BOLD, 25));
+        bet.setBorder(obramowanie);
         add(bet);
 
         JSlider pasekPuli = new JSlider();
