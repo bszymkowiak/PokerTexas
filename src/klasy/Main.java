@@ -10,6 +10,10 @@ public class Main {
 
         System.out.println();
 
+//        Rozgrywka rozgrywka = new Rozgrywka();
+//
+//        rozgrywka.symulacja();
+
 
     }
 }

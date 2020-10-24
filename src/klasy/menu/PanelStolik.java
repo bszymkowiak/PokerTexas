@@ -18,22 +18,36 @@ public class PanelStolik extends JPanel implements ActionListener{
     private JButton fold;
     private JButton check;
     private JButton bet;
+    private PanelStolik me;
+    Rozgrywka rozgrywka = new Rozgrywka();
 
     public PanelStolik(Stolik stolik) {
+
         super();
+        me = this;
         this.stolik = stolik;
         setLayout(null);
         Border obramowanie = BorderFactory.createEmptyBorder();
 
-        imageFile = new File("zdjecia\\stol nowy.jpg");
+        rozgrywka.setLiczbaGraczy(stolik.getLiczbaGraczy());
 
-        try {
-            image = ImageIO.read(imageFile);
-        } catch (IOException e) {
-            System.err.println("Blad odczytu obrazka");
-            e.printStackTrace();
-        }
+        rozgrywka.symulacja();
 
+        dodajTlo();
+        dodajPrzyciski(obramowanie);
+        dodajPolaGraczy();
+
+
+//        JButton allIN = new JButton("ALL IN" );
+//        allIN.setBounds(1730,930, 134,80);
+//        allIN.setBackground(Color.RED);
+//        allIN.setFont(new Font ("SansSerif", Font.BOLD, 25));
+//        add(allIN);
+
+
+    }
+
+    private void dodajPrzyciski(Border obramowanie) {
         fold = new JButton(new ImageIcon("zdjecia\\fold.jpg"));
         fold.setBounds(1422, 930, 134, 80);
         fold.setBackground(Color.GRAY);
@@ -64,6 +78,14 @@ public class PanelStolik extends JPanel implements ActionListener{
         wpisPuli.setBounds(1730, 890, 134, 30);
         add(wpisPuli);
 
+        JButton lobby = new JButton("LOBBY");
+        lobby.setBackground(Color.GRAY);
+        lobby.setBounds(20, 20, 100, 40);
+        lobby.setFont(new Font("SansSerif", Font.BOLD, 18));
+        add(lobby);
+    }
+
+    private void dodajPolaGraczy() {
         JList gracz1 = new JList();
         gracz1.setBounds(1270, 80, 250, 95);
         gracz1.setBackground(SystemColor.DARK_GRAY);
@@ -103,21 +125,18 @@ public class PanelStolik extends JPanel implements ActionListener{
         gracz8.setBounds(400, 80, 250, 95);
         gracz8.setBackground(SystemColor.DARK_GRAY);
         add(gracz8);
+    }
 
-        JButton lobby = new JButton("LOBBY");
-        lobby.setBackground(Color.GRAY);
-        lobby.setBounds(20, 20, 100, 40);
-        lobby.setFont(new Font("SansSerif", Font.BOLD, 18));
-        add(lobby);
+    private void dodajTlo() {
 
+        imageFile = new File("zdjecia\\stol nowy.jpg");
 
-//        JButton allIN = new JButton("ALL IN" );
-//        allIN.setBounds(1730,930, 134,80);
-//        allIN.setBackground(Color.RED);
-//        allIN.setFont(new Font ("SansSerif", Font.BOLD, 25));
-//        add(allIN);
-
-
+        try {
+            image = ImageIO.read(imageFile);
+        } catch (IOException e) {
+            System.err.println("Blad odczytu obrazka");
+            e.printStackTrace();
+        }
     }
 
     @Override

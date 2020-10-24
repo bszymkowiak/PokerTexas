@@ -12,15 +12,7 @@ public class MenuPoczatkowe extends JPanel{
     public MenuPoczatkowe() {
 
         me = this;
-
-        window = new JFrame("Poker Texas");
-        window.setVisible(true);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setPreferredSize(new Dimension(1920, 1080));
-
-        window.add(new MenuPoczatkowePanel(me));
-
-        window.pack();
+        dodajRamke();
 
 
 //        var rewersKarty = new Hashtable<Integer, Component>();
@@ -29,6 +21,17 @@ public class MenuPoczatkowe extends JPanel{
 //        add(rewersKarty);
 
 
+    }
+
+    private void dodajRamke() {
+        window = new JFrame("Poker Texas");
+        window.setVisible(true);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setPreferredSize(new Dimension(1920, 1080));
+
+        window.add(new MenuPoczatkowePanel(me));
+
+        window.pack();
     }
 
     public JFrame getWindow() {

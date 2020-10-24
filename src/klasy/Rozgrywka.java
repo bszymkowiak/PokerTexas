@@ -12,24 +12,12 @@ public class Rozgrywka extends Gracz {
 
     private TaliaKart taliaKart = new TaliaKart();
     private ArrayList<Gracz> gracze = new ArrayList<>();
-    private int liczbaGraczy;
+    private int liczbaGraczy = 8;
 
     private ArrayList<String> imionaGraczy = new ArrayList<>();
 
     public TaliaKart getTaliaKart() {
         return taliaKart;
-    }
-
-    public void setTaliaKart(TaliaKart taliaKart) {
-        this.taliaKart = taliaKart;
-    }
-
-    public ArrayList<String> getImionaGraczy() {
-        return imionaGraczy;
-    }
-
-    public void setImionaGraczy(ArrayList<String> imionaGraczy) {
-        this.imionaGraczy = imionaGraczy;
     }
 
     public ArrayList<Gracz> getGracze() {
@@ -70,10 +58,13 @@ public class Rozgrywka extends Gracz {
         taliaKart.tasujKarty();
 
         for(Gracz g : gracze){
-            g.setKarta1(taliaKart.getTaliaKart().get(0));
-            taliaKart.getTaliaKart().remove(0);
-            g.setKarta2(taliaKart.getTaliaKart().get(0));
-            taliaKart.getTaliaKart().remove(0);
+
+            for(int i = 0; i < 2; i++) {
+
+                g.kartyWRece.add(getTaliaKart().getTaliaKart().get(i));
+                taliaKart.getTaliaKart().remove(i);
+            }
+
         }
         return gracze;
     }
@@ -110,4 +101,18 @@ public class Rozgrywka extends Gracz {
         return losoweImie;
 
     }
+
+    public void symulacja(){
+
+
+        System.out.println(taliaKart.getTaliaKart().size());
+        dodajGraczy();
+        rozdajKartyDoReki();
+        wyswietlGraczy();
+        System.out.println(taliaKart.getTaliaKart().size());
+
+
+    }
+
+
 }
