@@ -133,9 +133,9 @@ public class Rozgrywka extends Gracz {
 
     }
 
-    public ArrayList<Karta> rozdajReturn(){
+    public ArrayList<Karta> rozdajTurn(){
 
-        System.out.println("RETURN");
+        System.out.println("TURN");
 
 //        System.out.println(taliaKart.getTaliaKart().size());
         taliaKart.getTaliaKart().remove(0);
@@ -187,7 +187,7 @@ public class Rozgrywka extends Gracz {
         wyswietlGraczy();
         System.out.println(taliaKart.getTaliaKart().size());
         rozdajFlop();
-        rozdajReturn();
+        rozdajTurn();
         rozdajRiver();
         wyswietlGraczy();
         System.out.println(taliaKart.getTaliaKart().size());

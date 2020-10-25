@@ -15,6 +15,11 @@ public class Gracz {
     public Gracz() {
     }
 
+    public Gracz(String nick, int iloscZetonow) {
+        this.nick = nick;
+        this.iloscZetonow = iloscZetonow;
+    }
+
     public ArrayList<Karta> getKartyWRece() {
         return kartyWRece;
     }

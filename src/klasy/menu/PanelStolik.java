@@ -4,6 +4,7 @@ import klasy.Rozgrywka;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,6 +43,7 @@ public class PanelStolik extends JPanel implements ActionListener{
 
         dodajTlo();
         dodajPrzyciski(obramowanie);
+//        dodajImionaGraczy();
         dodajPolaGraczy();
 
 
@@ -134,9 +136,18 @@ public class PanelStolik extends JPanel implements ActionListener{
         add(gracz8);
     }
 
+//    private void dodajImionaGraczy(){
+//
+//        JFormattedTextField gracz1 = new JFormattedTextField();
+//        gracz1.setText(rozgrywka.getGracze().get(1).getNick());
+//        gracz1.setBounds(1270, 80, 250, 50);
+//        add(gracz1);
+//
+//    }
+
     private void dodajTlo() {
 
-        imageFile = new File("zdjecia\\stol nowy.jpg");
+        imageFile = new File("zdjecia\\stol_final.jpg");
 
         try {
             image = ImageIO.read(imageFile);
@@ -163,6 +174,14 @@ public class PanelStolik extends JPanel implements ActionListener{
         var mess2 = "Ciemne: 10$ / 20$ ";
         g.drawString(mess2, 875, 325);
 
+        // Trzeba dodać warunki
+        g.setColor(Color.WHITE);
+        g.drawString(rozgrywka.getGracze().get(4).getNick(), 400, 80);
+        g.drawString(rozgrywka.getGracze().get(1).getNick(), 1270, 80);
+        g.drawString(rozgrywka.getGracze().get(2).getNick(),1530, 440);
+        g.drawString(rozgrywka.getGracze().get(3).getNick(),1450, 700);
+        g.drawString(rozgrywka.getGracze().get(0).getNick(),995, 830);
+        g.drawString(rozgrywka.getGracze().get(5).getNick(),650, 830);
 
     }
 

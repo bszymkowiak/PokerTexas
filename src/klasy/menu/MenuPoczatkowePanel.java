@@ -16,9 +16,9 @@ public class MenuPoczatkowePanel extends JPanel {
     private BufferedImage image;
     private JButton graj;
     private MenuPoczatkowe menuPoczatkowe;
-    private String imieGracza;
     private JTextField imieGr;
 
+    private String imieGracza;
     private int liczbaGraczy;
     private int iloscZetonow;
     JComboBox<Object> iloscPrzeciwnikowCombo;
@@ -107,8 +107,6 @@ public class MenuPoczatkowePanel extends JPanel {
         iloscPrzeciwnikowCombo.addItem(4);
         iloscPrzeciwnikowCombo.addItem(5);
         iloscPrzeciwnikowCombo.addItem(6);
-        iloscPrzeciwnikowCombo.addItem(7);
-        iloscPrzeciwnikowCombo.addItem(8);
 
         iloscPrzeciwnikowCombo.setBounds(1005, 285, 150, 30);
         iloscPrzeciwnikowCombo.setBackground(Color.GRAY);
