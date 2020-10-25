@@ -20,6 +20,18 @@ public class PanelStolik extends JPanel implements ActionListener{
     private JButton check;
     private JButton bet;
     private PanelStolik me;
+    Image gracz1k1;
+    Image gracz1k2;
+    Image gracz2k1;
+    Image gracz2k2;
+    Image gracz3k1;
+    Image gracz3k2;
+    Image gracz4k1;
+    Image gracz4k2;
+    Image gracz5k1;
+    Image gracz5k2;
+    Image gracz6k1;
+    Image gracz6k2;
 
     private Rozgrywka rozgrywka = new Rozgrywka();
 
@@ -95,45 +107,45 @@ public class PanelStolik extends JPanel implements ActionListener{
     }
 
     private void dodajPolaGraczy() {
-        JList gracz1 = new JList();
-        gracz1.setBounds(1270, 80, 250, 95);
-        gracz1.setBackground(SystemColor.DARK_GRAY);
-        add(gracz1);
 
-        JList gracz2 = new JList();
-        gracz2.setBounds(1530, 440, 250, 95);
-        gracz2.setBackground(SystemColor.DARK_GRAY);
-        add(gracz2);
 
-        JList gracz3 = new JList();
-        gracz3.setBounds(1450, 700, 250, 95);
-        gracz3.setBackground(SystemColor.DARK_GRAY);
-        add(gracz3);
+        gracz1k1 = new ImageIcon("zdjecia\\QC.jpg").getImage();
+        gracz1k2 = new ImageIcon("zdjecia\\QD.jpg").getImage();
+        gracz2k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+        gracz2k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+        gracz3k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+        gracz3k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+        gracz4k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+        gracz4k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+        gracz5k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+        gracz5k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+        gracz6k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+        gracz6k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
 
-        JList gracz4 = new JList();
-        gracz4.setBounds(995, 830, 250, 95);
-        gracz4.setBackground(SystemColor.DARK_GRAY);
-        add(gracz4);
 
-        JList gracz5 = new JList();
-        gracz5.setBounds(650, 830, 250, 95);
-        gracz5.setBackground(SystemColor.DARK_GRAY);
-        add(gracz5);
 
-        JList gracz6 = new JList();
-        gracz6.setBounds(220, 700, 250, 95);
-        gracz6.setBackground(SystemColor.DARK_GRAY);
-        add(gracz6);
+//        JList gracz2 = new JList();
+//        gracz2.setBounds(1530, 440, 250, 95);
+//        add(gracz2);
+//
+//        JList gracz3 = new JList();
+//        gracz3.setBounds(1450, 700, 250, 95);
+//        add(gracz3);
+//
+//        JList gracz4 = new JList();
+//        gracz4.setBounds(995, 830, 250, 95);
+//
+//        add(gracz4);
+//
+//        JList gracz5 = new JList();
+//        gracz5.setBounds(650, 830, 250, 95);
+//
+//        add(gracz5);
+//
+//        JList gracz6 = new JList();
+//        gracz6.setBounds(220, 700, 250, 95);
+//        add(gracz6);
 
-        JList gracz7 = new JList();
-        gracz7.setBounds(135, 440, 250, 95);
-        gracz7.setBackground(SystemColor.DARK_GRAY);
-        add(gracz7);
-
-        JList gracz8 = new JList();
-        gracz8.setBounds(400, 80, 250, 95);
-        gracz8.setBackground(SystemColor.DARK_GRAY);
-        add(gracz8);
     }
 
 //    private void dodajImionaGraczy(){
@@ -169,6 +181,7 @@ public class PanelStolik extends JPanel implements ActionListener{
         g2d.drawImage(image, 0, 0, this);
         Font f = new Font(Font.SANS_SERIF, Font.BOLD, 20);
         g.setFont(f);
+        g.setColor( Color.WHITE );
         var mess1 = "No Limit Poker Texas";
         g.drawString(mess1, 855, 300);
         var mess2 = "Ciemne: 10$ / 20$ ";
@@ -176,12 +189,28 @@ public class PanelStolik extends JPanel implements ActionListener{
 
         // Trzeba dodać warunki
         g.setColor(Color.WHITE);
-        g.drawString(rozgrywka.getGracze().get(4).getNick(), 400, 80);
-        g.drawString(rozgrywka.getGracze().get(1).getNick(), 1270, 80);
-        g.drawString(rozgrywka.getGracze().get(2).getNick(),1530, 440);
-        g.drawString(rozgrywka.getGracze().get(3).getNick(),1450, 700);
-        g.drawString(rozgrywka.getGracze().get(0).getNick(),995, 830);
-        g.drawString(rozgrywka.getGracze().get(5).getNick(),650, 830);
+        g.drawString(rozgrywka.getGracze().get(4).getNick(), 1750, 525);
+        g.drawString(rozgrywka.getGracze().get(1).getNick(), 1400, 183);
+        g.drawString(rozgrywka.getGracze().get(2).getNick(),1400, 870);
+        g.drawString(rozgrywka.getGracze().get(3).getNick(),70, 525);
+        g.drawString(rozgrywka.getGracze().get(0).getNick(),425, 183);
+        g.drawString(rozgrywka.getGracze().get(5).getNick(),425, 870);
+        g.drawImage(gracz1k1, 405,45,null);
+        g.drawImage(gracz1k2, 479,45,null);
+        g.drawImage(gracz2k1, 1375,45,null);
+        g.drawImage(gracz2k2, 1449,45,null);
+        g.drawImage(gracz3k1, 1375,731,null);
+        g.drawImage(gracz3k2, 1449,731,null);
+        g.drawImage(gracz4k1, 60,387,null);
+        g.drawImage(gracz4k2, 134,387,null);
+        g.drawImage(gracz5k1, 1720,387,null);
+        g.drawImage(gracz5k2, 1794,387,null);
+        g.drawImage(gracz6k1, 405,731,null);
+        g.drawImage(gracz6k2, 479,731,null);
+
+
+
+
 
     }
 
