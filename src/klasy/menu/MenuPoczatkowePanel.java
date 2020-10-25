@@ -139,6 +139,8 @@ public class MenuPoczatkowePanel extends JPanel {
     }
 
     private void dodajListeIloscPrzeciwnikow(Border obramowanie, Font sansbold20) {
+
+
         iloscPrzeciwnikowCombo = new JComboBox<>();
         iloscPrzeciwnikowCombo.addItem("ilość graczy:");
         iloscPrzeciwnikowCombo.addItem(1);
@@ -148,7 +150,7 @@ public class MenuPoczatkowePanel extends JPanel {
         iloscPrzeciwnikowCombo.addItem(5);
         iloscPrzeciwnikowCombo.addItem(6);
         iloscPrzeciwnikowCombo.addItem(7);
-        ;
+
         iloscPrzeciwnikowCombo.setBounds(1005, 285, 150, 30);
         iloscPrzeciwnikowCombo.setBackground(Color.GRAY);
         iloscPrzeciwnikowCombo.setFont(sansbold20);
