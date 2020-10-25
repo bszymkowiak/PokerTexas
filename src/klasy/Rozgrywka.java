@@ -173,6 +173,8 @@ public class Rozgrywka extends Gracz {
 //            System.out.println(k);
 //        }
 
+
+
         return kartyStol;
     }
 
@@ -180,7 +182,7 @@ public class Rozgrywka extends Gracz {
 
 
         System.out.println(taliaKart.getTaliaKart().size());
-        dodajGraczy();
+//        dodajGraczy();
         rozdajKartyDoReki();
         wyswietlGraczy();
         System.out.println(taliaKart.getTaliaKart().size());
@@ -188,6 +190,7 @@ public class Rozgrywka extends Gracz {
         rozdajReturn();
         rozdajRiver();
         wyswietlGraczy();
+        System.out.println(taliaKart.getTaliaKart().size());
 
 
     }

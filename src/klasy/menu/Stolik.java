@@ -10,6 +10,7 @@ class Stolik extends JPanel {
     private MenuPoczatkowePanel menuPoczatkowePanel;
     private int liczbaGraczy;
     private int iloscZetonow;
+    private String imieGracza;
 
 
     public Stolik(MenuPoczatkowePanel menuPoczatkowePanel) {
@@ -24,6 +25,7 @@ class Stolik extends JPanel {
     private void dodajTlo(MenuPoczatkowePanel menuPoczatkowePanel) {
         liczbaGraczy = menuPoczatkowePanel.getLiczbaGraczy();
         iloscZetonow = menuPoczatkowePanel.getIloscZetonow();
+        imieGracza = menuPoczatkowePanel.getImieGracza();
 
 
         window = new JFrame("Poker Texas");
@@ -33,6 +35,10 @@ class Stolik extends JPanel {
         window.add(new PanelStolik(we));
 
         window.pack();
+    }
+
+    public String getImieGracza() {
+        return imieGracza;
     }
 
     public int getLiczbaGraczy() {

@@ -19,7 +19,8 @@ public class PanelStolik extends JPanel implements ActionListener{
     private JButton check;
     private JButton bet;
     private PanelStolik me;
-    Rozgrywka rozgrywka = new Rozgrywka();
+
+    private Rozgrywka rozgrywka = new Rozgrywka();
 
     public PanelStolik(Stolik stolik) {
 
@@ -31,7 +32,13 @@ public class PanelStolik extends JPanel implements ActionListener{
 
         rozgrywka.setLiczbaGraczy(stolik.getLiczbaGraczy());
 
+        rozgrywka.dodajGraczy();
+
+        rozgrywka.getGracze().get(0).setNick(stolik.getImieGracza());
+
         rozgrywka.symulacja();
+
+
 
         dodajTlo();
         dodajPrzyciski(obramowanie);

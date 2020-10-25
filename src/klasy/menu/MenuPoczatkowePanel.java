@@ -4,13 +4,11 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class MenuPoczatkowePanel extends JPanel {
 
@@ -18,6 +16,8 @@ public class MenuPoczatkowePanel extends JPanel {
     private BufferedImage image;
     private JButton graj;
     private MenuPoczatkowe menuPoczatkowe;
+    private String imieGracza;
+    private JTextField imieGr;
 
     private int liczbaGraczy;
     private int iloscZetonow;
@@ -42,6 +42,129 @@ public class MenuPoczatkowePanel extends JPanel {
         dodajListeCzasuCiemnych(obramowanie, sansbold20);
         dodajPrzyciski(menuPoczatkowe, obramowanie);
 
+    }
+
+    private void dodajTlo() {
+        imageFile = new File("zdjecia\\tlo.jpg");
+
+        try {
+            image = ImageIO.read(imageFile);
+        } catch (
+                IOException e) {
+            System.err.println("Blad odczytu obrazka");
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void dodajPoleImie(Border obramowanie, Font sansbold20) {
+        imieGr = new JTextField("imię:", 20);
+        imieGr.setBackground(Color.LIGHT_GRAY);
+        imieGr.setBounds(1005, 209, 300, 25);
+        imieGr.setFont(sansbold20);
+        imieGr.setBorder(obramowanie);
+        add(imieGr);
+        imieGr.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+                if (e.getButton() == 1) {
+                    imieGr.setText("");
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
+    }
+
+    private void dodajListeIloscPrzeciwnikow(Border obramowanie, Font sansbold20) {
+
+
+        iloscPrzeciwnikowCombo = new JComboBox<>();
+        iloscPrzeciwnikowCombo.addItem("ilość graczy:");
+        iloscPrzeciwnikowCombo.addItem(2);
+        iloscPrzeciwnikowCombo.addItem(3);
+        iloscPrzeciwnikowCombo.addItem(4);
+        iloscPrzeciwnikowCombo.addItem(5);
+        iloscPrzeciwnikowCombo.addItem(6);
+        iloscPrzeciwnikowCombo.addItem(7);
+        iloscPrzeciwnikowCombo.addItem(8);
+
+        iloscPrzeciwnikowCombo.setBounds(1005, 285, 150, 30);
+        iloscPrzeciwnikowCombo.setBackground(Color.GRAY);
+        iloscPrzeciwnikowCombo.setFont(sansbold20);
+        iloscPrzeciwnikowCombo.setBorder(obramowanie);
+        add(iloscPrzeciwnikowCombo);
+
+        iloscPrzeciwnikowCombo.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    int b = (Integer) e.getItemSelectable().getSelectedObjects()[0];
+                    liczbaGraczy = b;
+                }
+            }
+        });
+    }
+
+    private void dodajListeIloscZetonowNaStart(Border obramowanie, Font sansbold20) {
+        iloscZetonowStart = new JComboBox<>();
+        iloscZetonowStart.addItem("ilość żetonów:");
+        iloscZetonowStart.addItem(500);
+        iloscZetonowStart.addItem(1000);
+        iloscZetonowStart.addItem(1500);
+        iloscZetonowStart.addItem(2000);
+        iloscZetonowStart.addItem(3000);
+        iloscZetonowStart.addItem(5000);
+        iloscZetonowStart.addItem(10000);
+        iloscZetonowStart.setBackground(Color.GRAY);
+        iloscZetonowStart.setBounds(1005, 360, 165, 30);
+        iloscZetonowStart.setFont(sansbold20);
+        iloscZetonowStart.setBorder(obramowanie);
+        add(iloscZetonowStart);
+
+        iloscZetonowStart.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent f) {
+                if (f.getStateChange() == ItemEvent.SELECTED) {
+                    int d = (Integer) f.getItemSelectable().getSelectedObjects()[0];
+                    iloscZetonow = d;
+                }
+            }
+        });
+    }
+
+    private void dodajListeCzasuCiemnych(Border obramowanie, Font sansbold20) {
+        var czasCiemnych = new JComboBox<Integer>();
+        czasCiemnych.addItem(5);
+        czasCiemnych.addItem(8);
+        czasCiemnych.addItem(10);
+        czasCiemnych.addItem(15);
+        czasCiemnych.setBackground(Color.GRAY);
+        czasCiemnych.setBounds(1005, 448, 50, 30);
+        czasCiemnych.setFont(sansbold20);
+        czasCiemnych.setBorder(obramowanie);
+        add(czasCiemnych);
     }
 
     private void dodajPrzyciski(MenuPoczatkowe menuPoczatkowe, Border obramowanie) {
@@ -92,103 +215,28 @@ public class MenuPoczatkowePanel extends JPanel {
         graj.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                menuPoczatkowe.getWindow().dispose();
-                new Stolik(me);
-            }
-        });
-    }
 
-    private void dodajListeCzasuCiemnych(Border obramowanie, Font sansbold20) {
-        var czasCiemnych = new JComboBox<Integer>();
-        czasCiemnych.addItem(5);
-        czasCiemnych.addItem(8);
-        czasCiemnych.addItem(10);
-        czasCiemnych.addItem(15);
-        czasCiemnych.setBackground(Color.GRAY);
-        czasCiemnych.setBounds(1005, 448, 50, 30);
-        czasCiemnych.setFont(sansbold20);
-        czasCiemnych.setBorder(obramowanie);
-        add(czasCiemnych);
-    }
+                if (Objects.equals(iloscPrzeciwnikowCombo.getSelectedItem(), "ilość graczy:")) {
 
-    private void dodajListeIloscZetonowNaStart(Border obramowanie, Font sansbold20) {
-        iloscZetonowStart = new JComboBox<>();
-        iloscZetonowStart.addItem("ilość żetonów:");
-        iloscZetonowStart.addItem(500);
-        iloscZetonowStart.addItem(1000);
-        iloscZetonowStart.addItem(1500);
-        iloscZetonowStart.addItem(2000);
-        iloscZetonowStart.addItem(3000);
-        iloscZetonowStart.addItem(5000);
-        iloscZetonowStart.addItem(10000);
-        iloscZetonowStart.setBackground(Color.GRAY);
-        iloscZetonowStart.setBounds(1005, 360, 165, 30);
-        iloscZetonowStart.setFont(sansbold20);
-        iloscZetonowStart.setBorder(obramowanie);
-        add(iloscZetonowStart);
+                    JOptionPane.showMessageDialog(null, "Podaj ilość przeciwników!", "Błąd przeciwników", JOptionPane.INFORMATION_MESSAGE);
 
-        iloscZetonowStart.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent f) {
-                if (f.getStateChange() == ItemEvent.SELECTED) {
-                    int d = (Integer) f.getItemSelectable().getSelectedObjects()[0];
-                    iloscZetonow = d;
+                } else if (Objects.equals(iloscZetonowStart.getSelectedItem(), "ilość żetonów:")) {
+
+                    JOptionPane.showMessageDialog(null, "Podaj ilość żetonów!", "Błąd ilości żetonów.", JOptionPane.INFORMATION_MESSAGE);
+
+                } else {
+
+                    menuPoczatkowe.getWindow().dispose();
+                    imieGracza = imieGr.getText();
+                    new Stolik(me);
                 }
+
             }
         });
     }
 
-    private void dodajListeIloscPrzeciwnikow(Border obramowanie, Font sansbold20) {
-
-
-        iloscPrzeciwnikowCombo = new JComboBox<>();
-        iloscPrzeciwnikowCombo.addItem("ilość graczy:");
-        iloscPrzeciwnikowCombo.addItem(1);
-        iloscPrzeciwnikowCombo.addItem(2);
-        iloscPrzeciwnikowCombo.addItem(3);
-        iloscPrzeciwnikowCombo.addItem(4);
-        iloscPrzeciwnikowCombo.addItem(5);
-        iloscPrzeciwnikowCombo.addItem(6);
-        iloscPrzeciwnikowCombo.addItem(7);
-
-        iloscPrzeciwnikowCombo.setBounds(1005, 285, 150, 30);
-        iloscPrzeciwnikowCombo.setBackground(Color.GRAY);
-        iloscPrzeciwnikowCombo.setFont(sansbold20);
-        iloscPrzeciwnikowCombo.setBorder(obramowanie);
-        add(iloscPrzeciwnikowCombo);
-
-        iloscPrzeciwnikowCombo.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    int b = (Integer) e.getItemSelectable().getSelectedObjects()[0];
-                    liczbaGraczy = b;
-                }
-            }
-        });
-    }
-
-    private void dodajPoleImie(Border obramowanie, Font sansbold20) {
-        JTextField imieGr = new JTextField(20);
-        imieGr.setBackground(Color.GRAY);
-        imieGr.setBounds(1005, 209, 300, 25);
-        imieGr.setFont(sansbold20);
-        imieGr.setBorder(obramowanie);
-        add(imieGr);
-    }
-
-    private void dodajTlo() {
-        imageFile = new File("zdjecia\\tlo.jpg");
-
-        try {
-            image = ImageIO.read(imageFile);
-        } catch (
-                IOException e) {
-            System.err.println("Blad odczytu obrazka");
-            e.printStackTrace();
-        }
-
-
+    public String getImieGracza() {
+        return imieGracza;
     }
 
     public int getLiczbaGraczy() {
