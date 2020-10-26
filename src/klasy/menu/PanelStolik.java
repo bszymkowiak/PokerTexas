@@ -32,6 +32,11 @@ public class PanelStolik extends JPanel implements ActionListener{
     Image gracz5k2;
     Image gracz6k1;
     Image gracz6k2;
+    Image kartaF1;
+    Image kartaF2;
+    Image kartaF3;
+    Image kartaT;
+    Image kartaR;
 
     private Rozgrywka rozgrywka = new Rozgrywka();
 
@@ -48,6 +53,7 @@ public class PanelStolik extends JPanel implements ActionListener{
         rozgrywka.dodajGraczy();
 
         rozgrywka.getGracze().get(0).setNick(stolik.getImieGracza());
+
 
         rozgrywka.symulacja();
 
@@ -92,7 +98,7 @@ public class PanelStolik extends JPanel implements ActionListener{
 
         JSlider pasekPuli = new JSlider();
         pasekPuli.setBounds(1422, 890, 288, 30);
-        pasekPuli.setBackground(Color.GRAY);
+        pasekPuli.setBackground(Color.DARK_GRAY);
         add(pasekPuli);
 
         JList wpisPuli = new JList();
@@ -121,7 +127,11 @@ public class PanelStolik extends JPanel implements ActionListener{
         gracz5k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
         gracz6k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
         gracz6k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
-
+        kartaF1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+        kartaF2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+        kartaF3 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+        kartaR = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+        kartaT = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
 
 
 //        JList gracz2 = new JList();
@@ -207,6 +217,11 @@ public class PanelStolik extends JPanel implements ActionListener{
         g.drawImage(gracz5k2, 1794,387,null);
         g.drawImage(gracz6k1, 405,731,null);
         g.drawImage(gracz6k2, 479,731,null);
+        g.drawImage( kartaF1, 777,487,null);
+        g.drawImage( kartaF2, 851,487,null);
+        g.drawImage( kartaF3, 925,487,null);
+        g.drawImage( kartaT, 999,487,null);
+        g.drawImage( kartaR, 1073,487,null);
 
 
 
