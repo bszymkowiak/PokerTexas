@@ -2,6 +2,7 @@ package klasy;
 
 import klasy.karty.Karta;
 import klasy.karty.TaliaKart;
+import klasy.menu.MenuPoczatkowePanel;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -44,6 +45,7 @@ public class Rozgrywka extends Gracz {
             System.out.println(g);
         }
     }
+
 
     public ArrayList<Gracz> dodajGraczy(){
 

@@ -44,6 +44,10 @@ public class MenuPoczatkowePanel extends JPanel {
 
     }
 
+    public MenuPoczatkowePanel() {
+
+    }
+
     private void dodajTlo() {
         imageFile = new File("zdjecia\\tlo.jpg");
 

@@ -97,7 +97,7 @@ public class PanelStolik extends JPanel implements ActionListener{
         add(bet);
 
         JSlider pasekPuli = new JSlider();
-        pasekPuli.setBounds(1422, 890, 288, 30);
+        pasekPuli.setBounds(1576, 890, 134, 30);
         pasekPuli.setBackground(Color.DARK_GRAY);
         add(pasekPuli);
 
@@ -110,6 +110,7 @@ public class PanelStolik extends JPanel implements ActionListener{
         lobby.setBounds(20, 20, 100, 40);
         lobby.setFont(new Font("SansSerif", Font.BOLD, 18));
         add(lobby);
+
     }
 
     private void dodajPolaGraczy() {
@@ -201,16 +202,16 @@ public class PanelStolik extends JPanel implements ActionListener{
         g.setColor(Color.WHITE);
         g.drawString(rozgrywka.getGracze().get(4).getNick(), 1750, 525);
         g.drawString(rozgrywka.getGracze().get(1).getNick(), 1400, 183);
-        g.drawString(rozgrywka.getGracze().get(2).getNick(),1400, 870);
+        g.drawString(rozgrywka.getGracze().get(0).getNick(),1400, 870);
         g.drawString(rozgrywka.getGracze().get(3).getNick(),70, 525);
-        g.drawString(rozgrywka.getGracze().get(0).getNick(),425, 183);
+        g.drawString(rozgrywka.getGracze().get(2).getNick(),425, 183);
         g.drawString(rozgrywka.getGracze().get(5).getNick(),425, 870);
-        g.drawImage(gracz1k1, 405,45,null);
-        g.drawImage(gracz1k2, 479,45,null);
+        g.drawImage(gracz1k1, 1375,731,null);
+        g.drawImage(gracz1k2, 1449,731,null);
         g.drawImage(gracz2k1, 1375,45,null);
         g.drawImage(gracz2k2, 1449,45,null);
-        g.drawImage(gracz3k1, 1375,731,null);
-        g.drawImage(gracz3k2, 1449,731,null);
+        g.drawImage(gracz3k1, 405,45,null);
+        g.drawImage(gracz3k2, 479,45,null);
         g.drawImage(gracz4k1, 60,387,null);
         g.drawImage(gracz4k2, 134,387,null);
         g.drawImage(gracz5k1, 1720,387,null);
@@ -222,7 +223,12 @@ public class PanelStolik extends JPanel implements ActionListener{
         g.drawImage( kartaF3, 925,487,null);
         g.drawImage( kartaT, 999,487,null);
         g.drawImage( kartaR, 1073,487,null);
-
+        g.drawString( String.valueOf( rozgrywka.getGracze().get( 0 ).getIloscZetonow() ) ,1430, 907);
+        g.drawString( String.valueOf( rozgrywka.getGracze().get( 1 ).getIloscZetonow() ) ,1430, 220);
+        g.drawString( String.valueOf( rozgrywka.getGracze().get( 2 ).getIloscZetonow() ) ,460, 220);
+        g.drawString( String.valueOf( rozgrywka.getGracze().get( 3 ).getIloscZetonow() ) ,115, 562);
+        g.drawString( String.valueOf( rozgrywka.getGracze().get( 4 ).getIloscZetonow() ) ,1775, 562);
+        g.drawString( String.valueOf( rozgrywka.getGracze().get( 5 ).getIloscZetonow() ) ,460, 907);
 
 
 
