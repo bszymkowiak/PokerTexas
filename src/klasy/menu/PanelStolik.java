@@ -1,4 +1,6 @@
 package klasy.menu;
+import EnumKlasy.Kolor;
+import EnumKlasy.Wartosc;
 import klasy.Rozgrywka;
 
 import javax.imageio.ImageIO;
@@ -12,7 +14,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class PanelStolik extends JPanel implements ActionListener{
+public class PanelStolik extends JPanel{
     private File imageFile;
     private BufferedImage image;
     private Stolik stolik;
@@ -20,18 +22,19 @@ public class PanelStolik extends JPanel implements ActionListener{
     private JButton check;
     private JButton bet;
     private PanelStolik me;
-    Image gracz1k1;
-    Image gracz1k2;
-    Image gracz2k1;
-    Image gracz2k2;
-    Image gracz3k1;
-    Image gracz3k2;
-    Image gracz4k1;
-    Image gracz4k2;
-    Image gracz5k1;
-    Image gracz5k2;
-    Image gracz6k1;
-    Image gracz6k2;
+    private Image obraz;
+    private Image gracz0k1;
+    private Image gracz0k2;
+    private Image gracz1k1;
+    private Image gracz1k2;
+    private Image gracz2k1;
+    private Image gracz2k2;
+    private Image gracz3k1;
+    private Image gracz3k2;
+    private Image gracz4k1;
+    private Image gracz4k2;
+    private Image gracz5k1;
+    private Image gracz5k2;
     Image kartaF1;
     Image kartaF2;
     Image kartaF3;
@@ -39,6 +42,128 @@ public class PanelStolik extends JPanel implements ActionListener{
     Image kartaR;
 
     private Rozgrywka rozgrywka = new Rozgrywka();
+
+    public Image zapiszObraz(int i){
+
+        if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.PIK) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.DWA) ) {
+            obraz = new ImageIcon("zdjecia\\karty\\2S.jpg").getImage();
+
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.PIK) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.TRZY)) {
+            obraz = new ImageIcon("zdjecia\\karty\\3S.jpg").getImage();
+
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.PIK) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.CZTERY)) {
+            obraz = new ImageIcon("zdjecia\\karty\\4S.jpg").getImage();
+
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.PIK) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.PIEC)) {
+            obraz = new ImageIcon("zdjecia\\karty\\5S.jpg").getImage();
+
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.PIK) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.SZESC)) {
+            obraz = new ImageIcon("zdjecia\\karty\\6S.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.PIK) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.SIEDEM)) {
+            obraz = new ImageIcon("zdjecia\\karty\\7S.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.PIK) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.OSIEM)) {
+            obraz = new ImageIcon("zdjecia\\karty\\8S.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.PIK) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.DZIEWIEC)) {
+            obraz = new ImageIcon("zdjecia\\karty\\9S.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.PIK) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.DZIESIEC)) {
+            obraz = new ImageIcon("zdjecia\\karty\\10S.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.PIK) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.JOPEK)) {
+            obraz = new ImageIcon("zdjecia\\karty\\JS.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.PIK) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.DAMA)) {
+            obraz = new ImageIcon("zdjecia\\karty\\QS.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.PIK) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.KROL)) {
+            obraz = new ImageIcon("zdjecia\\karty\\KS.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.PIK) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.AS)) {
+            obraz = new ImageIcon("zdjecia\\karty\\AS.jpg").getImage();
+
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.TREFL) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.DWA)) {
+            obraz = new ImageIcon("zdjecia\\karty\\2C.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.TREFL) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.TRZY)) {
+            obraz = new ImageIcon("zdjecia\\karty\\3C.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.TREFL) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.CZTERY)) {
+            obraz = new ImageIcon("zdjecia\\karty\\4C.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.TREFL) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.PIEC)) {
+            obraz = new ImageIcon("zdjecia\\karty\\5C.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.TREFL) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.SZESC)) {
+            obraz = new ImageIcon("zdjecia\\karty\\6C.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.TREFL) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.SIEDEM)) {
+            obraz = new ImageIcon("zdjecia\\karty\\7C.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.TREFL) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.OSIEM)) {
+            obraz = new ImageIcon("zdjecia\\karty\\8C.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.TREFL) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.DZIEWIEC)) {
+            obraz = new ImageIcon("zdjecia\\karty\\9C.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.TREFL) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.DZIESIEC)) {
+            obraz = new ImageIcon("zdjecia\\karty\\10C.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.TREFL) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.JOPEK)) {
+            obraz = new ImageIcon("zdjecia\\karty\\JC.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.TREFL) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.DAMA)) {
+            obraz = new ImageIcon("zdjecia\\karty\\QC.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.TREFL) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.KROL)) {
+            obraz = new ImageIcon("zdjecia\\karty\\KC.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.TREFL) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.AS)) {
+            obraz = new ImageIcon("zdjecia\\karty\\AC.jpg").getImage();
+
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KARO) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.DWA)) {
+            obraz = new ImageIcon("zdjecia\\karty\\2D.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KARO) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.TRZY)) {
+            obraz = new ImageIcon("zdjecia\\karty\\3D.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KARO) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.CZTERY)) {
+            obraz = new ImageIcon("zdjecia\\karty\\4D.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KARO) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.PIEC)) {
+            obraz = new ImageIcon("zdjecia\\karty\\5D.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KARO) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.SZESC)) {
+            obraz = new ImageIcon("zdjecia\\karty\\6D.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KARO) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.SIEDEM)) {
+            obraz = new ImageIcon("zdjecia\\karty\\7D.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KARO) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.OSIEM)) {
+            obraz = new ImageIcon("zdjecia\\karty\\8D.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KARO) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.DZIEWIEC)) {
+            obraz = new ImageIcon("zdjecia\\karty\\9D.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KARO) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.DZIESIEC)) {
+            obraz = new ImageIcon("zdjecia\\karty\\10D.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KARO) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.JOPEK)) {
+            obraz = new ImageIcon("zdjecia\\karty\\JD.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KARO) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.DAMA)) {
+            obraz = new ImageIcon("zdjecia\\karty\\QD.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KARO) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.KROL)) {
+            obraz = new ImageIcon("zdjecia\\karty\\KD.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KARO) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.AS)) {
+            obraz = new ImageIcon("zdjecia\\karty\\AD.jpg").getImage();
+
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KIER) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.DWA)) {
+            obraz = new ImageIcon("zdjecia\\karty\\2H.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KIER) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.TRZY)) {
+            obraz = new ImageIcon("zdjecia\\karty\\3H.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KIER) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.CZTERY)) {
+            obraz = new ImageIcon("zdjecia\\karty\\4H.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KIER) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.PIEC)) {
+            obraz = new ImageIcon("zdjecia\\karty\\5H.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KIER) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.SZESC)) {
+            obraz = new ImageIcon("zdjecia\\karty\\6H.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KIER) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.SIEDEM)) {
+            obraz = new ImageIcon("zdjecia\\karty\\7H.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KIER) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.OSIEM)) {
+            obraz = new ImageIcon("zdjecia\\karty\\8H.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KIER) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.DZIEWIEC)) {
+            obraz = new ImageIcon("zdjecia\\karty\\9H.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KIER) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.DZIESIEC)) {
+            obraz = new ImageIcon("zdjecia\\karty\\10H.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KIER) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.JOPEK)) {
+            obraz = new ImageIcon("zdjecia\\karty\\JH.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KIER) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.DAMA)) {
+            obraz = new ImageIcon("zdjecia\\karty\\QH.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KIER) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.KROL)) {
+            obraz = new ImageIcon("zdjecia\\karty\\KH.jpg").getImage();
+        } else if (rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor().equals(Kolor.KIER) && rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc().equals(Wartosc.AS)) {
+            obraz = new ImageIcon("zdjecia\\karty\\AH.jpg").getImage();
+        }
+
+
+
+
+        return obraz;
+
+    }
 
     public PanelStolik(Stolik stolik) {
 
@@ -116,8 +241,10 @@ public class PanelStolik extends JPanel implements ActionListener{
     private void dodajPolaGraczy() {
 
 
-        gracz1k1 = new ImageIcon("zdjecia\\QC.jpg").getImage();
-        gracz1k2 = new ImageIcon("zdjecia\\QD.jpg").getImage();
+        gracz0k1 = new ImageIcon(zapiszObraz(0)).getImage();
+        gracz0k2 = new ImageIcon(zapiszObraz(1)).getImage();
+        gracz1k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+        gracz1k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
         gracz2k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
         gracz2k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
         gracz3k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
@@ -126,8 +253,6 @@ public class PanelStolik extends JPanel implements ActionListener{
         gracz4k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
         gracz5k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
         gracz5k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
-        gracz6k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
-        gracz6k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
         kartaF1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
         kartaF2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
         kartaF3 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
@@ -192,7 +317,7 @@ public class PanelStolik extends JPanel implements ActionListener{
         g2d.drawImage(image, 0, 0, this);
         Font f = new Font(Font.SANS_SERIF, Font.BOLD, 20);
         g.setFont(f);
-        g.setColor( Color.WHITE );
+        g.setColor(Color.WHITE);
         var mess1 = "No Limit Poker Texas";
         g.drawString(mess1, 855, 300);
         var mess2 = "Ciemne: 10$ / 20$ ";
@@ -200,46 +325,132 @@ public class PanelStolik extends JPanel implements ActionListener{
 
         // Trzeba dodać warunki
         g.setColor(Color.WHITE);
-        g.drawString(rozgrywka.getGracze().get(4).getNick(), 1750, 525);
-        g.drawString(rozgrywka.getGracze().get(1).getNick(), 1400, 183);
-        g.drawString(rozgrywka.getGracze().get(0).getNick(),1400, 870);
-        g.drawString(rozgrywka.getGracze().get(3).getNick(),70, 525);
-        g.drawString(rozgrywka.getGracze().get(2).getNick(),425, 183);
-        g.drawString(rozgrywka.getGracze().get(5).getNick(),425, 870);
-        g.drawImage(gracz1k1, 1375,731,null);
-        g.drawImage(gracz1k2, 1449,731,null);
-        g.drawImage(gracz2k1, 1375,45,null);
-        g.drawImage(gracz2k2, 1449,45,null);
-        g.drawImage(gracz3k1, 405,45,null);
-        g.drawImage(gracz3k2, 479,45,null);
-        g.drawImage(gracz4k1, 60,387,null);
-        g.drawImage(gracz4k2, 134,387,null);
-        g.drawImage(gracz5k1, 1720,387,null);
-        g.drawImage(gracz5k2, 1794,387,null);
-        g.drawImage(gracz6k1, 405,731,null);
-        g.drawImage(gracz6k2, 479,731,null);
-        g.drawImage( kartaF1, 777,487,null);
-        g.drawImage( kartaF2, 851,487,null);
-        g.drawImage( kartaF3, 925,487,null);
-        g.drawImage( kartaT, 999,487,null);
-        g.drawImage( kartaR, 1073,487,null);
-        g.drawString( String.valueOf( rozgrywka.getGracze().get( 0 ).getIloscZetonow() ) ,1430, 907);
-        g.drawString( String.valueOf( rozgrywka.getGracze().get( 1 ).getIloscZetonow() ) ,1430, 220);
-        g.drawString( String.valueOf( rozgrywka.getGracze().get( 2 ).getIloscZetonow() ) ,460, 220);
-        g.drawString( String.valueOf( rozgrywka.getGracze().get( 3 ).getIloscZetonow() ) ,115, 562);
-        g.drawString( String.valueOf( rozgrywka.getGracze().get( 4 ).getIloscZetonow() ) ,1775, 562);
-        g.drawString( String.valueOf( rozgrywka.getGracze().get( 5 ).getIloscZetonow() ) ,460, 907);
+        if (rozgrywka.getLiczbaGraczy() == 2) {
+            g.drawString(rozgrywka.getGracze().get(0).getNick(), 1400, 870);
+            g.drawImage(gracz0k1, 1375, 731, null);
+            g.drawImage(gracz0k2, 1449, 731, null);
+            g.drawString(rozgrywka.getGracze().get(1).getNick(), 425, 870);
+            g.drawImage(gracz1k1, 405, 731, null);
+            g.drawImage(gracz1k2, 479, 731, null);
+            dodajKartyStol(g);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(0).getIloscZetonow()), 1430, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(1).getIloscZetonow()), 460, 907);
+
+        } else if (rozgrywka.getLiczbaGraczy() == 3) {
+            g.drawString(rozgrywka.getGracze().get(0).getNick(), 1400, 870);
+            g.drawString(rozgrywka.getGracze().get(1).getNick(), 425, 870);
+            g.drawString(rozgrywka.getGracze().get(2).getNick(), 70, 525);
+            g.drawImage(gracz0k1, 1375, 731, null);
+            g.drawImage(gracz0k2, 1449, 731, null);
+            g.drawImage(gracz1k1, 405, 731, null);
+            g.drawImage(gracz1k2, 479, 731, null);
+            g.drawImage(gracz2k1, 60, 387, null);
+            g.drawImage(gracz2k2, 134, 387, null);
+            dodajKartyStol(g);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(0).getIloscZetonow()), 1430, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(1).getIloscZetonow()), 460, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(2).getIloscZetonow()), 115, 562);
+
+        } else if (rozgrywka.getLiczbaGraczy() == 4) {
+            g.drawString(rozgrywka.getGracze().get(0).getNick(), 1400, 870);
+            g.drawString(rozgrywka.getGracze().get(1).getNick(), 425, 870);
+            g.drawString(rozgrywka.getGracze().get(2).getNick(), 70, 525);
+            g.drawString(rozgrywka.getGracze().get(3).getNick(), 425, 183);
+            g.drawImage(gracz0k1, 1375, 731, null);
+            g.drawImage(gracz0k2, 1449, 731, null);
+            g.drawImage(gracz1k1, 405, 731, null);
+            g.drawImage(gracz1k2, 479, 731, null);
+            g.drawImage(gracz2k1, 60, 387, null);
+            g.drawImage(gracz2k2, 134, 387, null);
+            g.drawImage(gracz3k1, 405, 45, null);
+            g.drawImage(gracz3k2, 479, 45, null);
+            dodajKartyStol(g);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(0).getIloscZetonow()), 1430, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(1).getIloscZetonow()), 460, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(2).getIloscZetonow()), 115, 562);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(3).getIloscZetonow()), 460, 220);
+
+        } else if (rozgrywka.getLiczbaGraczy() == 5) {
+            g.drawString(rozgrywka.getGracze().get(0).getNick(), 1400, 870);
+            g.drawString(rozgrywka.getGracze().get(1).getNick(), 425, 870);
+            g.drawString(rozgrywka.getGracze().get(2).getNick(), 70, 525);
+            g.drawString(rozgrywka.getGracze().get(3).getNick(), 425, 183);
+            g.drawString(rozgrywka.getGracze().get(4).getNick(), 1400, 183);
+            g.drawImage(gracz0k1, 1375, 731, null);
+            g.drawImage(gracz0k2, 1449, 731, null);
+            g.drawImage(gracz1k1, 405, 731, null);
+            g.drawImage(gracz1k2, 479, 731, null);
+            g.drawImage(gracz2k1, 60, 387, null);
+            g.drawImage(gracz2k2, 134, 387, null);
+            g.drawImage(gracz3k1, 405, 45, null);
+            g.drawImage(gracz3k2, 479, 45, null);
+            g.drawImage(gracz4k1, 1375, 45, null);
+            g.drawImage(gracz4k2, 1449, 45, null);
+            dodajKartyStol(g);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(0).getIloscZetonow()), 1430, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(1).getIloscZetonow()), 460, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(2).getIloscZetonow()), 115, 562);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(3).getIloscZetonow()), 460, 220);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(4).getIloscZetonow()), 1430, 220);
+
+        } else if (rozgrywka.getLiczbaGraczy() == 6) {
+            g.drawString(rozgrywka.getGracze().get(0).getNick(), 1400, 870);
+            g.drawString(rozgrywka.getGracze().get(1).getNick(), 425, 870);
+            g.drawString(rozgrywka.getGracze().get(2).getNick(), 70, 525);
+            g.drawString(rozgrywka.getGracze().get(3).getNick(), 425, 183);
+            g.drawString(rozgrywka.getGracze().get(4).getNick(), 1400, 183);
+            g.drawString(rozgrywka.getGracze().get(5).getNick(), 1750, 525);
+            g.drawImage(zapiszObraz(0), 1375, 731, null);
+            g.drawImage(zapiszObraz(1), 1449, 731, null);
+            g.drawImage(gracz1k1, 405, 731, null);
+            g.drawImage(gracz1k2, 479, 731, null);
+            g.drawImage(gracz2k1, 60, 387, null);
+            g.drawImage(gracz2k2, 134, 387, null);
+            g.drawImage(gracz3k1, 405, 45, null);
+            g.drawImage(gracz3k2, 479, 45, null);
+            g.drawImage(gracz4k1, 1375, 45, null);
+            g.drawImage(gracz4k2, 1449, 45, null);
+            g.drawImage(gracz5k1, 1720, 387, null);
+            g.drawImage(gracz5k2, 1794, 387, null);
+            dodajKartyStol(g);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(0).getIloscZetonow()), 1430, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(1).getIloscZetonow()), 460, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(2).getIloscZetonow()), 115, 562);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(3).getIloscZetonow()), 460, 220);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(4).getIloscZetonow()), 1430, 220);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(5).getIloscZetonow()), 1775, 562);
+
+//
 
 
+
+
+
+//            g.drawImage(kartaF1, 777, 487, null);
+//            g.drawImage(kartaF2, 851, 487, null);
+//            g.drawImage(kartaF3, 925, 487, null);
+//            g.drawImage(kartaT, 999, 487, null);
+//            g.drawImage(kartaR, 1073, 487, null);
+//            g.drawString(String.valueOf(rozgrywka.getGracze().get(0).getIloscZetonow()), 1430, 907);
+//            g.drawString(String.valueOf(rozgrywka.getGracze().get(1).getIloscZetonow()), 1430, 220);
+//            g.drawString(String.valueOf(rozgrywka.getGracze().get(2).getIloscZetonow()), 460, 220);
+//            g.drawString(String.valueOf(rozgrywka.getGracze().get(3).getIloscZetonow()), 115, 562);
+//            g.drawString(String.valueOf(rozgrywka.getGracze().get(4).getIloscZetonow()), 1775, 562);
+//            g.drawString(String.valueOf(rozgrywka.getGracze().get(5).getIloscZetonow()), 460, 907);
+
+
+        }
 
 
     }
 
+    public void dodajKartyStol(Graphics g){
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-
+        g.drawImage(kartaF1, 777, 487, null);
+        g.drawImage(kartaF2, 851, 487, null);
+        g.drawImage(kartaF3, 925, 487, null);
+        g.drawImage(kartaT, 999, 487, null);
+        g.drawImage(kartaR, 1073, 487, null);
 
     }
 }
