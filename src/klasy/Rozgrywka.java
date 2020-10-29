@@ -39,7 +39,7 @@ public class Rozgrywka extends Gracz {
         this.liczbaGraczy = liczbaGraczy;
     }
 
-    public void wyswietlGraczy(){
+    private void wyswietlGraczy(){
 
         for (Gracz g : gracze) {
             System.out.println(g);
@@ -73,7 +73,7 @@ public class Rozgrywka extends Gracz {
         return gracze;
     }
 
-    public String losoweImie(){
+    private String losoweImie(){
 
         String losoweImie = "";
 
@@ -106,7 +106,7 @@ public class Rozgrywka extends Gracz {
 
     }
 
-    public ArrayList<Karta> rozdajFlop(){
+    private ArrayList<Karta> rozdajFlop(){
 
         System.out.println("FLOP");
 
@@ -135,7 +135,7 @@ public class Rozgrywka extends Gracz {
 
     }
 
-    public ArrayList<Karta> rozdajTurn(){
+    private ArrayList<Karta> rozdajTurn(){
 
         System.out.println("TURN");
 
@@ -158,7 +158,7 @@ public class Rozgrywka extends Gracz {
 
     }
 
-    public ArrayList<Karta> rozdajRiver(){
+    private ArrayList<Karta> rozdajRiver(){
 
         System.out.println("RIVER");
 
@@ -174,7 +174,6 @@ public class Rozgrywka extends Gracz {
 //        for (Karta k : kartyStol) {
 //            System.out.println(k);
 //        }
-
 
 
         return kartyStol;

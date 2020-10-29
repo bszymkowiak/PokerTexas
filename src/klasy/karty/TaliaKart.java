@@ -1,7 +1,7 @@
 package klasy.karty;
 
-import EnumKlasy.Kolor;
-import EnumKlasy.Wartosc;
+import enumy.Kolor;
+import enumy.Wartosc;
 
 import java.util.ArrayList;
 import java.util.Random;

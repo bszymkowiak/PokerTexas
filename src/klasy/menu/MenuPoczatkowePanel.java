@@ -63,6 +63,7 @@ public class MenuPoczatkowePanel extends JPanel {
     }
 
     private void dodajPoleImie(Border obramowanie, Font sansbold20) {
+
         imieGr = new JTextField("imię:", 20);
         imieGr.setBackground(Color.LIGHT_GRAY);
         imieGr.setBounds(1005, 209, 300, 25);

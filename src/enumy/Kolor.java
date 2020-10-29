@@ -1,4 +1,4 @@
-package EnumKlasy;
+package enumy;
 
 public enum Kolor {
 
