@@ -94,6 +94,7 @@ public class PanelStolik extends JPanel {
         fold.setFont(new Font("SansSerif", Font.BOLD, 25));
         fold.setBorder(obramowanie);
         add(fold);
+        fold.addActionListener( e ->  System.exit( 0 ));
 
         check = new JButton(new ImageIcon("zdjecia\\check.jpg"));
         check.setBounds(1576, 930, 134, 80);

@@ -16,6 +16,7 @@ public class Rozgrywka extends Gracz {
     private ArrayList<Gracz> gracze = new ArrayList<>();
     private ArrayList<Karta> kartyStol = new ArrayList<>();
     private int liczbaGraczy = 8;
+    private int wartoscKart;
 
     private ArrayList<String> imionaGraczy = new ArrayList<>();
 
@@ -67,11 +68,14 @@ public class Rozgrywka extends Gracz {
 
                 g.kartyWRece.add(getTaliaKart().getTaliaKart().get(i));
                 taliaKart.getTaliaKart().remove(i);
+//                wartoscKart = wartoscKart + g.kartyWRece.get( i ).getWartosc().getWartosc();
             }
 
         }
         return gracze;
     }
+
+
 
     private String losoweImie(){
 
@@ -119,6 +123,7 @@ public class Rozgrywka extends Gracz {
 
             for (Gracz g : gracze) {
                 g.getKartyWRece().add(taliaKart.getTaliaKart().get(i));
+                wartoscKart += g.kartyWRece.get( i ).getKolor().getHierarchia();
             }
 
             taliaKart.getTaliaKart().remove(i);
@@ -146,6 +151,7 @@ public class Rozgrywka extends Gracz {
 
         for (Gracz g : gracze) {
             g.getKartyWRece().add(taliaKart.getTaliaKart().get(0));
+            wartoscKart = wartoscKart + g.kartyWRece.get(0).getWartosc().getWartosc();
         }
 
         taliaKart.getTaliaKart().remove(0);
@@ -167,6 +173,7 @@ public class Rozgrywka extends Gracz {
 
         for (Gracz g : gracze) {
             g.getKartyWRece().add(taliaKart.getTaliaKart().get(0));
+            wartoscKart = wartoscKart + g.kartyWRece.get(0).getWartosc().getWartosc();
         }
 
         taliaKart.getTaliaKart().remove(0);

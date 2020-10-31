@@ -1,7 +1,7 @@
 package klasy;
 
+import enumy.Wartosc;
 import klasy.karty.Karta;
-import klasy.karty.TaliaKart;
 
 import java.util.ArrayList;
 
@@ -9,15 +9,27 @@ public class Gracz {
 
     private String nick;
     private int iloscZetonow;
-
     protected ArrayList<Karta> kartyWRece = new ArrayList<>();
+    private int wartoscKart;
+
 
     public Gracz() {
     }
 
-    public Gracz(String nick, int iloscZetonow) {
+    @Override
+    public String toString() {
+        return "Gracz{" +
+                "nick='" + nick + '\'' +
+                ", iloscZetonow=" + iloscZetonow +
+                ", kartyWRece=" + kartyWRece +
+                ", wartoscKart=" + wartoscKart +
+                '}';
+    }
+
+    public Gracz(String nick, int iloscZetonow, int wartoscKart) {
         this.nick = nick;
         this.iloscZetonow = iloscZetonow;
+        this.wartoscKart = wartoscKart;
     }
 
     public ArrayList<Karta> getKartyWRece() {
@@ -44,13 +56,13 @@ public class Gracz {
         this.iloscZetonow = iloscZetonow;
     }
 
-
-    @Override
-    public String toString() {
-        return "Gracz{" +
-                "nick='" + nick + '\'' +
-                ", iloscZetonow=" + iloscZetonow +
-                ", kartyWRece=" + kartyWRece +
-                '}';
+    public int getWartoscKart(){
+        return wartoscKart;
     }
+
+    public void setWartoscKart(){
+        this.wartoscKart = wartoscKart;
+    }
+
+
 }
