@@ -46,7 +46,6 @@ public class Rozgrywka extends Gracz {
         }
     }
 
-
     public ArrayList<Gracz> dodajGraczy(){
 
         for (int i = 0; i < liczbaGraczy; i++) {
