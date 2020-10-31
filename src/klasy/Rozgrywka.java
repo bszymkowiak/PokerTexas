@@ -4,6 +4,8 @@ import klasy.karty.Karta;
 import klasy.karty.TaliaKart;
 import klasy.menu.MenuPoczatkowePanel;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -46,13 +48,12 @@ public class Rozgrywka extends Gracz {
         }
     }
 
-
-    public ArrayList<Gracz> dodajGraczy(){
+    public ArrayList<Gracz> dodajGraczy(int iloscZetonow){
 
         for (int i = 0; i < liczbaGraczy; i++) {
             gracze.add(new Gracz());
             gracze.get(i).setNick(losoweImie());
-            gracze.get(i).setIloscZetonow(1500);
+            gracze.get(i).setIloscZetonow(iloscZetonow);
         }
         return gracze;
     }
@@ -106,7 +107,7 @@ public class Rozgrywka extends Gracz {
 
     }
 
-    private ArrayList<Karta> rozdajFlop(){
+    public ArrayList<Karta> rozdajFlop(){
 
         System.out.println("FLOP");
 
@@ -135,7 +136,7 @@ public class Rozgrywka extends Gracz {
 
     }
 
-    private ArrayList<Karta> rozdajTurn(){
+    public ArrayList<Karta> rozdajTurn(){
 
         System.out.println("TURN");
 
@@ -158,7 +159,7 @@ public class Rozgrywka extends Gracz {
 
     }
 
-    private ArrayList<Karta> rozdajRiver(){
+    public ArrayList<Karta> rozdajRiver(){
 
         System.out.println("RIVER");
 
@@ -181,20 +182,28 @@ public class Rozgrywka extends Gracz {
 
     public void symulacja(){
 
+        Scanner scnr = new Scanner(System.in);
+        String decyzja;
 
-        System.out.println(taliaKart.getTaliaKart().size());
+
+//        System.out.println(taliaKart.getTaliaKart().size());
 //        dodajGraczy();
-        rozdajKartyDoReki();
-        wyswietlGraczy();
-        System.out.println(taliaKart.getTaliaKart().size());
-        rozdajFlop();
-        rozdajTurn();
-        rozdajRiver();
-        wyswietlGraczy();
-        System.out.println(taliaKart.getTaliaKart().size());
+//        rozdajKartyDoReki();
+//        wyswietlGraczy();
+//        System.out.println(taliaKart.getTaliaKart().size());
+//        rozdajFlop();
+//        rozdajTurn();
+//        rozdajRiver();
+////        wyswietlGraczy();
+//        System.out.println(taliaKart.getTaliaKart().size());
+
+
+
 
 
     }
+
+
 
 
 }

@@ -8,11 +8,6 @@ public class Main {
 
         MenuPoczatkowe menuPoczatkowe = new MenuPoczatkowe();
 
-        System.out.println();
-
-//        Rozgrywka rozgrywka = new Rozgrywka();
-//
-//        rozgrywka.symulacja();
 
 
 
