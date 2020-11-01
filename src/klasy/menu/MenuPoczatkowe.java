@@ -1,7 +1,13 @@
 package klasy.menu;
 
+import enumy.Kolor;
+import enumy.Wartosc;
+import klasy.Gracz;
+import klasy.Rozgrywka;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.Scanner;
 
 public class MenuPoczatkowe extends JPanel{
 
@@ -9,11 +15,12 @@ public class MenuPoczatkowe extends JPanel{
 
     private MenuPoczatkowe me;
 
+    private Rozgrywka rozgrywka = new Rozgrywka();
+
     public MenuPoczatkowe() {
 
         me = this;
         dodajRamke();
-
 
 //        var rewersKarty = new Hashtable<Integer, Component>();
 //        rewersKarty.put(0,new JLabel(new ImageIcon("src\\poker\\zdjecia\\blue_black.jpg")));
@@ -22,6 +29,7 @@ public class MenuPoczatkowe extends JPanel{
 
 
     }
+
 
     private void dodajRamke() {
         window = new JFrame("Poker Texas");
@@ -42,10 +50,9 @@ public class MenuPoczatkowe extends JPanel{
         this.window = window;
     }
 
-
-
-
-
+    public Rozgrywka getRozgrywka() {
+        return rozgrywka;
+    }
 
 
 }

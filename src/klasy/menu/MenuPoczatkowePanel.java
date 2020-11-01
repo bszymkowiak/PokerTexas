@@ -1,5 +1,7 @@
 package klasy.menu;
 
+import klasy.Rozgrywka;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -19,8 +21,8 @@ public class MenuPoczatkowePanel extends JPanel {
     private JTextField imieGr;
 
     private String imieGracza;
-    private int liczbaGraczy;
-    private int iloscZetonow;
+
+    private Rozgrywka rozgrywka;
     JComboBox<Object> iloscPrzeciwnikowCombo;
     JComboBox<Object> iloscZetonowStart;
     private MenuPoczatkowePanel me;
@@ -34,6 +36,10 @@ public class MenuPoczatkowePanel extends JPanel {
         setLayout(null);
         Border obramowanie = BorderFactory.createEmptyBorder();
         var sansbold20 = new Font("SansSerif", Font.BOLD, 20);
+        setRozgrywka(menuPoczatkowe.getRozgrywka());
+
+
+
 
         dodajTlo();
         dodajPoleImie(obramowanie, sansbold20);
@@ -124,7 +130,7 @@ public class MenuPoczatkowePanel extends JPanel {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     int b = (Integer) e.getItemSelectable().getSelectedObjects()[0];
-                    liczbaGraczy = b;
+                    rozgrywka.setLiczbaGraczy(b);
                 }
             }
         });
@@ -151,7 +157,7 @@ public class MenuPoczatkowePanel extends JPanel {
             public void itemStateChanged(ItemEvent f) {
                 if (f.getStateChange() == ItemEvent.SELECTED) {
                     int d = (Integer) f.getItemSelectable().getSelectedObjects()[0];
-                    iloscZetonow = d;
+                    rozgrywka.setIloscZetonow(d);
                 }
             }
         });
@@ -238,16 +244,16 @@ public class MenuPoczatkowePanel extends JPanel {
         });
     }
 
+    public void setRozgrywka(Rozgrywka rozgrywka) {
+        this.rozgrywka = rozgrywka;
+    }
+
+    public Rozgrywka getRozgrywka() {
+        return rozgrywka;
+    }
+
     public String getImieGracza() {
         return imieGracza;
-    }
-
-    public int getLiczbaGraczy() {
-        return liczbaGraczy;
-    }
-
-    public int getIloscZetonow() {
-        return iloscZetonow;
     }
 
     @Override

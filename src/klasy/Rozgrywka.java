@@ -17,7 +17,7 @@ public class Rozgrywka extends Gracz {
     private TaliaKart taliaKart = new TaliaKart();
     private ArrayList<Gracz> gracze = new ArrayList<>();
     private ArrayList<Karta> kartyStol = new ArrayList<>();
-    private int liczbaGraczy = 8;
+    private int liczbaGraczy;
 
     private ArrayList<String> imionaGraczy = new ArrayList<>();
 
@@ -41,7 +41,7 @@ public class Rozgrywka extends Gracz {
         this.liczbaGraczy = liczbaGraczy;
     }
 
-    private void wyswietlGraczy(){
+    public void wyswietlGraczy(){
 
         for (Gracz g : gracze) {
             System.out.println(g);
@@ -111,9 +111,7 @@ public class Rozgrywka extends Gracz {
 
         System.out.println("FLOP");
 
-//        System.out.println(taliaKart.getTaliaKart().size());
         taliaKart.getTaliaKart().remove(0);
-//        System.out.println(taliaKart.getTaliaKart().size());
 
         for (int i = 0; i < 3; i++) {
             kartyStol.add(taliaKart.getTaliaKart().get(i));
@@ -123,13 +121,7 @@ public class Rozgrywka extends Gracz {
             }
 
             taliaKart.getTaliaKart().remove(i);
-//            System.out.println(kartyStol.get(i));
         }
-
-//        System.out.println(taliaKart.getTaliaKart().size());
-//        System.out.println(kartyStol);
-
-
 
         return kartyStol;
 
@@ -140,9 +132,7 @@ public class Rozgrywka extends Gracz {
 
         System.out.println("TURN");
 
-//        System.out.println(taliaKart.getTaliaKart().size());
         taliaKart.getTaliaKart().remove(0);
-//        System.out.println(taliaKart.getTaliaKart().size());
         kartyStol.add(taliaKart.getTaliaKart().get(0));
 
         for (Gracz g : gracze) {
@@ -150,10 +140,6 @@ public class Rozgrywka extends Gracz {
         }
 
         taliaKart.getTaliaKart().remove(0);
-//        System.out.println(taliaKart.getTaliaKart().size());
-//        for (Karta k : kartyStol) {
-//            System.out.println(k);
-//        }
 
         return kartyStol;
 
@@ -171,11 +157,6 @@ public class Rozgrywka extends Gracz {
         }
 
         taliaKart.getTaliaKart().remove(0);
-//
-//        for (Karta k : kartyStol) {
-//            System.out.println(k);
-//        }
-
 
         return kartyStol;
     }

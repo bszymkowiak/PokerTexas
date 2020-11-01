@@ -1,5 +1,7 @@
 package klasy.menu;
 
+import klasy.Rozgrywka;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -8,8 +10,8 @@ class Stolik extends JPanel {
     JFrame window;
     private Stolik we;
     private MenuPoczatkowePanel menuPoczatkowePanel;
-    private int liczbaGraczy;
-    private int iloscZetonow;
+
+    private Rozgrywka rozgrywka;
     private String imieGracza;
 
 
@@ -23,8 +25,7 @@ class Stolik extends JPanel {
     }
 
     private void dodajTlo(MenuPoczatkowePanel menuPoczatkowePanel) {
-        liczbaGraczy = menuPoczatkowePanel.getLiczbaGraczy();
-        iloscZetonow = menuPoczatkowePanel.getIloscZetonow();
+        setRozgrywka(menuPoczatkowePanel.getRozgrywka());
         imieGracza = menuPoczatkowePanel.getImieGracza();
 
 
@@ -41,19 +42,11 @@ class Stolik extends JPanel {
         return imieGracza;
     }
 
-    public int getLiczbaGraczy() {
-        return liczbaGraczy;
+    public void setRozgrywka(Rozgrywka rozgrywka) {
+        this.rozgrywka = rozgrywka;
     }
 
-    public void setLiczbaGraczy(int liczbaGraczy) {
-        this.liczbaGraczy = liczbaGraczy;
-    }
-
-    public int getIloscZetonow() {
-        return iloscZetonow;
-    }
-
-    public void setIloscZetonow(int iloscZetonow) {
-        this.iloscZetonow = iloscZetonow;
+    public Rozgrywka getRozgrywka() {
+        return rozgrywka;
     }
 }
