@@ -9,18 +9,21 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class PanelStolik extends JPanel {
+public class PanelStolik extends JPanel implements ActionListener {
     private File imageFile;
     private BufferedImage image;
     private Stolik stolik;
     private JButton fold;
     private JButton check;
     private JButton bet;
+    private JButton graj;
     private PanelStolik me;
     private Image obraz;
     private Image gracz0k1;
@@ -43,7 +46,27 @@ public class PanelStolik extends JPanel {
 
     Border obramowanie = BorderFactory.createEmptyBorder();
 
-    private Rozgrywka rozgrywka = new Rozgrywka();
+    private Rozgrywka rozgrywka;
+
+    int temp= 0;
+
+
+    int betB;
+    //    private ChangeListener listener;
+    private JTextField wpisPuli;
+    //    private JPanel sliderPanel;
+    int iloscMoichZetonow=10000;
+    JTextField mojeZetony;
+    int pula;
+
+    public Rozgrywka getRozgrywka() {
+        return rozgrywka;
+    }
+
+    public void setRozgrywka(Rozgrywka rozgrywka) {
+        this.rozgrywka = rozgrywka;
+    }
+
 
     public PanelStolik(Stolik stolik) {
 
@@ -53,17 +76,26 @@ public class PanelStolik extends JPanel {
         this.stolik = stolik;
         setLayout(null);
 
-        rozgrywka.setLiczbaGraczy(stolik.getLiczbaGraczy());
 
-        rozgrywka.dodajGraczy(stolik.getIloscZetonow());
+        setRozgrywka(stolik.getRozgrywka());
 
-        rozgrywka.getGracze().get(0).setNick(stolik.getImieGracza());
+        rozgrywka.setLiczbaGraczy(stolik.getRozgrywka().getLiczbaGraczy());
 
-        rozgrywka.rozdajKartyDoReki();
+        getRozgrywka().dodajGraczy(stolik.getRozgrywka().getIloscZetonow());
+
+        getRozgrywka().getGracze().get(0).setNick(stolik.getImieGracza());
+
+        getRozgrywka().rozdajKartyDoReki();
+
+        getRozgrywka().rozdajFlop();
+        getRozgrywka().rozdajRiver();
+        getRozgrywka().rozdajTurn();
+
 
         dodajTlo();
         dodajPrzyciski(obramowanie);
         dodajPolaGraczy();
+
 
     }
 
@@ -139,6 +171,7 @@ public class PanelStolik extends JPanel {
             g.drawString(String.valueOf(rozgrywka.getGracze().get(2).getIloscZetonow()), 115, 562);
             g.drawString(String.valueOf(rozgrywka.getGracze().get(3).getIloscZetonow()), 460, 220);
 
+
         }
         else if (rozgrywka.getLiczbaGraczy() == 5) {
             g.drawString(rozgrywka.getGracze().get(0).getNick(), 1400, 870);
@@ -189,8 +222,12 @@ public class PanelStolik extends JPanel {
             g.drawString(String.valueOf(rozgrywka.getGracze().get(3).getIloscZetonow()), 460, 220);
             g.drawString(String.valueOf(rozgrywka.getGracze().get(4).getIloscZetonow()), 1430, 220);
             g.drawString(String.valueOf(rozgrywka.getGracze().get(5).getIloscZetonow()), 1775, 562);
+            dodajKartyStolFlop(g);
+            dodajKartyStolTurn(g);
+            dodajKartyStolRiver(g);
 
         }
+
 
 
     }
@@ -211,55 +248,18 @@ public class PanelStolik extends JPanel {
         g.drawImage(kartaR, 1073, 487, null);
     }
 
-    public void symulacja(){
-
-        String decyzja;
-        Scanner scnr = new Scanner(System.in);
-
-
-
-        for (Gracz g : rozgrywka.getGracze()) {
-
-            System.out.println("Co chcesz zrobić?\nFOLD|CHECK|BET/RAISE");
-            decyzja = scnr.nextLine();
-
-        };
-
-        rozgrywka.rozdajFlop();
-
-//        dodajKartyStolFlop(g);
-
-        kartaF1 = new ImageIcon(zapiszObraz(2)).getImage();
-        kartaF2 = new ImageIcon(zapiszObraz(3)).getImage();
-        kartaF3 = new ImageIcon(zapiszObraz(4)).getImage();
-
-        for (Gracz g : rozgrywka.getGracze()) {
-            System.out.println("Co chcesz zrobić?\nFOLD|CHECK|BET/RAISE");
-            decyzja = scnr.nextLine();
-
-        };
-
-        rozgrywka.rozdajTurn();
-
-        kartaR = new ImageIcon(zapiszObraz(5)).getImage();
-
-        for (Gracz g : rozgrywka.getGracze()) {
-            System.out.println("Co chcesz zrobić?\nFOLD|CHECK|BET/RAISE");
-
-        };
-
-        rozgrywka.rozdajRiver();
-
-        kartaT = new ImageIcon(zapiszObraz(6)).getImage();
-
-
-    }
 
     private Image zwrocZdjecieKartyOKolorzeIWartosci(Wartosc numerKarty, Kolor kolor) {
         return new ImageIcon("zdjecia\\karty\\" + kolor.toString().toLowerCase() + "\\" + numerKarty.getWartosc() + ".jpg").getImage();
     }
 
     private void dodajPrzyciski(Border obramowanie) {
+
+        wpisPuli = new JTextField();
+        wpisPuli.setBounds(1730, 890, 134, 30);
+        wpisPuli.setFont( new Font ("SansSerif", Font.BOLD, 18) );
+        add(wpisPuli);
+
         fold = new JButton(new ImageIcon("zdjecia\\fold.jpg"));
         fold.setBounds(1422, 930, 134, 80);
         fold.setBackground(Color.GRAY);
@@ -273,6 +273,27 @@ public class PanelStolik extends JPanel {
         check.setFont(new Font("SansSerif", Font.BOLD, 25));
         check.setBorder(obramowanie);
         add(check);
+        check.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if (temp == 0) {
+                    kartaF1 = new ImageIcon(zapiszObraz(2)).getImage();
+                    kartaF2 = new ImageIcon(zapiszObraz(3)).getImage();
+                    kartaF3 = new ImageIcon(zapiszObraz(4)).getImage();
+                    temp++;
+                    repaint();
+                } else if (temp == 1) {
+                    kartaT = new ImageIcon(zapiszObraz(5)).getImage();
+                    temp++;
+                    repaint();
+                } else if (temp == 2) {
+                    kartaR = new ImageIcon(zapiszObraz(6)).getImage();
+                    repaint();
+                }
+
+            }
+        });
 
         bet = new JButton(new ImageIcon("zdjecia\\bet.jpg"));
         bet.setBounds(1730, 930, 134, 80);
@@ -280,15 +301,27 @@ public class PanelStolik extends JPanel {
         bet.setFont(new Font("SansSerif", Font.BOLD, 25));
         bet.setBorder(obramowanie);
         add(bet);
+        bet.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                betB = Integer.parseInt(wpisPuli.getText());
+//                mojeZetony.setText( String.valueOf(rozgrywka.getGracze().get( 0 ).getIloscZetonow()- betB ));
+                rozgrywka.getGracze().get( 0 ).setIloscZetonow(rozgrywka.getGracze().get( 0 ).getIloscZetonow() - betB);
+                pula += betB;
+                repaint();
+            }
+        });
 
-        JSlider pasekPuli = new JSlider();
-        pasekPuli.setBounds(1576, 890, 134, 30);
-        pasekPuli.setBackground(Color.DARK_GRAY);
-        add(pasekPuli);
+        graj = new JButton(new ImageIcon("zdjecia\\graj2.jpg"));
+        graj.setBounds(877, 686, 243, 83);
+        graj.setBorder(obramowanie);
+        add(graj);
+        graj.addActionListener(this);
 
-        JList wpisPuli = new JList();
-        wpisPuli.setBounds(1730, 890, 134, 30);
-        add(wpisPuli);
+        mojeZetony = new JTextField(iloscMoichZetonow);
+//        mojeZetony.setBounds(1576, 890, 134, 30);
+//        mojeZetony.setFont( new Font ("SansSerif", Font.BOLD, 18) );
+        add(mojeZetony);
 
         JButton lobby = new JButton("LOBBY");
         lobby.setBackground(Color.GRAY);
@@ -326,6 +359,66 @@ public class PanelStolik extends JPanel {
             System.err.println("Blad odczytu obrazka");
             e.printStackTrace();
         }
+    }
+
+
+    public void symulacja(){
+
+
+        repaint();
+
+        String decyzja;
+        Scanner scnr = new Scanner(System.in);
+
+        rozgrywka.rozdajFlop();
+
+
+        System.out.println("Pokaz 1 karte");
+        decyzja = scnr.nextLine();
+
+        repaint();
+
+
+        System.out.println("Pokaz 1 karte");
+        decyzja = scnr.nextLine();
+
+
+        repaint();
+
+        System.out.println("Pokaz 1 karte");
+        decyzja = scnr.nextLine();
+
+
+        repaint();
+
+        rozgrywka.rozdajTurn();
+
+        kartaR = new ImageIcon(zapiszObraz(5)).getImage();
+
+        for (Gracz g : rozgrywka.getGracze()) {
+            System.out.println("Co chcesz zrobić?\nFOLD|CHECK|BET/RAISE");
+
+        };
+
+
+
+        kartaT = new ImageIcon(zapiszObraz(6)).getImage();
+
+
+    }
+
+    @Override
+    public String toString() {
+        return "PanelStolik{" +
+                "rozgrywka=" + rozgrywka +
+                "} " + super.toString();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        graj.setVisible(false);
+
     }
 }
 
