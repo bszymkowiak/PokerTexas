@@ -4,6 +4,8 @@ import enumy.Kolor;
 import enumy.Wartosc;
 import klasy.Gracz;
 import klasy.Rozgrywka;
+import klasy.karty.Karta;
+import klasy.karty.TaliaKart;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -14,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class PanelStolik extends JPanel implements ActionListener {
@@ -48,14 +51,10 @@ public class PanelStolik extends JPanel implements ActionListener {
 
     private Rozgrywka rozgrywka;
 
-    int temp= 0;
-
-
+    int temp = 0;
     int betB;
-    //    private ChangeListener listener;
     private JTextField wpisPuli;
-    //    private JPanel sliderPanel;
-    int iloscMoichZetonow=10000;
+    int iloscMoichZetonow;
     JTextField mojeZetony;
     int pula;
 
@@ -83,23 +82,27 @@ public class PanelStolik extends JPanel implements ActionListener {
 
         getRozgrywka().dodajGraczy(stolik.getRozgrywka().getIloscZetonow());
 
+
         getRozgrywka().getGracze().get(0).setNick(stolik.getImieGracza());
-
-        getRozgrywka().rozdajKartyDoReki();
-
-        getRozgrywka().rozdajFlop();
-        getRozgrywka().rozdajRiver();
-        getRozgrywka().rozdajTurn();
-
 
         dodajTlo();
         dodajPrzyciski(obramowanie);
-        dodajPolaGraczy();
+
+
 
 
     }
 
-    public Image zapiszObraz(int i) {
+    public Image zapiszObrazDlaKartStol(int i){
+
+        Kolor kolorKartyWReku = rozgrywka.getKartyStol().get(i).getKolor();
+        Wartosc numerKartyWReku = rozgrywka.getKartyStol().get(i).getWartosc();
+
+        return zwrocZdjecieKartyOKolorzeIWartosci(numerKartyWReku, kolorKartyWReku);
+
+    }
+
+    public Image zapiszObrazDlaGraczy(int i) {
 
         Kolor kolorKartyWReku = rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor();
         Wartosc numerKartyWReku = rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc();
@@ -137,8 +140,8 @@ public class PanelStolik extends JPanel implements ActionListener {
             g.drawString(String.valueOf(rozgrywka.getGracze().get(0).getIloscZetonow()), 1430, 907);
             g.drawString(String.valueOf(rozgrywka.getGracze().get(1).getIloscZetonow()), 460, 907);
 
-        }
-        else if (rozgrywka.getLiczbaGraczy() == 3) {
+        } else if (rozgrywka.getLiczbaGraczy() == 3) {
+
             g.drawString(rozgrywka.getGracze().get(0).getNick(), 1400, 870);
             g.drawString(rozgrywka.getGracze().get(1).getNick(), 425, 870);
             g.drawString(rozgrywka.getGracze().get(2).getNick(), 70, 525);
@@ -152,8 +155,7 @@ public class PanelStolik extends JPanel implements ActionListener {
             g.drawString(String.valueOf(rozgrywka.getGracze().get(1).getIloscZetonow()), 460, 907);
             g.drawString(String.valueOf(rozgrywka.getGracze().get(2).getIloscZetonow()), 115, 562);
 
-        }
-        else if (rozgrywka.getLiczbaGraczy() == 4) {
+        } else if (rozgrywka.getLiczbaGraczy() == 4) {
             g.drawString(rozgrywka.getGracze().get(0).getNick(), 1400, 870);
             g.drawString(rozgrywka.getGracze().get(1).getNick(), 425, 870);
             g.drawString(rozgrywka.getGracze().get(2).getNick(), 70, 525);
@@ -172,8 +174,7 @@ public class PanelStolik extends JPanel implements ActionListener {
             g.drawString(String.valueOf(rozgrywka.getGracze().get(3).getIloscZetonow()), 460, 220);
 
 
-        }
-        else if (rozgrywka.getLiczbaGraczy() == 5) {
+        } else if (rozgrywka.getLiczbaGraczy() == 5) {
             g.drawString(rozgrywka.getGracze().get(0).getNick(), 1400, 870);
             g.drawString(rozgrywka.getGracze().get(1).getNick(), 425, 870);
             g.drawString(rozgrywka.getGracze().get(2).getNick(), 70, 525);
@@ -195,8 +196,8 @@ public class PanelStolik extends JPanel implements ActionListener {
             g.drawString(String.valueOf(rozgrywka.getGracze().get(3).getIloscZetonow()), 460, 220);
             g.drawString(String.valueOf(rozgrywka.getGracze().get(4).getIloscZetonow()), 1430, 220);
 
-        }
-        else if (rozgrywka.getLiczbaGraczy() == 6) {
+        } else if (rozgrywka.getLiczbaGraczy() == 6) {
+
 
             g.drawString(rozgrywka.getGracze().get(0).getNick(), 1400, 870);
             g.drawString(rozgrywka.getGracze().get(1).getNick(), 425, 870);
@@ -204,8 +205,8 @@ public class PanelStolik extends JPanel implements ActionListener {
             g.drawString(rozgrywka.getGracze().get(3).getNick(), 425, 183);
             g.drawString(rozgrywka.getGracze().get(4).getNick(), 1400, 183);
             g.drawString(rozgrywka.getGracze().get(5).getNick(), 1750, 525);
-            g.drawImage(zapiszObraz(0), 1375, 731, null);
-            g.drawImage(zapiszObraz(1), 1449, 731, null);
+            g.drawImage(gracz0k1, 1375, 731, null);
+            g.drawImage(gracz0k2, 1449, 731, null);
             g.drawImage(gracz1k1, 405, 731, null);
             g.drawImage(gracz1k2, 479, 731, null);
             g.drawImage(gracz2k1, 60, 387, null);
@@ -227,7 +228,6 @@ public class PanelStolik extends JPanel implements ActionListener {
             dodajKartyStolRiver(g);
 
         }
-
 
 
     }
@@ -257,7 +257,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 
         wpisPuli = new JTextField();
         wpisPuli.setBounds(1730, 890, 134, 30);
-        wpisPuli.setFont( new Font ("SansSerif", Font.BOLD, 18) );
+        wpisPuli.setFont(new Font("SansSerif", Font.BOLD, 18));
         add(wpisPuli);
 
         fold = new JButton(new ImageIcon("zdjecia\\fold.jpg"));
@@ -266,6 +266,47 @@ public class PanelStolik extends JPanel implements ActionListener {
         fold.setFont(new Font("SansSerif", Font.BOLD, 25));
         fold.setBorder(obramowanie);
         add(fold);
+        fold.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                TaliaKart talia = new TaliaKart();
+
+                for (Gracz g : rozgrywka.getGracze()) {
+                    System.out.println(g);
+                }
+
+
+                for (Gracz g : rozgrywka.getGracze()) {
+                    g.getKartyWRece().removeAll(g.getKartyWRece());
+                }
+
+                rozgrywka.getKartyStol().removeAll(rozgrywka.getKartyStol());
+
+                System.out.println(talia.getTaliaKart().size());
+
+                rozgrywka.rozdajKartyDoReki(talia);
+
+                System.out.println(talia.getTaliaKart().size());
+
+                System.out.println();
+
+                for (Gracz g : rozgrywka.getGracze()) {
+                    System.out.println(g);
+                }
+
+                dodajPolaGraczy();
+
+
+                getRozgrywka().rozdajFlop(talia);
+                getRozgrywka().rozdajTurn();
+                getRozgrywka().rozdajRiver();
+
+                repaint();
+
+
+            }
+        });
 
         check = new JButton(new ImageIcon("zdjecia\\check.jpg"));
         check.setBounds(1576, 930, 134, 80);
@@ -278,17 +319,17 @@ public class PanelStolik extends JPanel implements ActionListener {
             public void actionPerformed(ActionEvent e) {
 
                 if (temp == 0) {
-                    kartaF1 = new ImageIcon(zapiszObraz(2)).getImage();
-                    kartaF2 = new ImageIcon(zapiszObraz(3)).getImage();
-                    kartaF3 = new ImageIcon(zapiszObraz(4)).getImage();
+                    kartaF1 = new ImageIcon(zapiszObrazDlaKartStol(0)).getImage();
+                    kartaF2 = new ImageIcon(zapiszObrazDlaKartStol(1)).getImage();
+                    kartaF3 = new ImageIcon(zapiszObrazDlaKartStol(2)).getImage();
                     temp++;
                     repaint();
                 } else if (temp == 1) {
-                    kartaT = new ImageIcon(zapiszObraz(5)).getImage();
+                    kartaT = new ImageIcon(zapiszObrazDlaKartStol(3)).getImage();
                     temp++;
                     repaint();
                 } else if (temp == 2) {
-                    kartaR = new ImageIcon(zapiszObraz(6)).getImage();
+                    kartaR = new ImageIcon(zapiszObrazDlaKartStol(4)).getImage();
                     repaint();
                 }
 
@@ -306,7 +347,7 @@ public class PanelStolik extends JPanel implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 betB = Integer.parseInt(wpisPuli.getText());
 //                mojeZetony.setText( String.valueOf(rozgrywka.getGracze().get( 0 ).getIloscZetonow()- betB ));
-                rozgrywka.getGracze().get( 0 ).setIloscZetonow(rozgrywka.getGracze().get( 0 ).getIloscZetonow() - betB);
+                rozgrywka.getGracze().get(0).setIloscZetonow(rozgrywka.getGracze().get(0).getIloscZetonow() - betB);
                 pula += betB;
                 repaint();
             }
@@ -333,19 +374,18 @@ public class PanelStolik extends JPanel implements ActionListener {
 
     private void dodajPolaGraczy() {
 
-
-        gracz0k1 = new ImageIcon(zapiszObraz(0)).getImage();
-        gracz0k2 = new ImageIcon(zapiszObraz(1)).getImage();
-        gracz1k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
-        gracz1k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
-        gracz2k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
-        gracz2k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
-        gracz3k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
-        gracz3k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
-        gracz4k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
-        gracz4k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
-        gracz5k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
-        gracz5k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+            gracz0k1 = new ImageIcon(zapiszObrazDlaGraczy(0)).getImage();
+            gracz1k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+            gracz2k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+            gracz3k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+            gracz4k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+            gracz5k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+            gracz0k2 = new ImageIcon(zapiszObrazDlaGraczy(1)).getImage();
+            gracz1k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+            gracz2k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+            gracz3k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+            gracz4k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+            gracz5k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
 
     }
 
@@ -362,7 +402,7 @@ public class PanelStolik extends JPanel implements ActionListener {
     }
 
 
-    public void symulacja(){
+    public void symulacja() {
 
 
         repaint();
@@ -370,7 +410,7 @@ public class PanelStolik extends JPanel implements ActionListener {
         String decyzja;
         Scanner scnr = new Scanner(System.in);
 
-        rozgrywka.rozdajFlop();
+        rozgrywka.rozdajFlop(rozgrywka.getTaliaKart());
 
 
         System.out.println("Pokaz 1 karte");
@@ -393,16 +433,16 @@ public class PanelStolik extends JPanel implements ActionListener {
 
         rozgrywka.rozdajTurn();
 
-        kartaR = new ImageIcon(zapiszObraz(5)).getImage();
+        kartaR = new ImageIcon(zapiszObrazDlaGraczy(5)).getImage();
 
         for (Gracz g : rozgrywka.getGracze()) {
             System.out.println("Co chcesz zrobić?\nFOLD|CHECK|BET/RAISE");
 
-        };
+        }
+        ;
 
 
-
-        kartaT = new ImageIcon(zapiszObraz(6)).getImage();
+        kartaT = new ImageIcon(zapiszObrazDlaGraczy(6)).getImage();
 
 
     }
@@ -419,6 +459,18 @@ public class PanelStolik extends JPanel implements ActionListener {
 
         graj.setVisible(false);
 
+        getRozgrywka().rozdajKartyDoReki(rozgrywka.getTaliaKart());
+
+        dodajPolaGraczy();
+
+
+        getRozgrywka().rozdajFlop(getRozgrywka().getTaliaKart());
+        getRozgrywka().rozdajTurn();
+        getRozgrywka().rozdajRiver();
+
+        repaint();
+
     }
+
 }
 

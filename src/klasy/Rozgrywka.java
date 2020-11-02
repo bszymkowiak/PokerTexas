@@ -2,10 +2,7 @@ package klasy;
 
 import klasy.karty.Karta;
 import klasy.karty.TaliaKart;
-import klasy.menu.MenuPoczatkowePanel;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -41,6 +38,14 @@ public class Rozgrywka extends Gracz {
         this.liczbaGraczy = liczbaGraczy;
     }
 
+    public ArrayList<Karta> getKartyStol() {
+        return kartyStol;
+    }
+
+    public void setKartyStol(ArrayList<Karta> kartyStol) {
+        this.kartyStol = kartyStol;
+    }
+
     public void wyswietlGraczy(){
 
         for (Gracz g : gracze) {
@@ -58,7 +63,7 @@ public class Rozgrywka extends Gracz {
         return gracze;
     }
 
-    public ArrayList<Gracz> rozdajKartyDoReki(){
+    public ArrayList<Gracz> rozdajKartyDoReki(TaliaKart taliaKart){
 
         taliaKart.tasujKarty();
 
@@ -70,8 +75,10 @@ public class Rozgrywka extends Gracz {
                 taliaKart.getTaliaKart().remove(i);
             }
 
+
         }
         return gracze;
+
     }
 
     private String losoweImie(){
@@ -107,7 +114,7 @@ public class Rozgrywka extends Gracz {
 
     }
 
-    public ArrayList<Karta> rozdajFlop(){
+    public ArrayList<Karta> rozdajFlop(TaliaKart taliaKart){
 
         System.out.println("FLOP");
 
@@ -159,6 +166,21 @@ public class Rozgrywka extends Gracz {
         taliaKart.getTaliaKart().remove(0);
 
         return kartyStol;
+    }
+
+    public ArrayList<Gracz> usunKartyZReki(){
+
+        for(Gracz g : gracze){
+
+            for(int i = 0; i < 5; i++) {
+
+                g.kartyWRece.remove(i);
+            }
+
+        }
+
+        return gracze;
+
     }
 
     public void symulacja(){

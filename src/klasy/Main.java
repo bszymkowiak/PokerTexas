@@ -8,7 +8,6 @@ public class Main {
 
         MenuPoczatkowe menuPoczatkowe = new MenuPoczatkowe();
 
-        System.out.println(menuPoczatkowe.getRozgrywka().getGracze().size());
 
 
 
