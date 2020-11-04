@@ -206,7 +206,7 @@ public class Rozgrywka extends Gracz {
         }
 
         if (j == 0) {
-            ktoBlind = rand.nextInt(6);
+            ktoBlind = rand.nextInt(gracze.size());
             malyBlind = 10;
             duzyBlind = 20;
             j++;
@@ -222,8 +222,8 @@ public class Rozgrywka extends Gracz {
         gracze.get(ktoBlind+counter).setBlind(malyBlind);
         counter++;
 
-        if ((ktoBlind +counter) > 5) {
-            counter -= 6;
+        if ((ktoBlind +counter) > (gracze.size()-1)) {
+            counter -= gracze.size();
         }
         gracze.get(ktoBlind+counter).setBlind(duzyBlind);
 
