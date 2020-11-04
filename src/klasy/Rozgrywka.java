@@ -15,6 +15,21 @@ public class Rozgrywka extends Gracz {
     private ArrayList<Gracz> gracze = new ArrayList<>();
     private ArrayList<Karta> kartyStol = new ArrayList<>();
     private int liczbaGraczy;
+    private int ktoBlind;
+    private Random rand = new Random();
+    private int ktoraRunda = 0;
+    int j = 0;
+    private int malyBlind;
+    private int duzyBlind;
+    private int counter = 0;
+
+    public int getKtoraRunda() {
+        return ktoraRunda;
+    }
+
+    public void setKtoraRunda(int ktoraRunda) {
+        this.ktoraRunda = ktoraRunda;
+    }
 
     private ArrayList<String> imionaGraczy = new ArrayList<>();
 
@@ -116,8 +131,6 @@ public class Rozgrywka extends Gracz {
 
     public ArrayList<Karta> rozdajFlop(TaliaKart taliaKart){
 
-        System.out.println("FLOP");
-
         taliaKart.getTaliaKart().remove(0);
 
         for (int i = 0; i < 3; i++) {
@@ -137,8 +150,6 @@ public class Rozgrywka extends Gracz {
 
     public ArrayList<Karta> rozdajTurn(){
 
-        System.out.println("TURN");
-
         taliaKart.getTaliaKart().remove(0);
         kartyStol.add(taliaKart.getTaliaKart().get(0));
 
@@ -153,8 +164,6 @@ public class Rozgrywka extends Gracz {
     }
 
     public ArrayList<Karta> rozdajRiver(){
-
-        System.out.println("RIVER");
 
         taliaKart.getTaliaKart().remove(0);
         kartyStol.add(taliaKart.getTaliaKart().get(0));
@@ -171,42 +180,61 @@ public class Rozgrywka extends Gracz {
     public ArrayList<Gracz> usunKartyZReki(){
 
         for(Gracz g : gracze){
-
-            for(int i = 0; i < 5; i++) {
-
-                g.kartyWRece.remove(i);
+            g.getKartyWRece().removeAll(g.getKartyWRece());
             }
-
-        }
 
         return gracze;
 
     }
 
-    public void symulacja(){
+    public ArrayList<Karta> usunKartyStol(){
 
-        Scanner scnr = new Scanner(System.in);
-        String decyzja;
+        kartyStol.removeAll(kartyStol);
 
+        return kartyStol;
+    }
 
-//        System.out.println(taliaKart.getTaliaKart().size());
-//        dodajGraczy();
-//        rozdajKartyDoReki();
-//        wyswietlGraczy();
-//        System.out.println(taliaKart.getTaliaKart().size());
-//        rozdajFlop();
-//        rozdajTurn();
-//        rozdajRiver();
-////        wyswietlGraczy();
-//        System.out.println(taliaKart.getTaliaKart().size());
+    public void setTaliaKart(TaliaKart taliaKart) {
+        this.taliaKart = taliaKart;
+    }
 
+    public void rozdajBlind(){
 
+        for (Gracz g : gracze) {
+
+            g.setBlind(0);
+        }
+
+        if (j == 0) {
+            ktoBlind = rand.nextInt(6);
+            malyBlind = 10;
+            duzyBlind = 20;
+            j++;
+        }
+
+        ktoraRunda++;
+
+        if (ktoraRunda % 10 == 0) {
+            malyBlind *= 2;
+            duzyBlind *=2;
+        }
+
+        gracze.get(ktoBlind+counter).setBlind(malyBlind);
+        counter++;
+
+        if ((ktoBlind +counter) > 5) {
+            counter -= 6;
+        }
+        gracze.get(ktoBlind+counter).setBlind(duzyBlind);
+
+        System.out.println("KONIEC RUNDY");
+        System.out.println();
+
+        for (Gracz g : gracze) {
+            System.out.println(g.getNick() + "   " + "BLIND" + g.getBlind());
+        }
 
 
 
     }
-
-
-
-
 }
