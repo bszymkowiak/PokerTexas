@@ -15,6 +15,21 @@ public class Rozgrywka extends Gracz {
     private ArrayList<Gracz> gracze = new ArrayList<>();
     private ArrayList<Karta> kartyStol = new ArrayList<>();
     private int liczbaGraczy;
+    private int ktoBlind;
+    private Random rand = new Random();
+    private int ktoraRunda = 0;
+    int j = 0;
+    private int malyBlind;
+    private int duzyBlind;
+    private int counter = 0;
+
+    public int getKtoraRunda() {
+        return ktoraRunda;
+    }
+
+    public void setKtoraRunda(int ktoraRunda) {
+        this.ktoraRunda = ktoraRunda;
+    }
 
     private ArrayList<String> imionaGraczy = new ArrayList<>();
 
@@ -171,42 +186,57 @@ public class Rozgrywka extends Gracz {
     public ArrayList<Gracz> usunKartyZReki(){
 
         for(Gracz g : gracze){
-
-            for(int i = 0; i < 5; i++) {
-
-                g.kartyWRece.remove(i);
+            g.getKartyWRece().removeAll(g.getKartyWRece());
             }
-
-        }
 
         return gracze;
 
     }
 
-    public void symulacja(){
+    public ArrayList<Karta> usunKartyStol(){
 
-        Scanner scnr = new Scanner(System.in);
-        String decyzja;
+        kartyStol.removeAll(kartyStol);
 
-
-//        System.out.println(taliaKart.getTaliaKart().size());
-//        dodajGraczy();
-//        rozdajKartyDoReki();
-//        wyswietlGraczy();
-//        System.out.println(taliaKart.getTaliaKart().size());
-//        rozdajFlop();
-//        rozdajTurn();
-//        rozdajRiver();
-////        wyswietlGraczy();
-//        System.out.println(taliaKart.getTaliaKart().size());
-
-
-
-
-
+        return kartyStol;
     }
 
+    public void setTaliaKart(TaliaKart taliaKart) {
+        this.taliaKart = taliaKart;
+    }
 
+    public void rozdajBlind(){
 
+        for (Gracz g : gracze) {
 
+            g.blind = 0;
+        }
+
+        if (ktoraRunda < 15) {
+            malyBlind = 10;
+            duzyBlind = 20;
+        } else if (ktoraRunda > 15 && ktoraRunda < 30) {
+            malyBlind = 20;
+            duzyBlind = 40;
+        } else if (ktoraRunda > 30 && ktoraRunda < 45) {
+            malyBlind = 40;
+            duzyBlind = 80;
+        } else if (ktoraRunda > 45 && ktoraRunda < 60) {
+            malyBlind = 80;
+            duzyBlind = 160;
+        }
+
+        if (j == 0) {
+            ktoBlind = rand.nextInt(6);
+            j++;
+        }
+
+        gracze.get(ktoBlind+counter).blind = malyBlind;
+        counter++;
+
+        if ((ktoBlind +counter) > 5) {
+            counter -= 6;
+        }
+        gracze.get(ktoBlind+counter).blind = duzyBlind;
+
+    }
 }

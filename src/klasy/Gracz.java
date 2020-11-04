@@ -9,8 +9,8 @@ public class Gracz {
 
     private String nick;
     private int iloscZetonow;
-
     protected ArrayList<Karta> kartyWRece = new ArrayList<>();
+    protected int blind;
 
     public Gracz() {
     }
@@ -43,7 +43,6 @@ public class Gracz {
     public void setIloscZetonow(int iloscZetonow) {
         this.iloscZetonow = iloscZetonow;
     }
-
 
     @Override
     public String toString() {

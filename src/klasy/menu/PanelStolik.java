@@ -129,128 +129,15 @@ public class PanelStolik extends JPanel implements ActionListener {
         var mess2 = "Ciemne: 10$ / 20$ ";
         g.drawString(mess2, 875, 325);
 
+        dodajKartyStolFlop(g);
+        dodajKartyStolTurn(g);
+        dodajKartyStolRiver(g);
+
         g.setColor(Color.WHITE);
-        if (rozgrywka.getLiczbaGraczy() == 2) {
-            g.drawString(rozgrywka.getGracze().get(0).getNick(), 1400, 870);
-            g.drawImage(gracz0k1, 1375, 731, null);
-            g.drawImage(gracz0k2, 1449, 731, null);
-            g.drawString(rozgrywka.getGracze().get(1).getNick(), 425, 870);
-            g.drawImage(gracz1k1, 405, 731, null);
-            g.drawImage(gracz1k2, 479, 731, null);
-            g.drawString(String.valueOf(rozgrywka.getGracze().get(0).getIloscZetonow()), 1430, 907);
-            g.drawString(String.valueOf(rozgrywka.getGracze().get(1).getIloscZetonow()), 460, 907);
 
-        } else if (rozgrywka.getLiczbaGraczy() == 3) {
-
-            g.drawString(rozgrywka.getGracze().get(0).getNick(), 1400, 870);
-            g.drawString(rozgrywka.getGracze().get(1).getNick(), 425, 870);
-            g.drawString(rozgrywka.getGracze().get(2).getNick(), 70, 525);
-            g.drawImage(gracz0k1, 1375, 731, null);
-            g.drawImage(gracz0k2, 1449, 731, null);
-            g.drawImage(gracz1k1, 405, 731, null);
-            g.drawImage(gracz1k2, 479, 731, null);
-            g.drawImage(gracz2k1, 60, 387, null);
-            g.drawImage(gracz2k2, 134, 387, null);
-            g.drawString(String.valueOf(rozgrywka.getGracze().get(0).getIloscZetonow()), 1430, 907);
-            g.drawString(String.valueOf(rozgrywka.getGracze().get(1).getIloscZetonow()), 460, 907);
-            g.drawString(String.valueOf(rozgrywka.getGracze().get(2).getIloscZetonow()), 115, 562);
-
-        } else if (rozgrywka.getLiczbaGraczy() == 4) {
-            g.drawString(rozgrywka.getGracze().get(0).getNick(), 1400, 870);
-            g.drawString(rozgrywka.getGracze().get(1).getNick(), 425, 870);
-            g.drawString(rozgrywka.getGracze().get(2).getNick(), 70, 525);
-            g.drawString(rozgrywka.getGracze().get(3).getNick(), 425, 183);
-            g.drawImage(gracz0k1, 1375, 731, null);
-            g.drawImage(gracz0k2, 1449, 731, null);
-            g.drawImage(gracz1k1, 405, 731, null);
-            g.drawImage(gracz1k2, 479, 731, null);
-            g.drawImage(gracz2k1, 60, 387, null);
-            g.drawImage(gracz2k2, 134, 387, null);
-            g.drawImage(gracz3k1, 405, 45, null);
-            g.drawImage(gracz3k2, 479, 45, null);
-            g.drawString(String.valueOf(rozgrywka.getGracze().get(0).getIloscZetonow()), 1430, 907);
-            g.drawString(String.valueOf(rozgrywka.getGracze().get(1).getIloscZetonow()), 460, 907);
-            g.drawString(String.valueOf(rozgrywka.getGracze().get(2).getIloscZetonow()), 115, 562);
-            g.drawString(String.valueOf(rozgrywka.getGracze().get(3).getIloscZetonow()), 460, 220);
+        dodaniePolGraczyZeWzgleduNaIchIlosc(g);
 
 
-        } else if (rozgrywka.getLiczbaGraczy() == 5) {
-            g.drawString(rozgrywka.getGracze().get(0).getNick(), 1400, 870);
-            g.drawString(rozgrywka.getGracze().get(1).getNick(), 425, 870);
-            g.drawString(rozgrywka.getGracze().get(2).getNick(), 70, 525);
-            g.drawString(rozgrywka.getGracze().get(3).getNick(), 425, 183);
-            g.drawString(rozgrywka.getGracze().get(4).getNick(), 1400, 183);
-            g.drawImage(gracz0k1, 1375, 731, null);
-            g.drawImage(gracz0k2, 1449, 731, null);
-            g.drawImage(gracz1k1, 405, 731, null);
-            g.drawImage(gracz1k2, 479, 731, null);
-            g.drawImage(gracz2k1, 60, 387, null);
-            g.drawImage(gracz2k2, 134, 387, null);
-            g.drawImage(gracz3k1, 405, 45, null);
-            g.drawImage(gracz3k2, 479, 45, null);
-            g.drawImage(gracz4k1, 1375, 45, null);
-            g.drawImage(gracz4k2, 1449, 45, null);
-            g.drawString(String.valueOf(rozgrywka.getGracze().get(0).getIloscZetonow()), 1430, 907);
-            g.drawString(String.valueOf(rozgrywka.getGracze().get(1).getIloscZetonow()), 460, 907);
-            g.drawString(String.valueOf(rozgrywka.getGracze().get(2).getIloscZetonow()), 115, 562);
-            g.drawString(String.valueOf(rozgrywka.getGracze().get(3).getIloscZetonow()), 460, 220);
-            g.drawString(String.valueOf(rozgrywka.getGracze().get(4).getIloscZetonow()), 1430, 220);
-
-        } else if (rozgrywka.getLiczbaGraczy() == 6) {
-
-
-            g.drawString(rozgrywka.getGracze().get(0).getNick(), 1400, 870);
-            g.drawString(rozgrywka.getGracze().get(1).getNick(), 425, 870);
-            g.drawString(rozgrywka.getGracze().get(2).getNick(), 70, 525);
-            g.drawString(rozgrywka.getGracze().get(3).getNick(), 425, 183);
-            g.drawString(rozgrywka.getGracze().get(4).getNick(), 1400, 183);
-            g.drawString(rozgrywka.getGracze().get(5).getNick(), 1750, 525);
-            g.drawImage(gracz0k1, 1375, 731, null);
-            g.drawImage(gracz0k2, 1449, 731, null);
-            g.drawImage(gracz1k1, 405, 731, null);
-            g.drawImage(gracz1k2, 479, 731, null);
-            g.drawImage(gracz2k1, 60, 387, null);
-            g.drawImage(gracz2k2, 134, 387, null);
-            g.drawImage(gracz3k1, 405, 45, null);
-            g.drawImage(gracz3k2, 479, 45, null);
-            g.drawImage(gracz4k1, 1375, 45, null);
-            g.drawImage(gracz4k2, 1449, 45, null);
-            g.drawImage(gracz5k1, 1720, 387, null);
-            g.drawImage(gracz5k2, 1794, 387, null);
-            g.drawString(String.valueOf(rozgrywka.getGracze().get(0).getIloscZetonow()), 1430, 907);
-            g.drawString(String.valueOf(rozgrywka.getGracze().get(1).getIloscZetonow()), 460, 907);
-            g.drawString(String.valueOf(rozgrywka.getGracze().get(2).getIloscZetonow()), 115, 562);
-            g.drawString(String.valueOf(rozgrywka.getGracze().get(3).getIloscZetonow()), 460, 220);
-            g.drawString(String.valueOf(rozgrywka.getGracze().get(4).getIloscZetonow()), 1430, 220);
-            g.drawString(String.valueOf(rozgrywka.getGracze().get(5).getIloscZetonow()), 1775, 562);
-            dodajKartyStolFlop(g);
-            dodajKartyStolTurn(g);
-            dodajKartyStolRiver(g);
-
-        }
-
-
-    }
-
-    public void dodajKartyStolFlop(Graphics g) {
-
-        g.drawImage(kartaF1, 777, 487, null);
-        g.drawImage(kartaF2, 851, 487, null);
-        g.drawImage(kartaF3, 925, 487, null);
-
-    }
-
-    public void dodajKartyStolTurn(Graphics g) {
-        g.drawImage(kartaT, 999, 487, null);
-    }
-
-    public void dodajKartyStolRiver(Graphics g) {
-        g.drawImage(kartaR, 1073, 487, null);
-    }
-
-
-    private Image zwrocZdjecieKartyOKolorzeIWartosci(Wartosc numerKarty, Kolor kolor) {
-        return new ImageIcon("zdjecia\\karty\\" + kolor.toString().toLowerCase() + "\\" + numerKarty.getWartosc() + ".jpg").getImage();
     }
 
     private void dodajPrzyciski(Border obramowanie) {
@@ -266,47 +153,7 @@ public class PanelStolik extends JPanel implements ActionListener {
         fold.setFont(new Font("SansSerif", Font.BOLD, 25));
         fold.setBorder(obramowanie);
         add(fold);
-        fold.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                TaliaKart talia = new TaliaKart();
-
-                for (Gracz g : rozgrywka.getGracze()) {
-                    System.out.println(g);
-                }
-
-
-                for (Gracz g : rozgrywka.getGracze()) {
-                    g.getKartyWRece().removeAll(g.getKartyWRece());
-                }
-
-                rozgrywka.getKartyStol().removeAll(rozgrywka.getKartyStol());
-
-                System.out.println(talia.getTaliaKart().size());
-
-                rozgrywka.rozdajKartyDoReki(talia);
-
-                System.out.println(talia.getTaliaKart().size());
-
-                System.out.println();
-
-                for (Gracz g : rozgrywka.getGracze()) {
-                    System.out.println(g);
-                }
-
-                dodajPolaGraczy();
-
-
-                getRozgrywka().rozdajFlop(talia);
-                getRozgrywka().rozdajTurn();
-                getRozgrywka().rozdajRiver();
-
-                repaint();
-
-
-            }
-        });
+        przyciskFoldAkcja();
 
         check = new JButton(new ImageIcon("zdjecia\\check.jpg"));
         check.setBounds(1576, 930, 134, 80);
@@ -370,6 +217,154 @@ public class PanelStolik extends JPanel implements ActionListener {
         lobby.setFont(new Font("SansSerif", Font.BOLD, 18));
         add(lobby);
 
+    }
+
+    private void przyciskFoldAkcja() {
+        fold.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                rozgrywka.setTaliaKart(new TaliaKart());
+
+                rozgrywka.usunKartyZReki();
+                rozgrywka.usunKartyStol();
+
+                rozgrywka.rozdajKartyDoReki(rozgrywka.getTaliaKart());
+
+                gracz0k1 = new ImageIcon(zapiszObrazDlaGraczy(0)).getImage();
+                gracz0k2 = new ImageIcon(zapiszObrazDlaGraczy(1)).getImage();
+
+                rozgrywka.setKtoraRunda(rozgrywka.getKtoraRunda()+1);
+
+                rozgrywka.rozdajBlind();
+
+
+                repaint();
+
+            }
+        });
+    }
+
+    private void dodaniePolGraczyZeWzgleduNaIchIlosc(Graphics g) {
+        if (rozgrywka.getLiczbaGraczy() == 2) {
+            g.drawString(rozgrywka.getGracze().get(0).getNick(), 1400, 870);
+            g.drawImage(gracz0k1, 1375, 731, null);
+            g.drawImage(gracz0k2, 1449, 731, null);
+            g.drawString(rozgrywka.getGracze().get(1).getNick(), 425, 870);
+            g.drawImage(gracz1k1, 405, 731, null);
+            g.drawImage(gracz1k2, 479, 731, null);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(0).getIloscZetonow()), 1430, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(1).getIloscZetonow()), 460, 907);
+
+
+        } else if (rozgrywka.getLiczbaGraczy() == 3) {
+
+            g.drawString(rozgrywka.getGracze().get(0).getNick(), 1400, 870);
+            g.drawString(rozgrywka.getGracze().get(1).getNick(), 425, 870);
+            g.drawString(rozgrywka.getGracze().get(2).getNick(), 70, 525);
+            g.drawImage(gracz0k1, 1375, 731, null);
+            g.drawImage(gracz0k2, 1449, 731, null);
+            g.drawImage(gracz1k1, 405, 731, null);
+            g.drawImage(gracz1k2, 479, 731, null);
+            g.drawImage(gracz2k1, 60, 387, null);
+            g.drawImage(gracz2k2, 134, 387, null);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(0).getIloscZetonow()), 1430, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(1).getIloscZetonow()), 460, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(2).getIloscZetonow()), 115, 562);
+
+        }
+        else if (rozgrywka.getLiczbaGraczy() == 4) {
+            g.drawString(rozgrywka.getGracze().get(0).getNick(), 1400, 870);
+            g.drawString(rozgrywka.getGracze().get(1).getNick(), 425, 870);
+            g.drawString(rozgrywka.getGracze().get(2).getNick(), 70, 525);
+            g.drawString(rozgrywka.getGracze().get(3).getNick(), 425, 183);
+            g.drawImage(gracz0k1, 1375, 731, null);
+            g.drawImage(gracz0k2, 1449, 731, null);
+            g.drawImage(gracz1k1, 405, 731, null);
+            g.drawImage(gracz1k2, 479, 731, null);
+            g.drawImage(gracz2k1, 60, 387, null);
+            g.drawImage(gracz2k2, 134, 387, null);
+            g.drawImage(gracz3k1, 405, 45, null);
+            g.drawImage(gracz3k2, 479, 45, null);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(0).getIloscZetonow()), 1430, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(1).getIloscZetonow()), 460, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(2).getIloscZetonow()), 115, 562);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(3).getIloscZetonow()), 460, 220);
+
+
+        } else if (rozgrywka.getLiczbaGraczy() == 5) {
+            g.drawString(rozgrywka.getGracze().get(0).getNick(), 1400, 870);
+            g.drawString(rozgrywka.getGracze().get(1).getNick(), 425, 870);
+            g.drawString(rozgrywka.getGracze().get(2).getNick(), 70, 525);
+            g.drawString(rozgrywka.getGracze().get(3).getNick(), 425, 183);
+            g.drawString(rozgrywka.getGracze().get(4).getNick(), 1400, 183);
+            g.drawImage(gracz0k1, 1375, 731, null);
+            g.drawImage(gracz0k2, 1449, 731, null);
+            g.drawImage(gracz1k1, 405, 731, null);
+            g.drawImage(gracz1k2, 479, 731, null);
+            g.drawImage(gracz2k1, 60, 387, null);
+            g.drawImage(gracz2k2, 134, 387, null);
+            g.drawImage(gracz3k1, 405, 45, null);
+            g.drawImage(gracz3k2, 479, 45, null);
+            g.drawImage(gracz4k1, 1375, 45, null);
+            g.drawImage(gracz4k2, 1449, 45, null);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(0).getIloscZetonow()), 1430, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(1).getIloscZetonow()), 460, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(2).getIloscZetonow()), 115, 562);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(3).getIloscZetonow()), 460, 220);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(4).getIloscZetonow()), 1430, 220);
+
+        }
+        else if (rozgrywka.getLiczbaGraczy() == 6) {
+
+
+            g.drawString(rozgrywka.getGracze().get(0).getNick(), 1400, 870);
+            g.drawString(rozgrywka.getGracze().get(1).getNick(), 425, 870);
+            g.drawString(rozgrywka.getGracze().get(2).getNick(), 70, 525);
+            g.drawString(rozgrywka.getGracze().get(3).getNick(), 425, 183);
+            g.drawString(rozgrywka.getGracze().get(4).getNick(), 1400, 183);
+            g.drawString(rozgrywka.getGracze().get(5).getNick(), 1750, 525);
+            g.drawImage(gracz0k1, 1375, 731, null);
+            g.drawImage(gracz0k2, 1449, 731, null);
+            g.drawImage(gracz1k1, 405, 731, null);
+            g.drawImage(gracz1k2, 479, 731, null);
+            g.drawImage(gracz2k1, 60, 387, null);
+            g.drawImage(gracz2k2, 134, 387, null);
+            g.drawImage(gracz3k1, 405, 45, null);
+            g.drawImage(gracz3k2, 479, 45, null);
+            g.drawImage(gracz4k1, 1375, 45, null);
+            g.drawImage(gracz4k2, 1449, 45, null);
+            g.drawImage(gracz5k1, 1720, 387, null);
+            g.drawImage(gracz5k2, 1794, 387, null);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(0).getIloscZetonow()), 1430, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(1).getIloscZetonow()), 460, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(2).getIloscZetonow()), 115, 562);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(3).getIloscZetonow()), 460, 220);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(4).getIloscZetonow()), 1430, 220);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(5).getIloscZetonow()), 1775, 562);
+
+
+        }
+    }
+
+    private void dodajKartyStolFlop(Graphics g) {
+
+        g.drawImage(kartaF1, 777, 487, null);
+        g.drawImage(kartaF2, 851, 487, null);
+        g.drawImage(kartaF3, 925, 487, null);
+
+    }
+
+    private void dodajKartyStolTurn(Graphics g) {
+        g.drawImage(kartaT, 999, 487, null);
+    }
+
+    private void dodajKartyStolRiver(Graphics g) {
+        g.drawImage(kartaR, 1073, 487, null);
+    }
+
+    private Image zwrocZdjecieKartyOKolorzeIWartosci(Wartosc numerKarty, Kolor kolor) {
+        return new ImageIcon("zdjecia\\karty\\" + kolor.toString().toLowerCase() + "\\" + numerKarty.getWartosc() + ".jpg").getImage();
     }
 
     private void dodajPolaGraczy() {
