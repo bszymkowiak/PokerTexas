@@ -44,6 +44,14 @@ public class Gracz {
         this.iloscZetonow = iloscZetonow;
     }
 
+    public int getBlind() {
+        return blind;
+    }
+
+    public void setBlind(int blind) {
+        this.blind = blind;
+    }
+
     @Override
     public String toString() {
         return "Gracz{" +

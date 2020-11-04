@@ -131,8 +131,6 @@ public class Rozgrywka extends Gracz {
 
     public ArrayList<Karta> rozdajFlop(TaliaKart taliaKart){
 
-        System.out.println("FLOP");
-
         taliaKart.getTaliaKart().remove(0);
 
         for (int i = 0; i < 3; i++) {
@@ -152,8 +150,6 @@ public class Rozgrywka extends Gracz {
 
     public ArrayList<Karta> rozdajTurn(){
 
-        System.out.println("TURN");
-
         taliaKart.getTaliaKart().remove(0);
         kartyStol.add(taliaKart.getTaliaKart().get(0));
 
@@ -168,8 +164,6 @@ public class Rozgrywka extends Gracz {
     }
 
     public ArrayList<Karta> rozdajRiver(){
-
-        System.out.println("RIVER");
 
         taliaKart.getTaliaKart().remove(0);
         kartyStol.add(taliaKart.getTaliaKart().get(0));
@@ -208,35 +202,39 @@ public class Rozgrywka extends Gracz {
 
         for (Gracz g : gracze) {
 
-            g.blind = 0;
-        }
-
-        if (ktoraRunda < 15) {
-            malyBlind = 10;
-            duzyBlind = 20;
-        } else if (ktoraRunda > 15 && ktoraRunda < 30) {
-            malyBlind = 20;
-            duzyBlind = 40;
-        } else if (ktoraRunda > 30 && ktoraRunda < 45) {
-            malyBlind = 40;
-            duzyBlind = 80;
-        } else if (ktoraRunda > 45 && ktoraRunda < 60) {
-            malyBlind = 80;
-            duzyBlind = 160;
+            g.setBlind(0);
         }
 
         if (j == 0) {
             ktoBlind = rand.nextInt(6);
+            malyBlind = 10;
+            duzyBlind = 20;
             j++;
         }
 
-        gracze.get(ktoBlind+counter).blind = malyBlind;
+        ktoraRunda++;
+
+        if (ktoraRunda % 10 == 0) {
+            malyBlind *= 2;
+            duzyBlind *=2;
+        }
+
+        gracze.get(ktoBlind+counter).setBlind(malyBlind);
         counter++;
 
         if ((ktoBlind +counter) > 5) {
             counter -= 6;
         }
-        gracze.get(ktoBlind+counter).blind = duzyBlind;
+        gracze.get(ktoBlind+counter).setBlind(duzyBlind);
+
+        System.out.println("KONIEC RUNDY");
+        System.out.println();
+
+        for (Gracz g : gracze) {
+            System.out.println(g.getNick() + "   " + "BLIND" + g.getBlind());
+        }
+
+
 
     }
 }
