@@ -1,6 +1,6 @@
 package enumy;
 
-public enum Wartosc {
+public enum Wartosc{
 
     DWA(2),
     TRZY(3),
@@ -25,4 +25,6 @@ public enum Wartosc {
     public int getWartosc() {
         return wartosc;
     }
+
+
 }
