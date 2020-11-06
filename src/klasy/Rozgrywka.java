@@ -3,6 +3,8 @@ package klasy;
 import klasy.karty.Karta;
 import klasy.karty.TaliaKart;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ public class Rozgrywka extends Gracz {
     private int malyBlind;
     private int duzyBlind;
     private int counter = 0;
+
 
     public int getKtoraRunda() {
         return ktoraRunda;
@@ -129,6 +132,10 @@ public class Rozgrywka extends Gracz {
 
     }
 
+
+
+
+
     public ArrayList<Karta> rozdajFlop(TaliaKart taliaKart){
 
         taliaKart.getTaliaKart().remove(0);
@@ -198,6 +205,17 @@ public class Rozgrywka extends Gracz {
         this.taliaKart = taliaKart;
     }
 
+    public int getKtoBlind() {
+        return ktoBlind;
+    }
+    public int getPobierzBlind(){
+        return ktoBlind + counter;
+    }
+
+    public void setKtoBlind(int ktoBlind) {
+        this.ktoBlind = ktoBlind;
+    }
+
     public void rozdajBlind(){
 
         for (Gracz g : gracze) {
@@ -233,8 +251,9 @@ public class Rozgrywka extends Gracz {
         for (Gracz g : gracze) {
             System.out.println(g.getNick() + "   " + "BLIND" + g.getBlind());
         }
-
+        System.out.println(getPobierzBlind());
 
 
     }
+
 }
