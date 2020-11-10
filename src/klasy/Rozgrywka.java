@@ -24,10 +24,27 @@ public class Rozgrywka extends Gracz {
     private int malyBlind;
     private int duzyBlind;
     private int counter = 0;
+    private boolean czyRozdalemBlind;
 
 
     public int getKtoraRunda() {
         return ktoraRunda;
+    }
+
+    public int getMalyBlind() {
+        return malyBlind;
+    }
+
+    public void setMalyBlind(int malyBlind) {
+        this.malyBlind = malyBlind;
+    }
+
+    public int getDuzyBlind() {
+        return duzyBlind;
+    }
+
+    public void setDuzyBlind(int duzyBlind) {
+        this.duzyBlind = duzyBlind;
     }
 
     public void setKtoraRunda(int ktoraRunda) {
@@ -64,14 +81,14 @@ public class Rozgrywka extends Gracz {
         this.kartyStol = kartyStol;
     }
 
-    public void wyswietlGraczy(){
+    public void wyswietlGraczy() {
 
         for (Gracz g : gracze) {
             System.out.println(g);
         }
     }
 
-    public ArrayList<Gracz> dodajGraczy(int iloscZetonow){
+    public ArrayList<Gracz> dodajGraczy(int iloscZetonow) {
 
         for (int i = 0; i < liczbaGraczy; i++) {
             gracze.add(new Gracz());
@@ -81,13 +98,13 @@ public class Rozgrywka extends Gracz {
         return gracze;
     }
 
-    public ArrayList<Gracz> rozdajKartyDoReki(TaliaKart taliaKart){
+    public ArrayList<Gracz> rozdajKartyDoReki(TaliaKart taliaKart) {
 
         taliaKart.tasujKarty();
 
-        for(Gracz g : gracze){
+        for (Gracz g : gracze) {
 
-            for(int i = 0; i < 2; i++) {
+            for (int i = 0; i < 2; i++) {
 
                 g.kartyWRece.add(getTaliaKart().getTaliaKart().get(i));
                 taliaKart.getTaliaKart().remove(i);
@@ -99,7 +116,7 @@ public class Rozgrywka extends Gracz {
 
     }
 
-    private String losoweImie(){
+    private String losoweImie() {
 
         String losoweImie = "";
 
@@ -133,10 +150,7 @@ public class Rozgrywka extends Gracz {
     }
 
 
-
-
-
-    public ArrayList<Karta> rozdajFlop(TaliaKart taliaKart){
+    public ArrayList<Karta> rozdajFlop() {
 
         taliaKart.getTaliaKart().remove(0);
 
@@ -155,7 +169,7 @@ public class Rozgrywka extends Gracz {
 
     }
 
-    public ArrayList<Karta> rozdajTurn(){
+    public ArrayList<Karta> rozdajTurn() {
 
         taliaKart.getTaliaKart().remove(0);
         kartyStol.add(taliaKart.getTaliaKart().get(0));
@@ -170,7 +184,7 @@ public class Rozgrywka extends Gracz {
 
     }
 
-    public ArrayList<Karta> rozdajRiver(){
+    public ArrayList<Karta> rozdajRiver() {
 
         taliaKart.getTaliaKart().remove(0);
         kartyStol.add(taliaKart.getTaliaKart().get(0));
@@ -184,17 +198,17 @@ public class Rozgrywka extends Gracz {
         return kartyStol;
     }
 
-    public ArrayList<Gracz> usunKartyZReki(){
+    public ArrayList<Gracz> usunKartyZReki() {
 
-        for(Gracz g : gracze){
+        for (Gracz g : gracze) {
             g.getKartyWRece().removeAll(g.getKartyWRece());
-            }
+        }
 
         return gracze;
 
     }
 
-    public ArrayList<Karta> usunKartyStol(){
+    public ArrayList<Karta> usunKartyStol() {
 
         kartyStol.removeAll(kartyStol);
 
@@ -208,7 +222,8 @@ public class Rozgrywka extends Gracz {
     public int getKtoBlind() {
         return ktoBlind;
     }
-    public int getPobierzBlind(){
+
+    public int getPobierzBlind() {
         return ktoBlind + counter;
     }
 
@@ -216,44 +231,40 @@ public class Rozgrywka extends Gracz {
         this.ktoBlind = ktoBlind;
     }
 
-    public void rozdajBlind(){
+    public void rozdajBlind() {
 
         for (Gracz g : gracze) {
 
             g.setBlind(0);
+            g.setPulaZetonow(0);
         }
 
-        if (j == 0) {
+        if (!czyRozdalemBlind) {
             ktoBlind = rand.nextInt(gracze.size());
             malyBlind = 10;
             duzyBlind = 20;
-            j++;
+            czyRozdalemBlind = true;
         }
 
         ktoraRunda++;
 
         if (ktoraRunda % 10 == 0) {
             malyBlind *= 2;
-            duzyBlind *=2;
+            duzyBlind *= 2;
         }
 
-        gracze.get(ktoBlind+counter).setBlind(malyBlind);
+        gracze.get(ktoBlind + counter).setBlind(malyBlind);
+        gracze.get(ktoBlind + counter).setIloscZetonow(gracze.get(ktoBlind + counter).getIloscZetonow() - malyBlind);
+        gracze.get(ktoBlind + counter).setPulaZetonow(malyBlind);
         counter++;
 
-        if ((ktoBlind +counter) > (gracze.size()-1)) {
+        if ((ktoBlind + counter) > (gracze.size() - 1)) {
             counter -= gracze.size();
         }
-        gracze.get(ktoBlind+counter).setBlind(duzyBlind);
-
-        System.out.println("KONIEC RUNDY");
-        System.out.println();
-
-        for (Gracz g : gracze) {
-            System.out.println(g.getNick() + "   " + "BLIND" + g.getBlind());
-        }
-        System.out.println(getPobierzBlind());
-
-
+        gracze.get(ktoBlind + counter).setBlind(duzyBlind);
+        gracze.get(ktoBlind + counter).setIloscZetonow(gracze.get(ktoBlind + counter).getIloscZetonow() - duzyBlind);
+        gracze.get(ktoBlind + counter).setPulaZetonow(duzyBlind);
     }
-
 }
+
+

@@ -1,7 +1,6 @@
 package klasy;
 
 import klasy.karty.Karta;
-import klasy.karty.TaliaKart;
 
 import java.util.ArrayList;
 
@@ -11,6 +10,9 @@ public class Gracz {
     private int iloscZetonow;
     protected ArrayList<Karta> kartyWRece = new ArrayList<>();
     protected int blind;
+    int pulaZetonow;
+
+
 
     public Gracz() {
     }
@@ -18,6 +20,14 @@ public class Gracz {
     public Gracz(String nick, int iloscZetonow) {
         this.nick = nick;
         this.iloscZetonow = iloscZetonow;
+    }
+
+    public int getPulaZetonow() {
+        return pulaZetonow;
+    }
+
+    public void setPulaZetonow(int pulaZetonow) {
+        this.pulaZetonow = pulaZetonow;
     }
 
     public ArrayList<Karta> getKartyWRece() {

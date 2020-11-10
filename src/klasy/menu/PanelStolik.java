@@ -124,7 +124,7 @@ public class PanelStolik extends JPanel implements ActionListener {
         g.setColor(Color.WHITE);
         var mess1 = "No Limit Poker Texas";
         g.drawString(mess1, 855, 300);
-        var mess2 = "Ciemne: 10$ / 20$ ";
+        var mess2 = "Ciemne: " + rozgrywka.getMalyBlind() + "$ / " + rozgrywka.getDuzyBlind() + "$ ";
         g.drawString(mess2, 875, 325);
 
         dodajKartyStolFlop(g);
@@ -211,23 +211,58 @@ public class PanelStolik extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (temp == 0) {
-                    kartaF1 = new ImageIcon(zapiszObrazDlaKartStol(0)).getImage();
-                    kartaF2 = new ImageIcon(zapiszObrazDlaKartStol(1)).getImage();
-                    kartaF3 = new ImageIcon(zapiszObrazDlaKartStol(2)).getImage();
-                    temp++;
-                    repaint();
-                } else if (temp == 1) {
-                    kartaT = new ImageIcon(zapiszObrazDlaKartStol(3)).getImage();
-                    temp++;
-                    repaint();
-                } else if (temp == 2) {
-                    kartaR = new ImageIcon(zapiszObrazDlaKartStol(4)).getImage();
-                    repaint();
+                if (kartaF1 == null) {
+                    checkPrzedFlop();
+                } else if (kartaT == null) {
+                    checkPrzedTurn();
+                } else if (kartaR == null) {
+                    checkPrzedRiver();
                 }
 
             }
         });
+    }
+
+    private void checkPrzedFlop() {
+
+        System.out.println("CHECK PRZED FLOP");
+
+        int wartoscTmp = rozgrywka.getGracze().get(0).getPulaZetonow();
+
+        for (Gracz g : rozgrywka.getGracze()) {
+            if (g.getPulaZetonow() >= wartoscTmp) {
+                wartoscTmp = g.getPulaZetonow();
+            }
+        }
+
+        for (Gracz g : rozgrywka.getGracze()) {
+            if (g.getPulaZetonow() <= wartoscTmp) {
+                g.setPulaZetonow(wartoscTmp);
+                g.setIloscZetonow(g.getIloscZetonow() - wartoscTmp + g.getBlind());
+            }
+            System.out.println(g.getNick() + "       " + g.getPulaZetonow());
+        }
+
+        kartaF1 = new ImageIcon(zapiszObrazDlaKartStol(0)).getImage();
+        kartaF2 = new ImageIcon(zapiszObrazDlaKartStol(1)).getImage();
+        kartaF3 = new ImageIcon(zapiszObrazDlaKartStol(2)).getImage();
+
+        repaint();
+
+
+    }
+
+    private void checkPrzedTurn() {
+
+        kartaT = new ImageIcon(zapiszObrazDlaKartStol(3)).getImage();
+        repaint();
+
+    }
+
+    private void checkPrzedRiver() {
+
+        kartaR = new ImageIcon(zapiszObrazDlaKartStol(4)).getImage();
+        repaint();
     }
 
     private void przyciskFoldAkcja() {
@@ -235,39 +270,56 @@ public class PanelStolik extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                    rozgrywka.setTaliaKart(new TaliaKart());
-
-                    rozgrywka.usunKartyZReki();
-                    rozgrywka.usunKartyStol();
-
-                    rozgrywka.rozdajKartyDoReki(rozgrywka.getTaliaKart());
-
-                    gracz0k1 = new ImageIcon(zapiszObrazDlaGraczy(0)).getImage();
-                    gracz0k2 = new ImageIcon(zapiszObrazDlaGraczy(1)).getImage();
-
-                    rozgrywka.rozdajBlind();
-                    dodajZdjecieSmallBlind();
-
-                    for (Gracz g : rozgrywka.getGracze()) {
-                        g.setIloscZetonow(g.getIloscZetonow() - g.getBlind());
-                    }
-
-
-                    for (Gracz g : rozgrywka.getGracze()) {
-                        if (g.getIloscZetonow() < 0) {
-                            rozgrywka.getGracze().remove(g);
-                            rozgrywka.setLiczbaGraczy(rozgrywka.getLiczbaGraczy() - 1);
-                        }
-                    }
-
-                    repaint();
-
+                for (Gracz g : rozgrywka.getGracze()) {
+                    g.setPulaZetonow(0);
+                    g.setBlind(0);
                 }
+
+                rozgrywka.setTaliaKart(new TaliaKart());
+
+                rozgrywka.usunKartyZReki();
+                rozgrywka.usunKartyStol();
+
+                kartaF1 = null;
+                kartaF2 = null;
+                kartaF3 = null;
+                kartaT = null;
+                kartaR = null;
+
+
+                rozgrywka.rozdajKartyDoReki(rozgrywka.getTaliaKart());
+
+                gracz0k1 = new ImageIcon(zapiszObrazDlaGraczy(0)).getImage();
+                gracz0k2 = new ImageIcon(zapiszObrazDlaGraczy(1)).getImage();
+
+                rozgrywka.rozdajBlind();
+                dodajZdjecieSmallBlind();
+
+                for (Gracz g : rozgrywka.getGracze()) {
+                    if (g.getIloscZetonow() < 0) {
+                        rozgrywka.getGracze().remove(g);
+                        rozgrywka.setLiczbaGraczy(rozgrywka.getLiczbaGraczy() - 1);
+                    }
+                }
+
+                rozgrywka.rozdajFlop();
+                rozgrywka.rozdajTurn();
+                rozgrywka.rozdajRiver();
+
+
+                repaint();
+
+                for (Gracz g : rozgrywka.getGracze()) {
+                    System.out.println(g.getNick() + "            " + g.getBlind());
+                }
+
+                repaint();
+
+            }
 
         });
 
     }
-
 
     private void dodaniePolGraczyZeWzgleduNaIchIlosc(Graphics g) {
 
@@ -391,22 +443,22 @@ public class PanelStolik extends JPanel implements ActionListener {
     }
 
     private void dodajZetonSmallBlind(Graphics g){
-        if(rozgrywka.getPobierzBlind()==0) {
+        if(rozgrywka.getPobierzBlind() -1 == 0) {
             g.drawImage( smallBlind,1200,790,null );
         }
-        else if (rozgrywka.getPobierzBlind() == 1){
+        else if (rozgrywka.getPobierzBlind() -1 == 1){
             g.drawImage( smallBlind,670,790,null );
         }
-        else if (rozgrywka.getPobierzBlind() == 2){
+        else if (rozgrywka.getPobierzBlind() -1 == 2){
             g.drawImage( smallBlind,320,480,null );
         }
-        else if (rozgrywka.getPobierzBlind()== 3){
+        else if (rozgrywka.getPobierzBlind() -1 == 3){
             g.drawImage( smallBlind,650,260,null );
         }
-        else if (rozgrywka.getPobierzBlind() == 4){
+        else if (rozgrywka.getPobierzBlind() -1  == 4){
             g.drawImage( smallBlind,1200,260,null );
         }
-        else if (rozgrywka.getPobierzBlind() == 5){
+        else if (rozgrywka.getPobierzBlind() +5 == 5){
             g.drawImage( smallBlind,1570,480,null );
         }
     }
@@ -417,22 +469,22 @@ public class PanelStolik extends JPanel implements ActionListener {
     }
 
     private void dodajZetonBibBlind(Graphics g){
-        if(rozgrywka.getPobierzBlind()+1==6) {
+        if(rozgrywka.getPobierzBlind() == 0) {
             g.drawImage( bigBlind,1200,790,null );
         }
-        else if (rozgrywka.getPobierzBlind()+1 == 1){
+        else if (rozgrywka.getPobierzBlind() == 1){
             g.drawImage( bigBlind,670,790,null );
         }
-        else if (rozgrywka.getPobierzBlind()+1 == 2){
+        else if (rozgrywka.getPobierzBlind() == 2){
             g.drawImage( bigBlind,320,480,null );
         }
-        else if (rozgrywka.getPobierzBlind()+1== 3){
+        else if (rozgrywka.getPobierzBlind()== 3){
             g.drawImage( bigBlind,650,260,null );
         }
-        else if (rozgrywka.getPobierzBlind()+1 == 4){
+        else if (rozgrywka.getPobierzBlind() == 4){
             g.drawImage( bigBlind,1200,260,null );
         }
-        else if (rozgrywka.getPobierzBlind()+1 == 5){
+        else if (rozgrywka.getPobierzBlind() == 5){
             g.drawImage( bigBlind,1570,480,null );
         }
     }
@@ -443,22 +495,22 @@ public class PanelStolik extends JPanel implements ActionListener {
     }
 
     private void dodajZetonDealer(Graphics g){
-        if(rozgrywka.getPobierzBlind()-1==-0) {
+        if(rozgrywka.getPobierzBlind()-2== 0) {
             g.drawImage( dealer,1200,790,null );
         }
-        else if (rozgrywka.getPobierzBlind()-1 == 1){
+        else if (rozgrywka.getPobierzBlind()-2 == 1){
             g.drawImage( dealer,670,790,null );
         }
-        else if (rozgrywka.getPobierzBlind()-1 == 2){
+        else if (rozgrywka.getPobierzBlind()-2 == 2){
             g.drawImage( dealer,320,480,null );
         }
-        else if (rozgrywka.getPobierzBlind()-1== 3){
+        else if (rozgrywka.getPobierzBlind()-2== 3){
             g.drawImage( dealer,650,260,null );
         }
-        else if (rozgrywka.getPobierzBlind()-1 == 4){
+        else if (rozgrywka.getPobierzBlind()+4 == 4){
             g.drawImage( dealer,1200,260,null );
         }
-        else if (rozgrywka.getPobierzBlind()+5 == 5){
+        else if (rozgrywka.getPobierzBlind()+4 == 5){
             g.drawImage( dealer,1570,480,null );
         }
     }
@@ -513,7 +565,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 
         dodajPolaGraczy();
 
-        getRozgrywka().rozdajFlop(getRozgrywka().getTaliaKart());
+        getRozgrywka().rozdajFlop();
         getRozgrywka().rozdajTurn();
         getRozgrywka().rozdajRiver();
 
@@ -521,6 +573,8 @@ public class PanelStolik extends JPanel implements ActionListener {
         dodajZdjecieSmallBlind();
         dodajZdjecieBigBlind();
         dodajZdjecieDealer();
+
+
 
 
         repaint();
