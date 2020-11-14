@@ -265,6 +265,7 @@ public class Rozgrywka extends Gracz {
         gracze.get(ktoBlind + counter).setIloscZetonow(gracze.get(ktoBlind + counter).getIloscZetonow() - duzyBlind);
         gracze.get(ktoBlind + counter).setPulaZetonow(duzyBlind);
     }
+
 }
 
 

@@ -46,6 +46,13 @@ public class PanelStolik extends JPanel implements ActionListener {
     private Image smallBlind;
     private Image bigBlind;
     private Image dealer;
+    int pulaGlowna;
+    int wpisDoPuli;
+    private int wartoscTmp;
+    private int iloscPostawionychMoichZetonow;
+
+
+
 
     Border obramowanie = BorderFactory.createEmptyBorder();
 
@@ -57,7 +64,6 @@ public class PanelStolik extends JPanel implements ActionListener {
     int iloscMoichZetonow;
     JTextField mojeZetony;
     int pula;
-
     public Rozgrywka getRozgrywka() {
         return rozgrywka;
     }
@@ -126,6 +132,9 @@ public class PanelStolik extends JPanel implements ActionListener {
         g.drawString(mess1, 855, 300);
         var mess2 = "Ciemne: " + rozgrywka.getMalyBlind() + "$ / " + rozgrywka.getDuzyBlind() + "$ ";
         g.drawString(mess2, 875, 325);
+        var pula = "Pula: " + pulaGlowna + "$";
+        g.drawString( pula,  900,465);
+
 
         dodajKartyStolFlop(g);
         dodajKartyStolTurn(g);
@@ -137,6 +146,13 @@ public class PanelStolik extends JPanel implements ActionListener {
         dodajZetonSmallBlind(g);
         dodajZetonBibBlind(g);
         dodajZetonDealer(g);
+        dodajIloscPostawionychZetonowGracza0( g );
+        dodajIloscPostawionychZetonowGracza1( g );
+        dodajIloscPostawionychZetonowGracza2( g );
+        dodajIloscPostawionychZetonowGracza3( g );
+        dodajIloscPostawionychZetonowGracza4( g );
+        dodajIloscPostawionychZetonowGracza5( g );
+
 
 
 
@@ -200,7 +216,16 @@ public class PanelStolik extends JPanel implements ActionListener {
                 betB = Integer.parseInt(wpisPuli.getText());
 //                mojeZetony.setText( String.valueOf(rozgrywka.getGracze().get( 0 ).getIloscZetonow()- betB ));
                 rozgrywka.getGracze().get(0).setIloscZetonow(rozgrywka.getGracze().get(0).getIloscZetonow() - betB);
-                pula += betB;
+                pulaGlowna += betB;
+                iloscPostawionychMoichZetonow = rozgrywka.getGracze().get( 0 ).getPulaZetonow();
+                iloscPostawionychMoichZetonow+= betB;
+
+                try{
+                    wpisDoPuli = Integer.parseInt(wpisPuli.getText());
+                }
+                catch(NumberFormatException f){
+                    JOptionPane.showMessageDialog(null, "Wpisz liczbe żetonów, które chcesz postawić!", "WPodaj ilość żetonów", JOptionPane.INFORMATION_MESSAGE);
+                }
                 repaint();
             }
         });
@@ -227,12 +252,13 @@ public class PanelStolik extends JPanel implements ActionListener {
 
         System.out.println("CHECK PRZED FLOP");
 
-        int wartoscTmp = rozgrywka.getGracze().get(0).getPulaZetonow();
+        wartoscTmp = rozgrywka.getGracze().get(0).getPulaZetonow();
 
         for (Gracz g : rozgrywka.getGracze()) {
             if (g.getPulaZetonow() >= wartoscTmp) {
                 wartoscTmp = g.getPulaZetonow();
             }
+
         }
 
         for (Gracz g : rozgrywka.getGracze()) {
@@ -241,6 +267,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                 g.setIloscZetonow(g.getIloscZetonow() - wartoscTmp + g.getBlind());
             }
             System.out.println(g.getNick() + "       " + g.getPulaZetonow());
+            pulaGlowna +=wartoscTmp;
         }
 
         kartaF1 = new ImageIcon(zapiszObrazDlaKartStol(0)).getImage();
@@ -312,6 +339,9 @@ public class PanelStolik extends JPanel implements ActionListener {
                 for (Gracz g : rozgrywka.getGracze()) {
                     System.out.println(g.getNick() + "            " + g.getBlind());
                 }
+                pulaGlowna=0;
+                wartoscTmp=0;
+                betB=0;
 
                 repaint();
 
@@ -519,6 +549,52 @@ public class PanelStolik extends JPanel implements ActionListener {
         dealer = new ImageIcon( "zdjecia\\dealer.jpg" ).getImage();
         return new ImageIcon(dealer);
     }
+    private void dodajIloscPostawionychZetonowGracza0(Graphics g){
+        if(rozgrywka.getGracze().get( 0 ).getPulaZetonow() >0) {
+            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get( 0 ).getPulaZetonow()+ betB) + "$";
+            g.drawString( iloscZetonowPostawionych, 1215, 710 );
+        }
+    }
+
+    private void dodajIloscPostawionychZetonowGracza1(Graphics g){
+        if(rozgrywka.getGracze().get( 1 ).getPulaZetonow() >0) {
+            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get( 1 ).getPulaZetonow()) + "$";
+            g.drawString( iloscZetonowPostawionych, 680, 710 );
+        }
+    }
+    private void dodajIloscPostawionychZetonowGracza2(Graphics g){
+        if(rozgrywka.getGracze().get( 2 ).getPulaZetonow() >0) {
+            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get( 2 ).getPulaZetonow()) + "$";
+            g.drawString( iloscZetonowPostawionych, 450, 520 );
+        }
+    }
+    private void dodajIloscPostawionychZetonowGracza3(Graphics g){
+        if(rozgrywka.getGracze().get( 3 ).getPulaZetonow() >0) {
+            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get( 3 ).getPulaZetonow()) + "$";
+            g.drawString( iloscZetonowPostawionych, 680, 360 );
+        }
+    }
+    private void dodajIloscPostawionychZetonowGracza4(Graphics g){
+        if(rozgrywka.getGracze().get( 4 ).getPulaZetonow() >0) {
+            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get( 4).getPulaZetonow()) + "$";
+            g.drawString( iloscZetonowPostawionych, 1215, 360 );
+        }
+    }
+    private void dodajIloscPostawionychZetonowGracza5(Graphics g){
+        if(rozgrywka.getGracze().get( 5 ).getPulaZetonow() >0) {
+            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get( 5 ).getPulaZetonow()) + "$";
+            g.drawString( iloscZetonowPostawionych, 1420, 520 );
+        }
+    }
+    public int dodajZetonyGraczaNaStol() {
+        for (int i = 0; i <= rozgrywka.getGracze().size(); i++) {
+            if (rozgrywka.getGracze().get( i ).getPulaZetonow() > 0)
+                return rozgrywka.getGracze().get( i ).getPulaZetonow();
+        }
+        return 0;
+    }
+
+
 
     private void dodajPolaGraczy() {
 
@@ -572,7 +648,9 @@ public class PanelStolik extends JPanel implements ActionListener {
         rozgrywka.rozdajBlind();
         dodajZdjecieSmallBlind();
         dodajZdjecieBigBlind();
-        dodajZdjecieDealer();
+
+        dodajZetonyGraczaNaStol();
+
 
 
 
@@ -580,6 +658,7 @@ public class PanelStolik extends JPanel implements ActionListener {
         repaint();
 
     }
+
 
 }
 
