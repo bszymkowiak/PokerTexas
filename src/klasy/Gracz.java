@@ -3,6 +3,7 @@ package klasy;
 import klasy.karty.Karta;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Gracz {
 
@@ -11,8 +12,6 @@ public class Gracz {
     protected ArrayList<Karta> kartyWRece = new ArrayList<>();
     protected int blind;
     int pulaZetonow;
-
-
 
     public Gracz() {
     }
@@ -61,6 +60,8 @@ public class Gracz {
     public void setBlind(int blind) {
         this.blind = blind;
     }
+
+
 
     @Override
     public String toString() {
