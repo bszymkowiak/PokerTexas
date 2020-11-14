@@ -265,6 +265,73 @@ public class Rozgrywka extends Gracz {
         gracze.get(ktoBlind + counter).setIloscZetonow(gracze.get(ktoBlind + counter).getIloscZetonow() - duzyBlind);
         gracze.get(ktoBlind + counter).setPulaZetonow(duzyBlind);
     }
+
+    public ArrayList<Karta> komputerFold(int i){
+
+        gracze.get(i).kartyWRece.removeAll(gracze.get(i).kartyWRece);
+        System.out.println(gracze.get(i).getNick() + " wykonuje fold.");
+
+        System.out.println(gracze.get(i).kartyWRece);
+
+        return kartyWRece;
+    }
+
+    public void komputerCheck(int i){
+
+        int wartoscTmp = gracze.get(i).getPulaZetonow();
+
+        System.out.println(gracze.get(i).getNick() + " wykonuje check.");
+
+        for (Gracz g : gracze) {
+            if (g.getPulaZetonow() >= wartoscTmp) {
+                wartoscTmp = g.getPulaZetonow();
+            }
+        }
+
+
+        gracze.get(i).setIloscZetonow(gracze.get(i).getIloscZetonow() - wartoscTmp + gracze.get(i).getPulaZetonow());
+        gracze.get(i).setPulaZetonow(wartoscTmp);
+
+
+    }
+
+    public void komputerBet(int i){
+
+        System.out.println(gracze.get(i).getNick() + " wykonuje bet.");
+
+        int wartoscTmp = gracze.get(i).getPulaZetonow();
+
+        for (Gracz g : gracze) {
+            if (g.getPulaZetonow() >= wartoscTmp) {
+                wartoscTmp = g.getPulaZetonow();
+            }
+        }
+
+        wartoscTmp += 40;
+
+
+        gracze.get(i).setIloscZetonow(gracze.get(i).getIloscZetonow() - wartoscTmp + gracze.get(i).getPulaZetonow());
+        gracze.get(i).setPulaZetonow(wartoscTmp);
+
+
+
+    }
+
+    public void ruchGracza(int i) {
+
+        Random rand = new Random();
+        int liczba = rand.nextInt(3);
+
+        if (liczba == 0) {
+            komputerFold(i);
+        } else if (liczba == 1) {
+            komputerCheck(i);
+        } else if (liczba == 2) {
+            komputerBet(i);
+        }
+    }
+
+
 }
 
 
