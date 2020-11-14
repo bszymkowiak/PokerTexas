@@ -8,8 +8,9 @@ public class Main {
 
         MenuPoczatkowe menuPoczatkowe = new MenuPoczatkowe();
 
-
-
+//        Rozgrywka rozgrywka = new Rozgrywka();
+//
+//        rozgrywka.ruchGracza();
 
     }
 }
