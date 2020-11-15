@@ -22,6 +22,7 @@ public class PanelStolik extends JPanel implements ActionListener {
     private Stolik stolik;
     private JButton fold;
     private JButton check;
+    private JButton call;
     private JButton bet;
     private JButton graj;
     private PanelStolik me;
@@ -48,11 +49,13 @@ public class PanelStolik extends JPanel implements ActionListener {
     private Image dealer;
     int pulaGlowna;
     int wpisDoPuli;
-//    private int wartoscTmp;
+    //    private int wartoscTmp;
     private int iloscPostawionychMoichZetonow;
+    private int iloscWartosciTmp;
 
-
-
+    boolean pierwszyObrot = true;
+    boolean licytacjaWGrze = true;
+    private int licznikGraczyZTakaSamaPula = 0;
 
     Border obramowanie = BorderFactory.createEmptyBorder();
 
@@ -63,7 +66,9 @@ public class PanelStolik extends JPanel implements ActionListener {
     private JTextField wpisPuli;
     int iloscMoichZetonow;
     JTextField mojeZetony;
-    int pula;
+
+    private boolean czyGraczeWlozyliTakaSamaIloscZetonowDoPuli = true;
+    private int licznikGraczyZKartami;
 
 
     public PanelStolik(Stolik stolik) {
@@ -136,7 +141,7 @@ public class PanelStolik extends JPanel implements ActionListener {
         var mess2 = "Ciemne: " + rozgrywka.getMalyBlind() + "$ / " + rozgrywka.getDuzyBlind() + "$ ";
         g.drawString(mess2, 875, 325);
         var pula = "Pula: " + pulaGlowna + "$";
-        g.drawString( pula,  900,465);
+        g.drawString(pula, 900, 465);
 
 
         dodajKartyStolFlop(g);
@@ -146,18 +151,49 @@ public class PanelStolik extends JPanel implements ActionListener {
         g.setColor(Color.WHITE);
 
         dodaniePolGraczyZeWzgleduNaIchIlosc(g);
+
+        if (rozgrywka.getGracze().get(0).getKartyWRece().size() == 0) {
+            gracz0k1 = null;
+            gracz0k2 = null;
+
+        } else if (rozgrywka.getGracze().get(1).getKartyWRece().size() == 0) {
+
+            gracz1k1 = new ImageIcon().getImage();
+            gracz1k2 = new ImageIcon().getImage();
+
+        } else if (rozgrywka.getGracze().get(2).getKartyWRece().size() == 0) {
+
+            gracz2k1 = new ImageIcon().getImage();
+            gracz2k2 = new ImageIcon().getImage();
+
+
+        } else if (rozgrywka.getGracze().get(3).getKartyWRece().size() == 0) {
+
+            gracz3k1 = new ImageIcon().getImage();
+            gracz3k2 = new ImageIcon().getImage();
+
+        } else if (rozgrywka.getGracze().get(4).getKartyWRece().size() == 0) {
+
+            gracz4k1 = new ImageIcon().getImage();
+            gracz4k2 = new ImageIcon().getImage();
+
+        } else if (rozgrywka.getGracze().get(5).getKartyWRece().size() == 0) {
+
+            gracz5k1 = new ImageIcon().getImage();
+            gracz5k2 = new ImageIcon().getImage();
+
+        }
+
         dodajZetonSmallBlind(g);
         dodajZetonBibBlind(g);
         dodajZetonDealer(g);
-        dodajIloscPostawionychZetonowGracza0( g );
-        dodajIloscPostawionychZetonowGracza1( g );
-        dodajIloscPostawionychZetonowGracza2( g );
-        dodajIloscPostawionychZetonowGracza3( g );
-        dodajIloscPostawionychZetonowGracza4( g );
-        dodajIloscPostawionychZetonowGracza5( g );
 
-
-
+        dodajIloscPostawionychZetonowGracza0(g);
+        dodajIloscPostawionychZetonowGracza1(g);
+        dodajIloscPostawionychZetonowGracza2(g);
+        dodajIloscPostawionychZetonowGracza3(g);
+        dodajIloscPostawionychZetonowGracza4(g);
+        dodajIloscPostawionychZetonowGracza5(g);
 
 
     }
@@ -228,10 +264,9 @@ public class PanelStolik extends JPanel implements ActionListener {
 //                iloscPostawionychMoichZetonow = rozgrywka.getGracze().get( 0 ).getPulaZetonow();
 //                iloscPostawionychMoichZetonow+= betB;
 
-                try{
+                try {
                     wpisDoPuli = Integer.parseInt(wpisPuli.getText());
-                }
-                catch(NumberFormatException f){
+                } catch (NumberFormatException f) {
                     JOptionPane.showMessageDialog(null, "Wpisz liczbe żetonów, które chcesz postawić!", "WPodaj ilość żetonów", JOptionPane.INFORMATION_MESSAGE);
                 }
                 repaint();
@@ -243,6 +278,10 @@ public class PanelStolik extends JPanel implements ActionListener {
         check.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                Gracz naszGracz = rozgrywka.getGracze().get(0);
+                int wartoscTmp = 0;
+
 
 //                if (kartaF1 == null) {
 //
@@ -258,81 +297,159 @@ public class PanelStolik extends JPanel implements ActionListener {
 
                     System.out.println("WYKONUJE RUCH");
 
-                    boolean licytacjaWGrze = true;
+                    licytacjaWGrze = true;
+
 
                     while (licytacjaWGrze) {
 
-                        int wartoscTmp = rozgrywka.getGracze().get(0).getPulaZetonow();
-
                         for (Gracz g : rozgrywka.getGracze()) {
-                            if (g.getPulaZetonow() >= wartoscTmp) {
-                                wartoscTmp = g.getPulaZetonow();
-                                repaint(pulaGlowna);
-                            }
+                            System.out.println(g + "\nIlosc kart: " + g.getKartyWRece().size());
                         }
 
-//                        rozgrywka.getGracze().get(0).setIloscZetonow(rozgrywka.getGracze().get(0).getIloscZetonow() - wartoscTmp + rozgrywka.getGracze().get(0).getPulaZetonow());
+                        czyGraczeWlozyliTakaSamaIloscZetonowDoPuli = true;
 
+                        if (pierwszyObrot) {
 
-                        for (int i = 1; i <= rozgrywka.getPobierzBlind(); i++) {
-                            System.out.println(rozgrywka.getGracze().get(i).getNick() + " ");
-                            rozgrywka.ruchGracza(i);
-                            repaint();
-
-                        }
-
-                        for (int i = rozgrywka.getPobierzBlind()+1 ; i < rozgrywka.getGracze().size(); i++) {
-                            if (rozgrywka.getGracze().get(i).getPulaZetonow() >= wartoscTmp) {
-                                wartoscTmp = rozgrywka.getGracze().get(i).getPulaZetonow();
-                                repaint(pulaGlowna);
-                            }
-                        }
-
-                        for (int i = 0; i <= rozgrywka.getPobierzBlind() - 1; i++) {
-                            if (rozgrywka.getGracze().get(i).getPulaZetonow() >= wartoscTmp) {
-                                wartoscTmp = rozgrywka.getGracze().get(i).getPulaZetonow();
-                                repaint(pulaGlowna);
-                            }
-                        }
-
-                        if(rozgrywka.getGracze().get(rozgrywka.getPobierzBlind()).getPulaZetonow() == wartoscTmp){
-
-                            kartaF1 = new ImageIcon(zapiszObrazDlaKartStol(0)).getImage();
-                            kartaF2 = new ImageIcon(zapiszObrazDlaKartStol(1)).getImage();
-                            kartaF3 = new ImageIcon(zapiszObrazDlaKartStol(2)).getImage();
-
-                            dodajZetonyGraczaDoPuli();
-
-                            for (Gracz g : rozgrywka.getGracze()) {
-                                g.setPulaZetonow(0);
-                            }
-
-                            licytacjaWGrze = false;
-                            betB = 0;
+                            System.out.println("PIERWSZY OBRÓT");
 
                         } else {
 
-                            for (int i = rozgrywka.getPobierzBlind() + 1; i < rozgrywka.getGracze().size(); i++){
-                                rozgrywka.ruchGracza(i);
-                            }
+                            System.out.println("KOLEJNY OBRÓT");
 
+                            for (int i = rozgrywka.getPobierzBlind() + 1; i < rozgrywka.getGracze().size(); i++) {
+                                if (rozgrywka.getGracze().get(i).getKartyWRece().size() != 0) {
+                                    rozgrywka.ruchGracza(i);
+                                }
+                            }
+                        }
+
+                        pierwszyObrot = false;
+
+                        wartoscTmp = rozgrywka.getGracze().get(0).getPulaZetonowGracza();
+
+                        wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
+
+
+                        if (naszGracz.getPulaZetonowGracza() < wartoscTmp) {
+                            naszGracz.setIloscZetonow(naszGracz.getIloscZetonow() - wartoscTmp + naszGracz.getPulaZetonowGracza());
+                            naszGracz.setPulaZetonowGracza(wartoscTmp);
                             licytacjaWGrze = false;
+                            repaint();
                         }
 
 
-                        System.out.println("KONCZE WYKONYWANIE RUCHU");
 
-                        repaint();
+//                        wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
+//
+//                        for (Gracz g : rozgrywka.getGracze()) {
+//                            if (g.getKartyWRece().size() != 0 && g.getPulaZetonowGracza() == wartoscTmp) {
+//                                licznikGraczyZTakaSamaPula++;
+//                            }
+//                        }
+//
+//                        for (Gracz g : rozgrywka.getGracze()) {
+//                            if (g.getKartyWRece().size() != 0) {
+//                                licznikGraczyZKartami++;
+//                            }
+//                        }
+//
+//                        if (licznikGraczyZKartami == licznikGraczyZTakaSamaPula) {
+//
+//                            System.out.println("POKAZUJE KARTY");
+//                            kartaF1 = new ImageIcon(zapiszObrazDlaKartStol(0)).getImage();
+//                            kartaF2 = new ImageIcon(zapiszObrazDlaKartStol(1)).getImage();
+//                            kartaF3 = new ImageIcon(zapiszObrazDlaKartStol(2)).getImage();
+//
+//                            for (Gracz g : rozgrywka.getGracze()) {
+//                                pulaGlowna += g.getPulaZetonowGracza();
+//                                g.setPulaZetonowGracza(0);
+//                            }
+//
+//                            repaint();
+//
+//                            licytacjaWGrze = false;
+//                        }
+//
 
-                    };
 
+                        for (int i = 0; i <= rozgrywka.getPobierzBlind(); i++) {
+                            if (i == 0) {
+
+                            } else {
+                                rozgrywka.ruchGracza(i);
+                            }
+                        }
+
+                        wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
+
+
+                        while (czyGraczeWlozyliTakaSamaIloscZetonowDoPuli) {
+
+                            System.out.println("SPRAWDZAMY CZY GRACZE WŁOŻYLI TAKĄ SAMĄ ILOŚĆ ŻETONÓW DO PULI");
+                            System.out.println("Najwyższa postawiona ilość żetonów: " + wartoscTmp);
+
+                            for (Gracz g : rozgrywka.getGracze()) {
+                                if (g.getKartyWRece().size() != 0) {
+
+                                    if (g.getPulaZetonowGracza() != wartoscTmp && g.getKartyWRece().size() != 0) {
+                                        System.out.println("Sprawdzenie " + g.getNick());
+                                        czyGraczeWlozyliTakaSamaIloscZetonowDoPuli = false;
+
+                                    }
+                                }
+                            }
+
+                            if (czyGraczeWlozyliTakaSamaIloscZetonowDoPuli) {
+                                System.out.println("POKAZUJE KARTY");
+                                kartaF1 = new ImageIcon(zapiszObrazDlaKartStol(0)).getImage();
+                                kartaF2 = new ImageIcon(zapiszObrazDlaKartStol(1)).getImage();
+                                kartaF3 = new ImageIcon(zapiszObrazDlaKartStol(2)).getImage();
+
+                                for (Gracz g : rozgrywka.getGracze()) {
+                                    pulaGlowna += g.getPulaZetonowGracza();
+                                    g.setPulaZetonowGracza(0);
+                                }
+
+                                repaint();
+
+                                licytacjaWGrze = false;
+                            }
+
+                        }
+
+                        for (int i = rozgrywka.getPobierzBlind() + 1; i < rozgrywka.getGracze().size(); i++) {
+                            if (rozgrywka.getGracze().get(i).getKartyWRece().size() != 0) {
+                                rozgrywka.ruchGracza(i);
+                            }
+                        }
+
+                        System.out.println("KONIEC KOLEJKI");
+
+                    }
+
+                    repaint();
+
+                } else if (kartaT == null) {
+                    kartaT = new ImageIcon(zapiszObrazDlaKartStol(3)).getImage();
+                    repaint();
 
                 }
 
 
             }
 
+
         });
+    }
+
+    private int najwyzszaWartoscPostawionychZetonowGracza(int wartoscTmp) {
+
+        for (Gracz g : rozgrywka.getGracze()) {
+            if (g.getPulaZetonowGracza() >= wartoscTmp && g.getKartyWRece().size() != 0) {
+                wartoscTmp = g.getPulaZetonowGracza();
+            }
+        }
+        return wartoscTmp;
     }
 
 //    private void checkPrzedFlop() {
@@ -377,13 +494,23 @@ public class PanelStolik extends JPanel implements ActionListener {
 //        repaint();
 //    }
 
+    private void sprawdzenieIlosciWlozonychZetonow() {
+
+        for (Gracz g : rozgrywka.getGracze()) {
+            if (g.getKartyWRece() != null) {
+
+            }
+        }
+
+    }
+
     private void przyciskFoldAkcja() {
         fold.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                pulaGlowna=0;
+                pulaGlowna = 0;
                 for (Gracz g : rozgrywka.getGracze()) {
-                    g.setPulaZetonow(0);
+                    g.setPulaZetonowGracza(0);
                     g.setBlind(0);
                 }
 
@@ -427,7 +554,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                 }
 
 
-                betB=0;
+                betB = 0;
 
                 repaint();
 
@@ -572,106 +699,101 @@ public class PanelStolik extends JPanel implements ActionListener {
         }
     }
 
-    private ImageIcon dodajZdjecieSmallBlind(){
-        smallBlind = new ImageIcon( "zdjecia\\sb.jpg" ).getImage();
+    private ImageIcon dodajZdjecieSmallBlind() {
+        smallBlind = new ImageIcon("zdjecia\\sb.jpg").getImage();
         return new ImageIcon(smallBlind);
     }
 
-    private void dodajZetonBibBlind(Graphics g){
-        if(rozgrywka.getPobierzBlind() == 0) {
-            g.drawImage( bigBlind,1200,790,null );
-        }
-        else if (rozgrywka.getPobierzBlind() == 1){
-            g.drawImage( bigBlind,670,790,null );
-        }
-        else if (rozgrywka.getPobierzBlind() == 2){
-            g.drawImage( bigBlind,320,480,null );
-        }
-        else if (rozgrywka.getPobierzBlind()== 3){
-            g.drawImage( bigBlind,650,260,null );
-        }
-        else if (rozgrywka.getPobierzBlind() == 4){
-            g.drawImage( bigBlind,1200,260,null );
-        }
-        else if (rozgrywka.getPobierzBlind() == 5){
-            g.drawImage( bigBlind,1570,480,null );
+    private void dodajZetonBibBlind(Graphics g) {
+        if (rozgrywka.getPobierzBlind() == 0) {
+            g.drawImage(bigBlind, 1200, 790, null);
+        } else if (rozgrywka.getPobierzBlind() == 1) {
+            g.drawImage(bigBlind, 670, 790, null);
+        } else if (rozgrywka.getPobierzBlind() == 2) {
+            g.drawImage(bigBlind, 320, 480, null);
+        } else if (rozgrywka.getPobierzBlind() == 3) {
+            g.drawImage(bigBlind, 650, 260, null);
+        } else if (rozgrywka.getPobierzBlind() == 4) {
+            g.drawImage(bigBlind, 1200, 260, null);
+        } else if (rozgrywka.getPobierzBlind() == 5) {
+            g.drawImage(bigBlind, 1570, 480, null);
         }
     }
-    
-    private ImageIcon dodajZdjecieBigBlind(){
-        bigBlind = new ImageIcon( "zdjecia\\bb.jpg" ).getImage();
+
+    private ImageIcon dodajZdjecieBigBlind() {
+        bigBlind = new ImageIcon("zdjecia\\bb.jpg").getImage();
         return new ImageIcon(bigBlind);
     }
 
-    private void dodajZetonDealer(Graphics g){
-        if(rozgrywka.getPobierzBlind()-2== 0) {
-            g.drawImage( dealer,1200,790,null );
-        }
-        else if (rozgrywka.getPobierzBlind()-2 == 1){
-            g.drawImage( dealer,670,790,null );
-        }
-        else if (rozgrywka.getPobierzBlind()-2 == 2){
-            g.drawImage( dealer,320,480,null );
-        }
-        else if (rozgrywka.getPobierzBlind()-2== 3){
-            g.drawImage( dealer,650,260,null );
-        }
-        else if (rozgrywka.getPobierzBlind()+4 == 4){
-            g.drawImage( dealer,1200,260,null );
-        }
-        else if (rozgrywka.getPobierzBlind()+4 == 5){
-            g.drawImage( dealer,1570,480,null );
+    private void dodajZetonDealer(Graphics g) {
+        if (rozgrywka.getPobierzBlind() - 2 == 0) {
+            g.drawImage(dealer, 1200, 790, null);
+        } else if (rozgrywka.getPobierzBlind() - 2 == 1) {
+            g.drawImage(dealer, 670, 790, null);
+        } else if (rozgrywka.getPobierzBlind() - 2 == 2) {
+            g.drawImage(dealer, 320, 480, null);
+        } else if (rozgrywka.getPobierzBlind() - 2 == 3) {
+            g.drawImage(dealer, 650, 260, null);
+        } else if (rozgrywka.getPobierzBlind() + 4 == 4) {
+            g.drawImage(dealer, 1200, 260, null);
+        } else if (rozgrywka.getPobierzBlind() + 4 == 5) {
+            g.drawImage(dealer, 1570, 480, null);
         }
     }
 
-    private ImageIcon dodajZdjecieDealer(){
-        dealer = new ImageIcon( "zdjecia\\dealer.jpg" ).getImage();
+    private ImageIcon dodajZdjecieDealer() {
+        dealer = new ImageIcon("zdjecia\\dealer.jpg").getImage();
         return new ImageIcon(dealer);
     }
 
-    private void dodajIloscPostawionychZetonowGracza0(Graphics g){
-        if(rozgrywka.getGracze().get( 0 ).getPulaZetonow() >= 0) {
-            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get( 0 ).getPulaZetonow()+ betB) + "$";
-            g.drawString( iloscZetonowPostawionych, 1215, 710 );
+    private void dodajIloscPostawionychZetonowGracza0(Graphics g) {
+        if (rozgrywka.getGracze().get(0).getPulaZetonowGracza() >= 0) {
+            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get(0).getPulaZetonowGracza() + betB) + "$";
+            g.drawString(iloscZetonowPostawionych, 1215, 710);
         }
     }
-    private void dodajIloscPostawionychZetonowGracza1(Graphics g){
-        if(rozgrywka.getGracze().get( 1 ).getPulaZetonow() >= 0) {
-            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get( 1 ).getPulaZetonow()) + "$";
-            g.drawString( iloscZetonowPostawionych, 680, 710 );
+
+    private void dodajIloscPostawionychZetonowGracza1(Graphics g) {
+        if (rozgrywka.getGracze().get(1).getPulaZetonowGracza() >= 0) {
+            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get(1).getPulaZetonowGracza()) + "$";
+            g.drawString(iloscZetonowPostawionych, 680, 710);
         }
     }
-    private void dodajIloscPostawionychZetonowGracza2(Graphics g){
-        if(rozgrywka.getGracze().get( 2 ).getPulaZetonow() >= 0) {
-            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get( 2 ).getPulaZetonow()) + "$";
-            g.drawString( iloscZetonowPostawionych, 450, 520 );
+
+    private void dodajIloscPostawionychZetonowGracza2(Graphics g) {
+        if (rozgrywka.getGracze().get(2).getPulaZetonowGracza() >= 0) {
+            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get(2).getPulaZetonowGracza()) + "$";
+            g.drawString(iloscZetonowPostawionych, 450, 520);
         }
     }
-    private void dodajIloscPostawionychZetonowGracza3(Graphics g){
-        if(rozgrywka.getGracze().get( 3 ).getPulaZetonow() >= 0) {
-            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get( 3 ).getPulaZetonow()) + "$";
-            g.drawString( iloscZetonowPostawionych, 680, 360 );
+
+    private void dodajIloscPostawionychZetonowGracza3(Graphics g) {
+        if (rozgrywka.getGracze().get(3).getPulaZetonowGracza() >= 0) {
+            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get(3).getPulaZetonowGracza()) + "$";
+            g.drawString(iloscZetonowPostawionych, 680, 360);
         }
     }
-    private void dodajIloscPostawionychZetonowGracza4(Graphics g){
-        if(rozgrywka.getGracze().get( 4 ).getPulaZetonow() >= 0) {
-            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get( 4).getPulaZetonow()) + "$";
-            g.drawString( iloscZetonowPostawionych, 1215, 360 );
+
+    private void dodajIloscPostawionychZetonowGracza4(Graphics g) {
+        if (rozgrywka.getGracze().get(4).getPulaZetonowGracza() >= 0) {
+            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get(4).getPulaZetonowGracza()) + "$";
+            g.drawString(iloscZetonowPostawionych, 1215, 360);
         }
     }
-    private void dodajIloscPostawionychZetonowGracza5(Graphics g){
-        if(rozgrywka.getGracze().get( 5 ).getPulaZetonow() >= 0) {
-            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get( 5 ).getPulaZetonow()) + "$";
-            g.drawString( iloscZetonowPostawionych, 1420, 520 );
+
+    private void dodajIloscPostawionychZetonowGracza5(Graphics g) {
+        if (rozgrywka.getGracze().get(5).getPulaZetonowGracza() >= 0) {
+            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get(5).getPulaZetonowGracza()) + "$";
+            g.drawString(iloscZetonowPostawionych, 1420, 520);
         }
     }
+
     public void dodajZetonyGraczaDoPuli() {
 
         for (int i = 0; i < rozgrywka.getGracze().size(); i++) {
-            pulaGlowna += rozgrywka.getGracze().get(i).getPulaZetonow();
+            pulaGlowna += rozgrywka.getGracze().get(i).getPulaZetonowGracza();
         }
     }
-
 
 
     private void dodajZdjeciaKartGraczy() {
@@ -696,18 +818,28 @@ public class PanelStolik extends JPanel implements ActionListener {
 //            }
 //        };
 //        new Timer(delay, taskPerformer1).start();
-            gracz0k1 = new ImageIcon(zapiszObrazDlaGraczy(0)).getImage();
-            gracz1k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
-            gracz2k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
-            gracz3k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
-            gracz4k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
-            gracz5k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
-            gracz0k2 = new ImageIcon(zapiszObrazDlaGraczy(1)).getImage();
-            gracz1k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
-            gracz2k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
-            gracz3k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
-            gracz4k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
-            gracz5k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+        gracz0k1 = new ImageIcon(zapiszObrazDlaGraczy(0)).getImage();
+        gracz1k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+        gracz2k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+        gracz3k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+        gracz4k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+        gracz5k1 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+        gracz0k2 = new ImageIcon(zapiszObrazDlaGraczy(1)).getImage();
+        gracz1k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+        gracz2k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+        gracz3k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+        gracz4k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+        gracz5k2 = new ImageIcon("zdjecia\\Green_back.jpg").getImage();
+
+    }
+
+    private void sprawdzenieCzyWszyscyGraczeDoadaliTaSamaIloscZetonow() {
+
+        for (Gracz g : rozgrywka.getGracze()) {
+            if (rozgrywka.getGracze().size() == iloscWartosciTmp) {
+
+            }
+        }
 
     }
 
@@ -748,7 +880,6 @@ public class PanelStolik extends JPanel implements ActionListener {
         dodajZdjecieBigBlind();
 
 
-
 //        JButton button = new JButton();
 //        button.setBounds(877, 686, 243, 83);
 //        button.setBorder(obramowanie);
@@ -769,8 +900,9 @@ public class PanelStolik extends JPanel implements ActionListener {
 
         System.out.println("KTO BLIND " + rozgrywka.getPobierzBlind());
 
-        for (int i = rozgrywka.getPobierzBlind() + 1; i < rozgrywka.getGracze().size(); i++){
+        for (int i = rozgrywka.getPobierzBlind() + 1; i < rozgrywka.getGracze().size(); i++) {
             rozgrywka.ruchGracza(i);
+            repaint();
         }
 
 //        dodajZetonyGraczaDoPuli();

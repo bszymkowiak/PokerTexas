@@ -3,7 +3,6 @@ package klasy;
 import klasy.karty.Karta;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Gracz {
 
@@ -11,7 +10,7 @@ public class Gracz {
     private int iloscZetonow;
     protected ArrayList<Karta> kartyWRece = new ArrayList<>();
     protected int blind;
-    int pulaZetonow;
+    int pulaZetonowGracza;
 
     public Gracz() {
     }
@@ -21,12 +20,12 @@ public class Gracz {
         this.iloscZetonow = iloscZetonow;
     }
 
-    public int getPulaZetonow() {
-        return pulaZetonow;
+    public int getPulaZetonowGracza() {
+        return pulaZetonowGracza;
     }
 
-    public void setPulaZetonow(int pulaZetonow) {
-        this.pulaZetonow = pulaZetonow;
+    public void setPulaZetonowGracza(int pulaZetonowGracza) {
+        this.pulaZetonowGracza = pulaZetonowGracza;
     }
 
     public ArrayList<Karta> getKartyWRece() {
