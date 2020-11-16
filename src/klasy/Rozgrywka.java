@@ -318,16 +318,21 @@ public class Rozgrywka extends Gracz {
         Random rand = new Random();
         int liczba = rand.nextInt(3);
 
-        if (liczba == 0) {
-            komputerFold(i);
-        } else if (liczba == 1) {
-            komputerCheck(i);
-        } else if (liczba == 2) {
-            komputerBet(i);
+
+        if (gracze.get(i).kartyWRece.size() != 0) {
+            if (liczba == 0) {
+                komputerFold(i);
+            } else if (liczba == 1) {
+                komputerCheck(i);
+            } else if (liczba == 2) {
+                komputerBet(i);
+            }
         }
     }
 
-
 }
+
+
+
 
 
