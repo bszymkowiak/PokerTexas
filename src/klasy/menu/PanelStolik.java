@@ -154,6 +154,7 @@ public class PanelStolik extends JPanel implements ActionListener {
             gracz0k1 = null;
             gracz0k2 = null;
 
+
             repaint();
         }
         if (rozgrywka.getGracze().get(1).getKartyWRece().size() == 0) {
@@ -739,42 +740,42 @@ public class PanelStolik extends JPanel implements ActionListener {
     }
 
     private void dodajIloscPostawionychZetonowGracza0(Graphics g) {
-        if (rozgrywka.getGracze().get(0).getPulaZetonowGracza() >= 0) {
+        if (rozgrywka.getGracze().get(0).getPulaZetonowGracza() > 0) {
             var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get(0).getPulaZetonowGracza() + betB) + "$";
             g.drawString(iloscZetonowPostawionych, 1215, 710);
         }
     }
 
     private void dodajIloscPostawionychZetonowGracza1(Graphics g) {
-        if (rozgrywka.getGracze().get(1).getPulaZetonowGracza() >= 0) {
+        if (rozgrywka.getGracze().get(1).getPulaZetonowGracza() > 0) {
             var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get(1).getPulaZetonowGracza()) + "$";
             g.drawString(iloscZetonowPostawionych, 680, 710);
         }
     }
 
     private void dodajIloscPostawionychZetonowGracza2(Graphics g) {
-        if (rozgrywka.getGracze().get(2).getPulaZetonowGracza() >= 0) {
+        if (rozgrywka.getGracze().get(2).getPulaZetonowGracza() > 0) {
             var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get(2).getPulaZetonowGracza()) + "$";
             g.drawString(iloscZetonowPostawionych, 450, 520);
         }
     }
 
     private void dodajIloscPostawionychZetonowGracza3(Graphics g) {
-        if (rozgrywka.getGracze().get(3).getPulaZetonowGracza() >= 0) {
+        if (rozgrywka.getGracze().get(3).getPulaZetonowGracza() > 0) {
             var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get(3).getPulaZetonowGracza()) + "$";
             g.drawString(iloscZetonowPostawionych, 680, 360);
         }
     }
 
     private void dodajIloscPostawionychZetonowGracza4(Graphics g) {
-        if (rozgrywka.getGracze().get(4).getPulaZetonowGracza() >= 0) {
+        if (rozgrywka.getGracze().get(4).getPulaZetonowGracza() > 0) {
             var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get(4).getPulaZetonowGracza()) + "$";
             g.drawString(iloscZetonowPostawionych, 1215, 360);
         }
     }
 
     private void dodajIloscPostawionychZetonowGracza5(Graphics g) {
-        if (rozgrywka.getGracze().get(5).getPulaZetonowGracza() >= 0) {
+        if (rozgrywka.getGracze().get(5).getPulaZetonowGracza() > 0) {
             var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get(5).getPulaZetonowGracza()) + "$";
             g.drawString(iloscZetonowPostawionych, 1420, 520);
         }
