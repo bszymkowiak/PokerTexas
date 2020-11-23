@@ -343,19 +343,24 @@ public class Rozgrywka extends Gracz {
 
     public void sprawdzanieKart() {
 
+
         for (Gracz g : gracze) {
-
-            if (checkRoyalFlush(g)) {
-                System.out.println(g.getNick() + "!!   BRAWO, WYGRALES");
+            checkRoyalFlush(g);
+            if (!g.isCzyStraightFlush()) {
+                checkStraightFlush(g);
             }
+        }
 
+        for (Gracz g : gracze) {
+            checkStraightFlush(g);
+            if (g.isCzyStraightFlush()) {
+
+            }
         }
 
 
-
-
-
     }
+
 
     public boolean checkRoyalFlush(Gracz g) {
 
@@ -385,7 +390,7 @@ public class Rozgrywka extends Gracz {
         listaList.add(tmpKaro);
         listaList.add(tmpKier);
 
-        for(ArrayList<Karta> lista : listaList) {
+        for (ArrayList<Karta> lista : listaList) {
             lista.sort(comparatorKartaWartosc);
             if (lista.size() >= 5) {
                 if (lista.get(0).getWartosc().equals(Wartosc.AS) && lista.get(1).getWartosc().equals(Wartosc.KROL) &&
@@ -402,61 +407,173 @@ public class Rozgrywka extends Gracz {
         return false;
     }
 
-        public void sprawdzenieFlush (Gracz g){
+    public void checkStraightFlush(Gracz g) {
 
+        Comparator<Karta> comparatorKartaWartosc = Comparator.comparing(Karta::getWartosc);
 
-            Comparator<Karta> comparatorKartaWartoscIKolor = Comparator.comparing(Karta::getWartosc).reversed();
-            comparatorKartaWartoscIKolor.thenComparing(Karta::getKolor).reversed();
+        ArrayList<Karta> tmpPik = new ArrayList<>();
+        ArrayList<Karta> tmpTrefl = new ArrayList<>();
+        ArrayList<Karta> tmpKaro = new ArrayList<>();
+        ArrayList<Karta> tmpKier = new ArrayList<>();
 
-            ArrayList<Karta> tmpPik = new ArrayList<>();
-            ArrayList<Karta> tmpTrefl = new ArrayList<>();
-            ArrayList<Karta> tmpKaro = new ArrayList<>();
-            ArrayList<Karta> tmpKier = new ArrayList<>();
+        ArrayList<ArrayList<Karta>> listaList = new ArrayList<>();
 
-            ArrayList<ArrayList> listyTmp = new ArrayList<>();
+        for (Karta k : g.getKartyWRece()) {
+            if (k.getKolor().equals(Kolor.PIK)) {
+                tmpPik.add(k);
+            } else if (k.getKolor().equals(Kolor.TREFL)) {
+                tmpTrefl.add(k);
+            } else if (k.getKolor().equals(Kolor.KARO)) {
+                tmpKaro.add(k);
+            } else if (k.getKolor().equals(Kolor.KIER)) {
+                tmpKier.add(k);
+            }
+        }
 
-            // sortowanie
-            // usuwanie 2 kart najmniejszych
-            // segregujesz na zasadzie koloru, sprawdzasz kazda karta i jesli ma taki sam kolor to dodaje jee posortowane do listyTMP
-            // sprawdzam każdą kartę z osobna czy odpowiada np. get(0).equals(AS) , get(1).equals(Krol) etc
-            // po sprawdzeniu jesli sie zgadza to na true.
+        listaList.add(tmpPik);
+        listaList.add(tmpTrefl);
+        listaList.add(tmpKaro);
+        listaList.add(tmpKier);
 
-            g.kartyWRece.sort(comparatorKartaWartoscIKolor);
-            g.kartyWRece.remove(5);
-            g.kartyWRece.remove(5);
-            System.out.println(g);
+        for (ArrayList<Karta> lista : listaList) {
+            lista.sort(comparatorKartaWartosc.reversed());
+            if (lista.size() >= 5) {
 
-            for (Karta k : kartyWRece) {
-                if (k.getKolor().equals(Kolor.PIK)) {
-                    tmpPik.add(k);
-                } else if (k.getKolor().equals(Kolor.TREFL)) {
-                    tmpTrefl.add(k);
-                } else if (k.getKolor().equals(Kolor.KARO)) {
-                    tmpKaro.add(k);
-                } else if (k.getKolor().equals(Kolor.KIER)) {
-                    tmpKier.add(k);
+                for(int j = 0; j < (7 - lista.size()); j++){
+                    for (int i = 14; i > 2; i--) {
+
+                        if (czyStraight(lista, i, j)) {
+                            g.setWartoscTmp(sumaWartosciStreightFlush(g, i));
+                            g.setCzyStraightFlush(true);
+
+                        } else if (czyStrightOd5DoAsa(lista, 14, 5, 4, 3, 2)) {
+                            //To nie działa tak jak powinno, nie rozpatruje jednego przypadku w ktorym mamy karty pik np. as, 2, 3 , 4 ,5 , 8
+                            lista.sort(comparatorKartaWartosc);
+                            System.out.println(lista);
+                            g.setWartoscTmp(sumaWartosciStreightFlushOd5DoAsa(g, i, lista) - 13);
+                            g.setCzyStraightFlush(true);
+                        }
+                    }
+                }
+            }
+        }
+
+        System.out.println(g.isCzyStraightFlush());
+        System.out.println(g.getWartoscTmp());
+    }
+
+    private boolean czyStraight(ArrayList<Karta> lista, int i, int j) {
+        return lista.get(j).getWartosc().getWartosc() == i && lista.get(j+1).getWartosc().getWartosc() == (i - 1) && lista.get(j+2).getWartosc().getWartosc() == (i - 2) &&
+                lista.get(j+3).getWartosc().getWartosc() == (i - 3) && lista.get(j+4).getWartosc().getWartosc() == (i - 4);
+    }
+
+    private int sumaWartosciStreightFlush(Gracz g, int i) {
+        return g.kartyWRece.get(j).getWartosc().getWartosc() + g.kartyWRece.get(j + 1).getWartosc().getWartosc() +
+                g.kartyWRece.get(j + 2).getWartosc().getWartosc() +
+                g.kartyWRece.get(j + 3).getWartosc().getWartosc() +
+                g.kartyWRece.get(j+ 4).getWartosc().getWartosc();
+    }
+
+    private int sumaWartosciStreightFlushOd5DoAsa(Gracz g, int i, ArrayList<Karta> lista) {
+        return lista.get(j).getWartosc().getWartosc() + lista.get(j + 1).getWartosc().getWartosc() +
+                lista.get(j + 2).getWartosc().getWartosc() +
+                lista.get(j + 3).getWartosc().getWartosc() +
+                lista.get(lista.size() -1).getWartosc().getWartosc();
+    }
+
+    public void checkFourOfAKind(Gracz g) {
+
+        Comparator<Karta> comparatorKartaWartosc = Comparator.comparing(Karta::getWartosc).reversed();
+
+        g.kartyWRece.sort(comparatorKartaWartosc);
+
+        System.out.println(g.kartyWRece);
+
+        for(int j = 14; j > 2; j--)
+            for (int i = 0; i < 4; i++) {
+                if (czyFourOfAKind(g, j, i)) {
+                    g.setWartoscTmp(sumaWartosciFourOfAKind(g, i));
+                    g.setCzyFourOfAKind(true);
                 }
             }
 
+        System.out.println(g.isCzyFourOfAKind());
+        System.out.println(g.getWartoscTmp());
+    }
 
-            for (ArrayList aL : listyTmp) {
-                if (aL.size() == 5) {
-                    g.setCzyFlush(true);
-                }
+    private int sumaWartosciFourOfAKind(Gracz g, int i) {
+        return g.kartyWRece.get(i).getWartosc().getWartosc() + g.kartyWRece.get(i + 1).getWartosc().getWartosc() +
+                g.kartyWRece.get(i + 2).getWartosc().getWartosc() +
+                g.kartyWRece.get(i + 3).getWartosc().getWartosc();
+    }
+
+    private boolean czyFourOfAKind(Gracz g, int j, int i) {
+        return g.kartyWRece.get(i).getWartosc().getWartosc() == j &&
+                g.kartyWRece.get(i + 1).getWartosc().getWartosc() == j &&
+                g.kartyWRece.get(i + 2).getWartosc().getWartosc() == j &&
+                g.kartyWRece.get(i + 3).getWartosc().getWartosc() == j;
+    }
+
+    private boolean czyStrightOd5DoAsa(ArrayList<Karta> lista, int i, int i2, int i3, int i4, int i5) {
+        return lista.get(0).getWartosc().getWartosc() == i && lista.get(1).getWartosc().getWartosc() == i2 && lista.get(2).getWartosc().getWartosc() == i3 &&
+                lista.get(3).getWartosc().getWartosc() == i4 && lista.get(4).getWartosc().getWartosc() == i5;
+    }
+
+    public void sprawdzenieFlush(Gracz g) {
+
+
+        Comparator<Karta> comparatorKartaWartoscIKolor = Comparator.comparing(Karta::getWartosc).reversed();
+        comparatorKartaWartoscIKolor.thenComparing(Karta::getKolor).reversed();
+
+        ArrayList<Karta> tmpPik = new ArrayList<>();
+        ArrayList<Karta> tmpTrefl = new ArrayList<>();
+        ArrayList<Karta> tmpKaro = new ArrayList<>();
+        ArrayList<Karta> tmpKier = new ArrayList<>();
+
+        ArrayList<ArrayList> listyTmp = new ArrayList<>();
+
+        // sortowanie
+        // usuwanie 2 kart najmniejszych
+        // segregujesz na zasadzie koloru, sprawdzasz kazda karta i jesli ma taki sam kolor to dodaje jee posortowane do listyTMP
+        // sprawdzam każdą kartę z osobna czy odpowiada np. get(0).equals(AS) , get(1).equals(Krol) etc
+        // po sprawdzeniu jesli sie zgadza to na true.
+
+        g.kartyWRece.sort(comparatorKartaWartoscIKolor);
+        g.kartyWRece.remove(5);
+        g.kartyWRece.remove(5);
+        System.out.println(g);
+
+        for (Karta k : kartyWRece) {
+            if (k.getKolor().equals(Kolor.PIK)) {
+                tmpPik.add(k);
+            } else if (k.getKolor().equals(Kolor.TREFL)) {
+                tmpTrefl.add(k);
+            } else if (k.getKolor().equals(Kolor.KARO)) {
+                tmpKaro.add(k);
+            } else if (k.getKolor().equals(Kolor.KIER)) {
+                tmpKier.add(k);
             }
-
-
-            //sprawdzam czy >= 5 i pozniej segreguje, odejmuje 2 najemniejsze i sprawdzam HighCard
-
-
         }
 
-        public void sprawdzeniePar () {
 
-
+        for (ArrayList aL : listyTmp) {
+            if (aL.size() == 5) {
+                g.setCzyFlush(true);
+            }
         }
+
+
+        //sprawdzam czy >= 5 i pozniej segreguje, odejmuje 2 najemniejsze i sprawdzam HighCard
+
 
     }
+
+    public void sprawdzeniePar() {
+
+
+    }
+
+}
 
 
 

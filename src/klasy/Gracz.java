@@ -11,6 +11,7 @@ public class Gracz {
     protected ArrayList<Karta> kartyWRece = new ArrayList<>();
     protected int blind;
     int pulaZetonowGracza;
+    private int wartoscTmp;
 
     private boolean czyRoyalFlush;
     private boolean czyStraightFlush;
@@ -29,6 +30,15 @@ public class Gracz {
     public Gracz(String nick, int iloscZetonow) {
         this.nick = nick;
         this.iloscZetonow = iloscZetonow;
+    }
+
+    public int getWartoscTmp() {
+
+        return wartoscTmp;
+    }
+
+    public void setWartoscTmp(int wartoscTmp) {
+        this.wartoscTmp = wartoscTmp;
     }
 
     public int getPulaZetonowGracza() {

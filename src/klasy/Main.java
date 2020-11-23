@@ -3,6 +3,7 @@ package klasy;
 import enumy.Kolor;
 import enumy.Wartosc;
 import klasy.karty.Karta;
+import klasy.menu.MenuPoczatkowe;
 
 public class Main {
 
@@ -10,8 +11,7 @@ public class Main {
 
         Rozgrywka rozgrywka = new Rozgrywka();
 
-        rozgrywka.setLiczbaGraczy(4);
-
+        rozgrywka.setLiczbaGraczy(1);
         rozgrywka.dodajGraczy(2000);
 
 
@@ -25,28 +25,19 @@ public class Main {
             g.kartyWRece.addAll(rozgrywka.getKartyStol());
         }
 
-        Gracz naszGracz = rozgrywka.getGracze().get(1);
-        rozgrywka.getGracze().get(1).getKartyWRece().removeAll(rozgrywka.getGracze().get(1).getKartyWRece());
-
-        naszGracz.getKartyWRece().add(new Karta(Kolor.KARO, Wartosc.AS));
-        naszGracz.getKartyWRece().add(new Karta(Kolor.KARO, Wartosc.KROL));
-        naszGracz.getKartyWRece().add(new Karta(Kolor.KARO, Wartosc.DZIESIEC));
-        naszGracz.getKartyWRece().add(new Karta(Kolor.KARO, Wartosc.DAMA));
-        naszGracz.getKartyWRece().add(new Karta(Kolor.KARO, Wartosc.JOPEK));
+        Gracz naszGracz = rozgrywka.getGracze().get(0);
+        rozgrywka.getGracze().get(0).getKartyWRece().removeAll(rozgrywka.getGracze().get(0).getKartyWRece());
 
 
-        rozgrywka.sprawdzanieKart();
+        naszGracz.getKartyWRece().add(new Karta(Kolor.PIK, Wartosc.PIEC));
+        naszGracz.getKartyWRece().add(new Karta(Kolor.PIK, Wartosc.CZTERY));
+        naszGracz.getKartyWRece().add(new Karta(Kolor.PIK, Wartosc.TRZY));
+        naszGracz.getKartyWRece().add(new Karta(Kolor.TREFL, Wartosc.DAMA));
+        naszGracz.getKartyWRece().add(new Karta(Kolor.PIK, Wartosc.DWA));
+        naszGracz.getKartyWRece().add(new Karta(Kolor.PIK, Wartosc.AS));
 
 
-
-
-
-
-
-
-
-
-
+        rozgrywka.checkStraightFlush(naszGracz);
 
 
     }
