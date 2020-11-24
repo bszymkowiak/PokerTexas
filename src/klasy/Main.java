@@ -30,16 +30,17 @@ public class Main {
 
 
         naszGracz.getKartyWRece().add(new Karta(Kolor.PIK, Wartosc.PIEC));
-        naszGracz.getKartyWRece().add(new Karta(Kolor.PIK, Wartosc.OSIEM));
-        naszGracz.getKartyWRece().add(new Karta(Kolor.KARO, Wartosc.PIEC));
+        naszGracz.getKartyWRece().add(new Karta(Kolor.PIK, Wartosc.CZTERY));
+        naszGracz.getKartyWRece().add(new Karta(Kolor.KARO, Wartosc.TRZY));
         naszGracz.getKartyWRece().add(new Karta(Kolor.TREFL, Wartosc.DAMA));
         naszGracz.getKartyWRece().add(new Karta(Kolor.PIK, Wartosc.DWA));
         naszGracz.getKartyWRece().add(new Karta(Kolor.PIK, Wartosc.SIEDEM));
+        naszGracz.getKartyWRece().add(new Karta(Kolor.PIK, Wartosc.AS));
         naszGracz.getKartyWRece().add(new Karta(Kolor.PIK, Wartosc.DAMA));
-        naszGracz.getKartyWRece().add(new Karta(Kolor.PIK, Wartosc.TRZY));
 
 
-        rozgrywka.checkFlush(naszGracz);
+
+        rozgrywka.checkStraight(naszGracz);
 
 
     }
