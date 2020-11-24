@@ -545,7 +545,6 @@ public class Rozgrywka extends Gracz {
 
     public void checkFlush(Gracz g) {
 
-
         Comparator<Karta> comparatorKartaWartoscIKolor = Comparator.comparing(Karta::getWartosc).reversed();
 
         ArrayList<Karta> tmpPik = new ArrayList<>();
@@ -556,7 +555,7 @@ public class Rozgrywka extends Gracz {
         ArrayList<ArrayList<Karta>> listyTmp = new ArrayList<>();
 
         g.kartyWRece.sort(comparatorKartaWartoscIKolor);
-        System.out.println(g);
+//        System.out.println(g);
 
         for (Karta k : g.kartyWRece) {
             if (k.getKolor().equals(Kolor.PIK)) {
@@ -585,6 +584,8 @@ public class Rozgrywka extends Gracz {
                     aL.remove(5);
                 }
 
+                //zapisanie najwyzszej karty wartosci
+                g.setWartoscTmp(aL.get(0).getWartosc().getWartosc());
                 g.setCzyFlush(true);
                 System.out.println(g.isCzyFlush());
             }
@@ -621,7 +622,8 @@ public class Rozgrywka extends Gracz {
                     listaTmp.add(g.kartyWRece.get(j+4));
 
                     System.out.println("SUPER");
-                    System.out.println(listaTmp);
+                    //zapisuje najwyższą kartę
+                    g.setWartoscTmp(listaTmp.get(0).getWartosc().getWartosc());
                     g.setCzyStraight(true);
 
                 }
@@ -635,6 +637,9 @@ public class Rozgrywka extends Gracz {
                     listaTmp.add(g.kartyWRece.get(j+2));
                     listaTmp.add(g.kartyWRece.get(j+3));
                     listaTmp.add(g.kartyWRece.get(g.kartyWRece.size()-1));
+
+                    //zapisuje wartosc najwyzszej karty
+                    g.setWartoscTmp(listaTmp.get(0).getWartosc().getWartosc());
 
                     g.setCzyStraightFlush(true);
                 }
