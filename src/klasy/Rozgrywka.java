@@ -2,10 +2,10 @@ package klasy;
 
 import enumy.Kolor;
 import enumy.Wartosc;
+import jdk.swing.interop.SwingInterOpUtils;
 import klasy.karty.Karta;
 import klasy.karty.TaliaKart;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -443,14 +443,14 @@ public class Rozgrywka extends Gracz {
                     for (int i = 14; i > 2; i--) {
 
                         if (czyStraight(lista, i, j)) {
-                            g.setWartoscTmp(sumaWartosciStreightFlush(g, i));
+                            g.setWartoscTmp(sumaWartosciStraightFlush(g, i));
                             g.setCzyStraightFlush(true);
 
                         } else if (czyStrightOd5DoAsa(lista, 14, 5, 4, 3, 2)) {
                             //To nie działa tak jak powinno, nie rozpatruje jednego przypadku w ktorym mamy karty pik np. as, 2, 3 , 4 ,5 , 8
                             lista.sort(comparatorKartaWartosc);
                             System.out.println(lista);
-                            g.setWartoscTmp(sumaWartosciStreightFlushOd5DoAsa(g, i, lista) - 13);
+                            g.setWartoscTmp(sumaWartosciStraightFlushOd5DoAsa(g, i, lista) - 13);
                             g.setCzyStraightFlush(true);
                         }
                     }
@@ -467,14 +467,14 @@ public class Rozgrywka extends Gracz {
                 lista.get(j+3).getWartosc().getWartosc() == (i - 3) && lista.get(j+4).getWartosc().getWartosc() == (i - 4);
     }
 
-    private int sumaWartosciStreightFlush(Gracz g, int i) {
+    private int sumaWartosciStraightFlush(Gracz g, int i) {
         return g.kartyWRece.get(j).getWartosc().getWartosc() + g.kartyWRece.get(j + 1).getWartosc().getWartosc() +
                 g.kartyWRece.get(j + 2).getWartosc().getWartosc() +
                 g.kartyWRece.get(j + 3).getWartosc().getWartosc() +
                 g.kartyWRece.get(j+ 4).getWartosc().getWartosc();
     }
 
-    private int sumaWartosciStreightFlushOd5DoAsa(Gracz g, int i, ArrayList<Karta> lista) {
+    private int sumaWartosciStraightFlushOd5DoAsa(Gracz g, int i, ArrayList<Karta> lista) {
         return lista.get(j).getWartosc().getWartosc() + lista.get(j + 1).getWartosc().getWartosc() +
                 lista.get(j + 2).getWartosc().getWartosc() +
                 lista.get(j + 3).getWartosc().getWartosc() +
@@ -483,20 +483,39 @@ public class Rozgrywka extends Gracz {
 
     public void checkFourOfAKind(Gracz g) {
 
+        ArrayList<Karta> listaTmp = new ArrayList<>();
+
         Comparator<Karta> comparatorKartaWartosc = Comparator.comparing(Karta::getWartosc).reversed();
 
         g.kartyWRece.sort(comparatorKartaWartosc);
 
+        System.out.println("Po sortowaniu.");
         System.out.println(g.kartyWRece);
 
-        for(int j = 14; j > 2; j--)
-            for (int i = 0; i < 4; i++) {
+        for(int  i = 0; i < 3; i++){
+            for (int j = 14; j > 2; j--) {
                 if (czyFourOfAKind(g, j, i)) {
-                    g.setWartoscTmp(sumaWartosciFourOfAKind(g, i));
+                    listaTmp.add(g.kartyWRece.get(i));
+                    listaTmp.add(g.kartyWRece.get(i+1));
+                    listaTmp.add(g.kartyWRece.get(i+2));
+                    listaTmp.add(g.kartyWRece.get(i+3));
+                    g.kartyWRece.remove(i + 3);
+                    g.kartyWRece.remove(i + 2);
+                    g.kartyWRece.remove(i + 1);
+                    g.kartyWRece.remove(i);
+
                     g.setCzyFourOfAKind(true);
                 }
             }
+        }
 
+        System.out.println("Po usunieciu");
+        System.out.println(g.kartyWRece);
+
+        g.kartyWRece.sort(comparatorKartaWartosc);
+        listaTmp.add(g.kartyWRece.get(0));
+        System.out.println("Lista tmp cała, razem z high card");
+        System.out.println(listaTmp);
         System.out.println(g.isCzyFourOfAKind());
         System.out.println(g.getWartoscTmp());
     }
@@ -519,31 +538,22 @@ public class Rozgrywka extends Gracz {
                 lista.get(3).getWartosc().getWartosc() == i4 && lista.get(4).getWartosc().getWartosc() == i5;
     }
 
-    public void sprawdzenieFlush(Gracz g) {
+    public void checkFlush(Gracz g) {
 
 
         Comparator<Karta> comparatorKartaWartoscIKolor = Comparator.comparing(Karta::getWartosc).reversed();
-        comparatorKartaWartoscIKolor.thenComparing(Karta::getKolor).reversed();
 
         ArrayList<Karta> tmpPik = new ArrayList<>();
         ArrayList<Karta> tmpTrefl = new ArrayList<>();
         ArrayList<Karta> tmpKaro = new ArrayList<>();
         ArrayList<Karta> tmpKier = new ArrayList<>();
 
-        ArrayList<ArrayList> listyTmp = new ArrayList<>();
-
-        // sortowanie
-        // usuwanie 2 kart najmniejszych
-        // segregujesz na zasadzie koloru, sprawdzasz kazda karta i jesli ma taki sam kolor to dodaje jee posortowane do listyTMP
-        // sprawdzam każdą kartę z osobna czy odpowiada np. get(0).equals(AS) , get(1).equals(Krol) etc
-        // po sprawdzeniu jesli sie zgadza to na true.
+        ArrayList<ArrayList<Karta>> listyTmp = new ArrayList<>();
 
         g.kartyWRece.sort(comparatorKartaWartoscIKolor);
-        g.kartyWRece.remove(5);
-        g.kartyWRece.remove(5);
         System.out.println(g);
 
-        for (Karta k : kartyWRece) {
+        for (Karta k : g.kartyWRece) {
             if (k.getKolor().equals(Kolor.PIK)) {
                 tmpPik.add(k);
             } else if (k.getKolor().equals(Kolor.TREFL)) {
@@ -555,16 +565,25 @@ public class Rozgrywka extends Gracz {
             }
         }
 
+        listyTmp.add(tmpPik);
+        listyTmp.add(tmpTrefl);
+        listyTmp.add(tmpKaro);
+        listyTmp.add(tmpKier);
 
-        for (ArrayList aL : listyTmp) {
-            if (aL.size() == 5) {
+        for (ArrayList<Karta> aL : listyTmp) {
+            if (aL.size() >= 5) {
+                aL.sort(comparatorKartaWartoscIKolor);
+                if (aL.size() == 6) {
+                    aL.remove(5);
+                } else if (aL.size() == 7) {
+                    aL.remove(6);
+                    aL.remove(5);
+                }
+
                 g.setCzyFlush(true);
+                System.out.println(g.isCzyFlush());
             }
         }
-
-
-        //sprawdzam czy >= 5 i pozniej segreguje, odejmuje 2 najemniejsze i sprawdzam HighCard
-
 
     }
 
