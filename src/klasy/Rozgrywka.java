@@ -332,37 +332,13 @@ public class Rozgrywka extends Gracz {
         }
     }
 
-    public void rozpoznawanieKart() {
-
-        for (Gracz g : gracze) {
-            if (g.getKartyWRece().size() != 0) {
-
-            }
-        }
-    }
-
     public void sprawdzanieKart() {
 
 
-        for (Gracz g : gracze) {
-            checkRoyalFlush(g);
-            if (!g.isCzyStraightFlush()) {
-                checkStraightFlush(g);
-            }
-        }
-
-        for (Gracz g : gracze) {
-            checkStraightFlush(g);
-            if (g.isCzyStraightFlush()) {
-
-            }
-        }
-
 
     }
 
-
-    public boolean checkRoyalFlush(Gracz g) {
+    private void checkRoyalFlush(Gracz g) {
 
         Comparator<Karta> comparatorKartaWartosc = Comparator.comparing(Karta::getWartosc).reversed();
 
@@ -398,16 +374,15 @@ public class Rozgrywka extends Gracz {
                         && lista.get(4).getWartosc().equals(Wartosc.DZIESIEC)) {
 
                     g.setCzyRoyalFlush(true);
-                    return true;
 
                 }
 
             }
         }
-        return false;
+
     }
 
-    public void checkStraightFlush(Gracz g) {
+    private void checkStraightFlush(Gracz g) {
 
         Comparator<Karta> comparatorKartaWartosc = Comparator.comparing(Karta::getWartosc);
 
@@ -462,57 +437,29 @@ public class Rozgrywka extends Gracz {
         System.out.println(g.getWartoscTmp());
     }
 
-    private boolean czyStraight(ArrayList<Karta> lista, int i, int j) {
-        return lista.get(j).getWartosc().getWartosc() == i && lista.get(j+1).getWartosc().getWartosc() == (i - 1) && lista.get(j+2).getWartosc().getWartosc() == (i - 2) &&
-                lista.get(j+3).getWartosc().getWartosc() == (i - 3) && lista.get(j+4).getWartosc().getWartosc() == (i - 4);
-    }
-
-    private boolean czyStrightOd5DoAsa(ArrayList<Karta> lista, int i, int i2, int i3, int i4, int i5) {
-        return lista.get(0).getWartosc().getWartosc() == i && lista.get(1).getWartosc().getWartosc() == i2 && lista.get(2).getWartosc().getWartosc() == i3 &&
-                lista.get(3).getWartosc().getWartosc() == i4 && lista.get(4).getWartosc().getWartosc() == i5;
-    }
-
-    private boolean czyStrightOd5DoAsaPoprawka(ArrayList<Karta> lista, int i, int i2, int i3, int i4, int i5) {
-        return lista.get(j).getWartosc().getWartosc() == i && lista.get(j+1).getWartosc().getWartosc() == i2 && lista.get(j+2).getWartosc().getWartosc() == i3 &&
-                lista.get(j+3).getWartosc().getWartosc() == i4 && lista.get(lista.size()-1).getWartosc().getWartosc() == i5;
-    }
-
-    private int sumaWartosciStraightFlush(Gracz g, int i) {
-        return g.kartyWRece.get(j).getWartosc().getWartosc() + g.kartyWRece.get(j + 1).getWartosc().getWartosc() +
-                g.kartyWRece.get(j + 2).getWartosc().getWartosc() +
-                g.kartyWRece.get(j + 3).getWartosc().getWartosc() +
-                g.kartyWRece.get(j+ 4).getWartosc().getWartosc();
-    }
-
-    private int sumaWartosciStraightFlushOd5DoAsa(Gracz g, int i, ArrayList<Karta> lista) {
-        return lista.get(j).getWartosc().getWartosc() + lista.get(j + 1).getWartosc().getWartosc() +
-                lista.get(j + 2).getWartosc().getWartosc() +
-                lista.get(j + 3).getWartosc().getWartosc() +
-                lista.get(lista.size() -1).getWartosc().getWartosc();
-    }
-
-    public void checkFourOfAKind(Gracz g) {
+    private void checkFourOfAKind(Gracz g) {
 
         ArrayList<Karta> listaTmp = new ArrayList<>();
 
         Comparator<Karta> comparatorKartaWartosc = Comparator.comparing(Karta::getWartosc).reversed();
 
         g.kartyWRece.sort(comparatorKartaWartosc);
+        ArrayList<Karta> kartyWReceCopy = new ArrayList<>(g.kartyWRece);
 
         System.out.println("Po sortowaniu.");
-        System.out.println(g.kartyWRece);
+        System.out.println(kartyWReceCopy);
 
         for(int  i = 0; i < 3; i++){
             for (int j = 14; j > 2; j--) {
                 if (czyFourOfAKind(g, j, i)) {
-                    listaTmp.add(g.kartyWRece.get(i));
-                    listaTmp.add(g.kartyWRece.get(i+1));
-                    listaTmp.add(g.kartyWRece.get(i+2));
-                    listaTmp.add(g.kartyWRece.get(i+3));
-                    g.kartyWRece.remove(i + 3);
-                    g.kartyWRece.remove(i + 2);
-                    g.kartyWRece.remove(i + 1);
-                    g.kartyWRece.remove(i);
+                    listaTmp.add(kartyWReceCopy.get(i));
+                    listaTmp.add(kartyWReceCopy.get(i+1));
+                    listaTmp.add(kartyWReceCopy.get(i+2));
+                    listaTmp.add(kartyWReceCopy.get(i+3));
+                    kartyWReceCopy.remove(i + 3);
+                    kartyWReceCopy.remove(i + 2);
+                    kartyWReceCopy.remove(i + 1);
+                    kartyWReceCopy.remove(i);
 
                     g.setCzyFourOfAKind(true);
                 }
@@ -520,30 +467,65 @@ public class Rozgrywka extends Gracz {
         }
 
         System.out.println("Po usunieciu");
-        System.out.println(g.kartyWRece);
+        System.out.println(kartyWReceCopy);
 
-        g.kartyWRece.sort(comparatorKartaWartosc);
-        listaTmp.add(g.kartyWRece.get(0));
+        kartyWReceCopy.sort(comparatorKartaWartosc);
+        listaTmp.add(kartyWReceCopy.get(0));
         System.out.println("Lista tmp cała, razem z high card");
         System.out.println(listaTmp);
         System.out.println(g.isCzyFourOfAKind());
         System.out.println(g.getWartoscTmp());
     }
 
-    private int sumaWartosciFourOfAKind(Gracz g, int i) {
-        return g.kartyWRece.get(i).getWartosc().getWartosc() + g.kartyWRece.get(i + 1).getWartosc().getWartosc() +
-                g.kartyWRece.get(i + 2).getWartosc().getWartosc() +
-                g.kartyWRece.get(i + 3).getWartosc().getWartosc();
+    private void checkFullHouse(Gracz g) {
+
+        //na tym koniec
+
+        Comparator<Karta> comparatorKartaWartosc = Comparator.comparing(Karta::getWartosc).reversed();
+        ArrayList<Karta> listaTmp = new ArrayList<>();
+
+        boolean tmp = false;
+
+        g.kartyWRece.sort(comparatorKartaWartosc);
+        ArrayList<Karta> kartyWReceCopy = new ArrayList<>(g.kartyWRece);
+        System.out.println("Karty po sortowaniu.");
+        System.out.println(kartyWReceCopy);
+
+        for (int i = 0; i < (kartyWReceCopy.size() - 2); i++) {
+            if (kartyWReceCopy.get(i).getWartosc().getWartosc() == kartyWReceCopy.get(i + 1).getWartosc().getWartosc() && kartyWReceCopy.get(i).getWartosc().getWartosc() == kartyWReceCopy.get(i + 2).getWartosc().getWartosc() && !tmp) {
+                System.out.println("RAS");
+                listaTmp.add(kartyWReceCopy.get(i));
+                listaTmp.add(kartyWReceCopy.get(i + 1));
+                listaTmp.add(kartyWReceCopy.get(i + 2));
+                kartyWReceCopy.remove(i + 2);
+                kartyWReceCopy.remove(i + 1);
+                kartyWReceCopy.remove(i);
+                tmp = true;
+            }
+        }
+
+        System.out.println("Karty po usunięciu");
+        System.out.println(kartyWReceCopy);
+        System.out.println();
+        System.out.println("Karty w liscieTMP");
+        System.out.println(listaTmp);
+
+        for(int i = 0; i < (kartyWReceCopy.size() - 1); i++) {
+            if(kartyWReceCopy.get(i).getWartosc().getWartosc() == kartyWReceCopy.get(i+1).getWartosc().getWartosc() && tmp)
+                listaTmp.add(kartyWReceCopy.get(i));
+                listaTmp.add(kartyWReceCopy.get(i+1));
+                kartyWReceCopy.remove(i+1);
+                kartyWReceCopy.remove(i);
+                tmp = false;
+                setCzyFullHouse(true);
+        }
+
+        System.out.println();
+        System.out.println("KARTY");
+        System.out.println(listaTmp);
     }
 
-    private boolean czyFourOfAKind(Gracz g, int j, int i) {
-        return g.kartyWRece.get(i).getWartosc().getWartosc() == j &&
-                g.kartyWRece.get(i + 1).getWartosc().getWartosc() == j &&
-                g.kartyWRece.get(i + 2).getWartosc().getWartosc() == j &&
-                g.kartyWRece.get(i + 3).getWartosc().getWartosc() == j;
-    }
-
-    public void checkFlush(Gracz g) {
+    private void checkFlush(Gracz g) {
 
         Comparator<Karta> comparatorKartaWartoscIKolor = Comparator.comparing(Karta::getWartosc).reversed();
 
@@ -593,33 +575,34 @@ public class Rozgrywka extends Gracz {
 
     }
 
-    public void checkStraight(Gracz g) {
+    private void checkStraight(Gracz g) {
 
         Comparator<Karta> comparatorKartaWartosc = Comparator.comparing(Karta::getWartosc);
         ArrayList<Karta> listaTmp = new ArrayList<>();
+        ArrayList<Karta> kartyWReceCopy = new ArrayList<>(g.kartyWRece);
 
-        for (int i = 0; i < (g.kartyWRece.size()-1); i++) {
-            if (g.kartyWRece.get(i).getWartosc().getWartosc() == g.kartyWRece.get(i + 1).getWartosc().getWartosc()) {
-                g.kartyWRece.remove(j+1);
+        for (int i = 0; i < (kartyWReceCopy.size()-1); i++) {
+            if (kartyWReceCopy.get(i).getWartosc().getWartosc() == kartyWReceCopy.get(i + 1).getWartosc().getWartosc()) {
+                kartyWReceCopy.remove(j+1);
                 i--;
             }
 
         }
 
-        for(int j = 0; j < (g.kartyWRece.size()-4); j++){
+        for(int j = 0; j < (kartyWReceCopy.size()-4); j++){
             for (int i = 14; i > 2; i--) {
 
-                g.kartyWRece.sort(comparatorKartaWartosc.reversed());
+                kartyWReceCopy.sort(comparatorKartaWartosc.reversed());
 
-                if (czyStraight(g.kartyWRece, i, j) && !g.isCzyStraight()) {
+                if (czyStraight(kartyWReceCopy, i, j) && !g.isCzyStraight()) {
 
-                    System.out.println(g.kartyWRece);
+                    System.out.println(kartyWReceCopy);
 
-                    listaTmp.add(g.kartyWRece.get(j));
-                    listaTmp.add(g.kartyWRece.get(j+1));
-                    listaTmp.add(g.kartyWRece.get(j+2));
-                    listaTmp.add(g.kartyWRece.get(j+3));
-                    listaTmp.add(g.kartyWRece.get(j+4));
+                    listaTmp.add(kartyWReceCopy.get(j));
+                    listaTmp.add(kartyWReceCopy.get(j+1));
+                    listaTmp.add(kartyWReceCopy.get(j+2));
+                    listaTmp.add(kartyWReceCopy.get(j+3));
+                    listaTmp.add(kartyWReceCopy.get(j+4));
 
                     System.out.println("SUPER");
                     //zapisuje najwyższą kartę
@@ -628,20 +611,20 @@ public class Rozgrywka extends Gracz {
 
                 }
 
-                g.kartyWRece.sort(comparatorKartaWartosc);
+                kartyWReceCopy.sort(comparatorKartaWartosc);
 
-                if (czyStrightOd5DoAsaPoprawka(g.kartyWRece, 2, 3, 4, 5, 14) && !g.isCzyStraightFlush()) {
+                if (czyStrightOd5DoAsaPoprawka(kartyWReceCopy, 2, 3, 4, 5, 14) && !g.isCzyStraightFlush()) {
 
-                    listaTmp.add(g.kartyWRece.get(j));
-                    listaTmp.add(g.kartyWRece.get(j+1));
-                    listaTmp.add(g.kartyWRece.get(j+2));
-                    listaTmp.add(g.kartyWRece.get(j+3));
-                    listaTmp.add(g.kartyWRece.get(g.kartyWRece.size()-1));
+                    listaTmp.add(kartyWReceCopy.get(j));
+                    listaTmp.add(kartyWReceCopy.get(j+1));
+                    listaTmp.add(kartyWReceCopy.get(j+2));
+                    listaTmp.add(kartyWReceCopy.get(j+3));
+                    listaTmp.add(kartyWReceCopy.get(kartyWReceCopy.size()-1));
 
                     //zapisuje wartosc najwyzszej karty
                     g.setWartoscTmp(listaTmp.get(0).getWartosc().getWartosc());
 
-                    g.setCzyStraightFlush(true);
+                    g.setCzyStraight(true);
                 }
             }
         }
@@ -650,9 +633,173 @@ public class Rozgrywka extends Gracz {
 
     }
 
-    public void sprawdzeniePar() {
+    private void checkThreeOfAKind(Gracz g) {
+
+        Comparator<Karta> comparatorKartaWartosc = Comparator.comparing(Karta::getWartosc).reversed();
+        ArrayList<Karta> listaTmp = new ArrayList<>();
+        boolean tmp = false;
+
+        g.kartyWRece.sort(comparatorKartaWartosc);
+        ArrayList<Karta> kartyWReceCopy = new ArrayList<>(g.kartyWRece);
+        System.out.println("Karty po sortowaniu.");
+        System.out.println(kartyWReceCopy);
+
+        for (int i = 0; i < (kartyWReceCopy.size() - 2); i++) {
+            if (kartyWReceCopy.get(i).getWartosc().getWartosc() == kartyWReceCopy.get(i + 1).getWartosc().getWartosc() && kartyWReceCopy.get(i).getWartosc().getWartosc() == kartyWReceCopy.get(i + 2).getWartosc().getWartosc() && !tmp) {
+                System.out.println("RAS");
+                listaTmp.add(kartyWReceCopy.get(i));
+                listaTmp.add(kartyWReceCopy.get(i + 1));
+                listaTmp.add(kartyWReceCopy.get(i + 2));
+                kartyWReceCopy.remove(i + 2);
+                kartyWReceCopy.remove(i + 1);
+                kartyWReceCopy.remove(i);
+                listaTmp.add(kartyWReceCopy.get(0));
+                listaTmp.add(kartyWReceCopy.get(1));
+                tmp = true;
+                setCzyThreeOfAKind(true);
+            }
+        }
+
+        System.out.println("Karty po usunięciu");
+        System.out.println(kartyWReceCopy);
+        System.out.println();
+        System.out.println("Karty w liscieTMP");
+        System.out.println(listaTmp);
 
 
+
+    }
+
+    private void checkTwoPair(Gracz g) {
+
+        Comparator<Karta> comparatorKartaWartosc = Comparator.comparing(Karta::getWartosc).reversed();
+        ArrayList<Karta> listaTmp = new ArrayList<>();
+
+        boolean tmp = false;
+
+        g.kartyWRece.sort(comparatorKartaWartosc);
+        ArrayList<Karta> kartyWReceCopy = new ArrayList<>(g.kartyWRece);
+        System.out.println("KARTY PO SORTOWANIU");
+        System.out.println(kartyWReceCopy + "\n");
+
+        for(int i = 0; i < (kartyWReceCopy.size() - 1); i++) {
+            if(kartyWReceCopy.get(i).getWartosc().getWartosc() == kartyWReceCopy.get(i+1).getWartosc().getWartosc() && !tmp) {
+                listaTmp.add(kartyWReceCopy.get(i));
+                listaTmp.add(kartyWReceCopy.get(i + 1));
+                kartyWReceCopy.remove(i + 1);
+                kartyWReceCopy.remove(i);
+                tmp = true;
+            }
+        }
+
+        System.out.println("PIERWSZA PARA");
+        System.out.println(listaTmp + "\n");
+
+        for(int i = 0; i < (kartyWReceCopy.size() - 1); i++) {
+            if(kartyWReceCopy.get(i).getWartosc().getWartosc() == kartyWReceCopy.get(i+1).getWartosc().getWartosc() && tmp) {
+                listaTmp.add(kartyWReceCopy.get(i));
+                listaTmp.add(kartyWReceCopy.get(i + 1));
+                kartyWReceCopy.remove(i + 1);
+                kartyWReceCopy.remove(i);
+                listaTmp.add(kartyWReceCopy.get(0));
+                tmp = true;
+                setCzyTwoPair(true);
+            }
+        }
+
+        System.out.println("WSZYSTKIE KARTY");
+        System.out.println(listaTmp);
+
+    }
+
+    private void checkOnePair(Gracz g){
+
+        Comparator<Karta> comparatorKartaWartosc = Comparator.comparing(Karta::getWartosc).reversed();
+        ArrayList<Karta> listaTmp = new ArrayList<>();
+
+        boolean tmp = false;
+
+        g.kartyWRece.sort(comparatorKartaWartosc);
+        ArrayList<Karta> kartyWReceCopy = new ArrayList<>(g.kartyWRece);
+        System.out.println("KARTY PO SORTOWANIU");
+        System.out.println(kartyWReceCopy + "\n");
+
+        for(int i = 0; i < (kartyWReceCopy.size() - 1); i++) {
+            if(kartyWReceCopy.get(i).getWartosc().getWartosc() == kartyWReceCopy.get(i+1).getWartosc().getWartosc() && !tmp) {
+                listaTmp.add(kartyWReceCopy.get(i));
+                listaTmp.add(kartyWReceCopy.get(i + 1));
+                kartyWReceCopy.remove(i + 1);
+                kartyWReceCopy.remove(i);
+                listaTmp.add(kartyWReceCopy.get(0));
+                listaTmp.add(kartyWReceCopy.get(1));
+                listaTmp.add(kartyWReceCopy.get(2));
+                setCzyOnePair(true);
+                tmp = true;
+            }
+        }
+
+        System.out.println("WSZYSTKIE KARRTY");
+        System.out.println(listaTmp);
+
+    }
+
+    private void checkHighCard(Gracz g){
+
+        Comparator<Karta> comparatorKartaWartosc = Comparator.comparing(Karta::getWartosc).reversed();
+        ArrayList<Karta> listaTmp = new ArrayList<>();
+
+        g.kartyWRece.sort(comparatorKartaWartosc);
+
+        listaTmp.add(g.kartyWRece.get(0));
+        listaTmp.add(g.kartyWRece.get(1));
+        listaTmp.add(g.kartyWRece.get(2));
+        listaTmp.add(g.kartyWRece.get(3));
+        listaTmp.add(g.kartyWRece.get(4));
+
+        System.out.println(listaTmp);
+
+    }
+
+    private boolean czyStraight(ArrayList<Karta> lista, int i, int j) {
+        return lista.get(j).getWartosc().getWartosc() == i && lista.get(j+1).getWartosc().getWartosc() == (i - 1) && lista.get(j+2).getWartosc().getWartosc() == (i - 2) &&
+                lista.get(j+3).getWartosc().getWartosc() == (i - 3) && lista.get(j+4).getWartosc().getWartosc() == (i - 4);
+    }
+
+    private boolean czyStrightOd5DoAsa(ArrayList<Karta> lista, int i, int i2, int i3, int i4, int i5) {
+        return lista.get(0).getWartosc().getWartosc() == i && lista.get(1).getWartosc().getWartosc() == i2 && lista.get(2).getWartosc().getWartosc() == i3 &&
+                lista.get(3).getWartosc().getWartosc() == i4 && lista.get(4).getWartosc().getWartosc() == i5;
+    }
+
+    private boolean czyStrightOd5DoAsaPoprawka(ArrayList<Karta> lista, int i, int i2, int i3, int i4, int i5) {
+        return lista.get(j).getWartosc().getWartosc() == i && lista.get(j+1).getWartosc().getWartosc() == i2 && lista.get(j+2).getWartosc().getWartosc() == i3 &&
+                lista.get(j+3).getWartosc().getWartosc() == i4 && lista.get(lista.size()-1).getWartosc().getWartosc() == i5;
+    }
+
+    private int sumaWartosciStraightFlush(Gracz g, int i) {
+        return g.kartyWRece.get(j).getWartosc().getWartosc() + g.kartyWRece.get(j + 1).getWartosc().getWartosc() +
+                g.kartyWRece.get(j + 2).getWartosc().getWartosc() +
+                g.kartyWRece.get(j + 3).getWartosc().getWartosc() +
+                g.kartyWRece.get(j+ 4).getWartosc().getWartosc();
+    }
+
+    private int sumaWartosciStraightFlushOd5DoAsa(Gracz g, int i, ArrayList<Karta> lista) {
+        return lista.get(j).getWartosc().getWartosc() + lista.get(j + 1).getWartosc().getWartosc() +
+                lista.get(j + 2).getWartosc().getWartosc() +
+                lista.get(j + 3).getWartosc().getWartosc() +
+                lista.get(lista.size() -1).getWartosc().getWartosc();
+    }
+
+    private int sumaWartosciFourOfAKind(Gracz g, int i) {
+        return g.kartyWRece.get(i).getWartosc().getWartosc() + g.kartyWRece.get(i + 1).getWartosc().getWartosc() +
+                g.kartyWRece.get(i + 2).getWartosc().getWartosc() +
+                g.kartyWRece.get(i + 3).getWartosc().getWartosc();
+    }
+
+    private boolean czyFourOfAKind(Gracz g, int j, int i) {
+        return g.kartyWRece.get(i).getWartosc().getWartosc() == j &&
+                g.kartyWRece.get(i + 1).getWartosc().getWartosc() == j &&
+                g.kartyWRece.get(i + 2).getWartosc().getWartosc() == j &&
+                g.kartyWRece.get(i + 3).getWartosc().getWartosc() == j;
     }
 
 }
