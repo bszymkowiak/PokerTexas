@@ -12,12 +12,36 @@ public class Gracz {
     protected int blind;
     int pulaZetonowGracza;
 
+
+    private int wartoscKartGracza;
+
+    private boolean czyRoyalFlush;
+    private boolean czyStraightFlush;
+    private boolean czyFourOfAKind;
+    private boolean czyFullHouse;
+    private boolean czyFlush;
+    private boolean czyStraight;
+    private boolean czyThreeOfAKind;
+    private boolean czyTwoPair;
+    private boolean czyOnePair;
+    private boolean czyHighCard;
+    protected ArrayList<Karta> listaTmp = new ArrayList<>();
+
     public Gracz() {
     }
 
     public Gracz(String nick, int iloscZetonow) {
         this.nick = nick;
         this.iloscZetonow = iloscZetonow;
+    }
+
+    public int getWartoscKartGracza() {
+
+        return wartoscKartGracza;
+    }
+
+    public void setWartoscKartGracza(int wartoscKartGracza) {
+        this.wartoscKartGracza = wartoscKartGracza;
     }
 
     public int getPulaZetonowGracza() {
@@ -60,7 +84,85 @@ public class Gracz {
         this.blind = blind;
     }
 
+    public boolean isCzyRoyalFlush() {
+        return czyRoyalFlush;
+    }
 
+    public void setCzyRoyalFlush(boolean czyRoyalFlush) {
+        this.czyRoyalFlush = czyRoyalFlush;
+    }
+
+    public boolean isCzyStraightFlush() {
+        return czyStraightFlush;
+    }
+
+    public void setCzyStraightFlush(boolean czyStraightFlush) {
+        this.czyStraightFlush = czyStraightFlush;
+    }
+
+    public boolean isCzyFourOfAKind() {
+        return czyFourOfAKind;
+    }
+
+    public void setCzyFourOfAKind(boolean czyFourOfAKind) {
+        this.czyFourOfAKind = czyFourOfAKind;
+    }
+
+    public boolean isCzyFullHouse() {
+        return czyFullHouse;
+    }
+
+    public void setCzyFullHouse(boolean czyFullHouse) {
+        this.czyFullHouse = czyFullHouse;
+    }
+
+    public boolean isCzyFlush() {
+        return czyFlush;
+    }
+
+    public void setCzyFlush(boolean czyFlush) {
+        this.czyFlush = czyFlush;
+    }
+
+    public boolean isCzyStraight() {
+        return czyStraight;
+    }
+
+    public void setCzyStraight(boolean czyStraight) {
+        this.czyStraight = czyStraight;
+    }
+
+    public boolean isCzyThreeOfAKind() {
+        return czyThreeOfAKind;
+    }
+
+    public void setCzyThreeOfAKind(boolean czyThreeOfAKind) {
+        this.czyThreeOfAKind = czyThreeOfAKind;
+    }
+
+    public boolean isCzyTwoPair() {
+        return czyTwoPair;
+    }
+
+    public void setCzyTwoPair(boolean czyTwoPair) {
+        this.czyTwoPair = czyTwoPair;
+    }
+
+    public boolean isCzyOnePair() {
+        return czyOnePair;
+    }
+
+    public void setCzyOnePair(boolean czyOnePair) {
+        this.czyOnePair = czyOnePair;
+    }
+
+    public boolean isCzyHighCard() {
+        return czyHighCard;
+    }
+
+    public void setCzyHighCard(boolean czyHighCard) {
+        this.czyHighCard = czyHighCard;
+    }
 
     @Override
     public String toString() {
