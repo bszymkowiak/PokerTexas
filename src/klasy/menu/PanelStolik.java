@@ -46,7 +46,7 @@ public class PanelStolik extends JPanel implements ActionListener {
     private Image smallBlind;
     private Image bigBlind;
     private Image dealer;
-    int pulaGlowna;
+
     int wpisDoPuli;
     private int wartoscTmp;
 
@@ -137,7 +137,7 @@ public class PanelStolik extends JPanel implements ActionListener {
         g.drawString(mess1, 855, 300);
         var mess2 = "Ciemne: " + rozgrywka.getMalyBlind() + "$ / " + rozgrywka.getDuzyBlind() + "$ ";
         g.drawString(mess2, 875, 325);
-        var pula = "Pula: " + pulaGlowna + "$";
+        var pula = "Pula: " + rozgrywka.pulaGlowna + "$";
         g.drawString(pula, 900, 465);
 
 
@@ -276,7 +276,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                 betB = Integer.parseInt(wpisPuli.getText());
 //                mojeZetony.setText( String.valueOf(rozgrywka.getGracze().get( 0 ).getIloscZetonow()- betB ));
                 rozgrywka.getGracze().get(0).setIloscZetonow(rozgrywka.getGracze().get(0).getIloscZetonow() - betB);
-                pulaGlowna += betB;
+                rozgrywka.pulaGlowna += betB;
 //                iloscPostawionychMoichZetonow = rozgrywka.getGracze().get( 0 ).getPulaZetonow();
 //                iloscPostawionychMoichZetonow+= betB;
 
@@ -1169,7 +1169,7 @@ public class PanelStolik extends JPanel implements ActionListener {
     public void dodajZetonyGraczyDoPuli() {
 
         for (Gracz g : rozgrywka.getGracze()) {
-            pulaGlowna += g.getPulaZetonowGracza();
+            rozgrywka.pulaGlowna += g.getPulaZetonowGracza();
             g.setPulaZetonowGracza(0);
         }
     }

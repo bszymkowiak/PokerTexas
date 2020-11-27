@@ -11,7 +11,9 @@ public class Gracz {
     protected ArrayList<Karta> kartyWRece = new ArrayList<>();
     protected int blind;
     int pulaZetonowGracza;
-    private int wartoscTmp;
+
+
+    private int wartoscKartGracza;
 
     private boolean czyRoyalFlush;
     private boolean czyStraightFlush;
@@ -23,6 +25,7 @@ public class Gracz {
     private boolean czyTwoPair;
     private boolean czyOnePair;
     private boolean czyHighCard;
+    protected ArrayList<Karta> listaTmp = new ArrayList<>();
 
     public Gracz() {
     }
@@ -32,13 +35,13 @@ public class Gracz {
         this.iloscZetonow = iloscZetonow;
     }
 
-    public int getWartoscTmp() {
+    public int getWartoscKartGracza() {
 
-        return wartoscTmp;
+        return wartoscKartGracza;
     }
 
-    public void setWartoscTmp(int wartoscTmp) {
-        this.wartoscTmp = wartoscTmp;
+    public void setWartoscKartGracza(int wartoscKartGracza) {
+        this.wartoscKartGracza = wartoscKartGracza;
     }
 
     public int getPulaZetonowGracza() {
