@@ -11,7 +11,7 @@ public class Main {
 
         Rozgrywka rozgrywka = new Rozgrywka();
 
-        rozgrywka.setLiczbaGraczy(6);
+        rozgrywka.setLiczbaGraczy(10);
         rozgrywka.dodajGraczy(2000);
 
 
@@ -24,9 +24,6 @@ public class Main {
         for (Gracz g : rozgrywka.getGracze()) {
             g.kartyWRece.addAll(rozgrywka.getKartyStol());
         }
-
-
-
 
         rozgrywka.sprawdzanieKart();
 

@@ -392,14 +392,14 @@ public class Rozgrywka extends Gracz {
             int temp = 0;
 
             for (Gracz g : gracze) {
-                if (g.getWartoscKartGracza() == maxWartosc) {
+                if (g.getWartoscKartGracza() == maxWartosc && g.isCzyStraight()) {
                     temp++;
                 }
             }
 
             if (temp == 1) {
                 for (Gracz g : gracze) {
-                    if (g.getWartoscKartGracza() == maxWartosc) {
+                    if (g.getWartoscKartGracza() == maxWartosc && g.isCzyStraight()) {
                         g.setPulaZetonowGracza(g.getPulaZetonowGracza() + pulaGlowna);
                         System.out.println("BRAWO, masz Straighta i wygrywasz : " + g.getNick());
                     }
@@ -407,7 +407,7 @@ public class Rozgrywka extends Gracz {
             }
             if (temp > 1) {
                 for (Gracz g : gracze) {
-                    if (g.getWartoscKartGracza() == maxWartosc) {
+                    if (g.getWartoscKartGracza() == maxWartosc && g.isCzyStraight()) {
                         g.setPulaZetonowGracza(g.getPulaZetonowGracza() + (pulaGlowna / temp));
                         System.out.println("BRAWO, masz Straighta i wygrywasz razem z innymi : " + g.getNick());
                     }
@@ -441,6 +441,7 @@ public class Rozgrywka extends Gracz {
                 temp = sprawdzenieDrugiejKartyFlush(playersWithFlush);
 
                 if (tylkoJedenGraczMaNajwyzszaKarte(temp)) {
+
                     najwyzszaDrugaKartaFlush();
 
                 } else if (temp > 1) {
@@ -464,7 +465,9 @@ public class Rozgrywka extends Gracz {
                             temp = sprawdzeniePiatejKartyFlush(playersWithFlush);
 
                             if (tylkoJedenGraczMaNajwyzszaKarte(temp)) {
+
                                 najwyzszaPiataKartaFlush();
+
                             } else if (temp > 1) {
 
                                 piataKartaFlushWiecejGraczy(temp);
@@ -560,6 +563,7 @@ public class Rozgrywka extends Gracz {
     }
 
     private int sprawdzenieNajwyzszejTrzeciejKartyFlush(ArrayList<Gracz> playersWithFlush) {
+
         int temp;
         maxWartosc = playersWithFlush.get(0).listaTmp.get(2).getWartosc().getWartosc();
 
@@ -1358,14 +1362,17 @@ public class Rozgrywka extends Gracz {
 //        System.out.println("PIERWSZA PARA");
 //        System.out.println(listaTmp + "\n");
 
+        boolean ostatniTest = true;
+
         for (int i = 0; i < (kartyWReceCopy.size() - 1); i++) {
-            if (kartyWReceCopy.get(i).getWartosc().getWartosc() == kartyWReceCopy.get(i + 1).getWartosc().getWartosc() && tmp) {
+            if (kartyWReceCopy.get(i).getWartosc().getWartosc() == kartyWReceCopy.get(i + 1).getWartosc().getWartosc() && tmp && ostatniTest) {
                 g.listaTmp.add(kartyWReceCopy.get(i));
                 g.listaTmp.add(kartyWReceCopy.get(i + 1));
                 kartyWReceCopy.remove(i + 1);
                 kartyWReceCopy.remove(i);
                 g.listaTmp.add(kartyWReceCopy.get(0));
                 twoPairCounter++;
+                ostatniTest = false;
                 tmp = true;
                 g.setCzyTwoPair(true);
             }
@@ -1506,7 +1513,7 @@ public class Rozgrywka extends Gracz {
 
             if (temp == 1) {
                 for (Gracz g : gracze) {
-                    if (g.getWartoscKartGracza() == maxWartosc) {
+                    if (g.getWartoscKartGracza() == maxWartosc && g.isCzyThreeOfAKind()) {
                         g.setPulaZetonowGracza(g.getPulaZetonowGracza() + pulaGlowna);
                         System.out.println("Brawo, masz Trójkę i wygrywasz! " + g.getNick());
                     }
@@ -1553,7 +1560,7 @@ public class Rozgrywka extends Gracz {
                     }
                     if (temp >= 1) {
                         for (Gracz g : gracze) {
-                            if (g.listaTmp.get(4).getWartosc().getWartosc() == maxWartosc) {
+                            if (g.listaTmp.get(4).getWartosc().getWartosc() == maxWartosc && g.isCzyThreeOfAKind()) {
                                 g.setPulaZetonowGracza(g.getPulaZetonowGracza() + (pulaGlowna / temp));
                                 System.out.println("Brawo, wygrałeś bo masz fulla: " + g.getNick());
                             }
@@ -1739,8 +1746,9 @@ public class Rozgrywka extends Gracz {
             }
             if (temp == 1) {
                 for (Gracz g : gracze) {
-                    if (g.getWartoscKartGracza() == maxWartosc) {
+                    if (g.getWartoscKartGracza() == maxWartosc && g.isCzyOnePair()) {
                         g.setPulaZetonowGracza(g.getPulaZetonowGracza() + pulaGlowna);
+                        System.out.println("Masz najwyzsza pare " + g.getNick());
                     }
                 }
             } else if (temp > 1) {
@@ -1761,8 +1769,9 @@ public class Rozgrywka extends Gracz {
 
                 if (temp == 1) {
                     for (Gracz g : gracze) {
-                        if (g.listaTmp.get(2).getWartosc().getWartosc() == maxWartosc) {
+                        if (g.listaTmp.get(2).getWartosc().getWartosc() == maxWartosc && g.isCzyOnePair()) {
                             g.setPulaZetonowGracza(g.getPulaZetonowGracza() + pulaGlowna);
+                            System.out.println("Masz najwyzsza pare " + g.getNick());
                         }
                     }
 
@@ -1784,8 +1793,9 @@ public class Rozgrywka extends Gracz {
 
                     if (temp == 1) {
                         for (Gracz g : gracze) {
-                            if (g.listaTmp.get(3).getWartosc().getWartosc() == maxWartosc) {
+                            if (g.listaTmp.get(3).getWartosc().getWartosc() == maxWartosc && g.isCzyOnePair()) {
                                 g.setPulaZetonowGracza(g.getPulaZetonowGracza() + pulaGlowna);
+                                System.out.println("Masz najwyzsza pare " + g.getNick());
                             }
                         }
 
@@ -1808,8 +1818,9 @@ public class Rozgrywka extends Gracz {
                         if (temp >= 1) {
                             for (Gracz g : gracze) {
 
-                                if (g.listaTmp.get(4).getWartosc().getWartosc() == maxWartosc) {
+                                if (g.listaTmp.get(4).getWartosc().getWartosc() == maxWartosc && g.isCzyOnePair()) {
                                     g.setPulaZetonowGracza(g.getPulaZetonowGracza() + (pulaGlowna / temp));
+                                    System.out.println("Masz najwyzsza pare " + g.getNick());
 
                                 }
 
@@ -1860,7 +1871,7 @@ public class Rozgrywka extends Gracz {
                 }
             } else if (temp > 1) {
 
-                for (Gracz g : playersWithTwoPair) {
+                for (Gracz g : gracze) {
                     g.setWartoscKartGracza(g.listaTmp.get(2).getWartosc().getWartosc() + g.listaTmp.get(3).getWartosc().getWartosc());
                 }
                 temp = 0;
@@ -1880,7 +1891,7 @@ public class Rozgrywka extends Gracz {
 
                 if (temp == 1) {
                     for (Gracz g : gracze) {
-                        if (g.getWartoscKartGracza() == maxWartosc) {
+                        if (g.getWartoscKartGracza() == maxWartosc && g.isCzyTwoPair()) {
                             g.setPulaZetonowGracza(g.getPulaZetonowGracza() + pulaGlowna);
                             System.out.println("Brawo masz najwyższą drugą parę i wygrywasz ! " + g.getNick());
                         }
@@ -1903,7 +1914,7 @@ public class Rozgrywka extends Gracz {
 
                     if (temp >= 1) {
                         for (Gracz g : gracze) {
-                            if (g.listaTmp.get(4).getWartosc().getWartosc() == maxWartosc) {
+                            if (g.listaTmp.get(4).getWartosc().getWartosc() == maxWartosc && g.isCzyTwoPair()) {
                                 g.setPulaZetonowGracza(g.getPulaZetonowGracza() + (pulaGlowna / temp));
                                 System.out.println("Brawo masz najwyższą kartę z dwóch par! " + g.getNick());
                             }
