@@ -7,6 +7,7 @@ import klasy.Rozgrywka;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class MenuPoczatkowe extends JPanel{
@@ -17,7 +18,7 @@ public class MenuPoczatkowe extends JPanel{
 
     private Rozgrywka rozgrywka = new Rozgrywka();
 
-    public MenuPoczatkowe() {
+    public MenuPoczatkowe() throws SQLException, ClassNotFoundException {
 
         me = this;
         dodajRamke();
