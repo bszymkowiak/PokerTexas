@@ -278,7 +278,7 @@ public class Rozgrywka extends Gracz {
         }
 
         if (!czyRozdalemBlind) {
-            ktoBlind = rand.nextInt(gracze.size());
+            ktoBlind = 5;//rand.nextInt(gracze.size());
             malyBlind = 10;
             duzyBlind = 20;
             czyRozdalemBlind = true;
@@ -1978,16 +1978,16 @@ public class Rozgrywka extends Gracz {
 
         sprawdzamIleGraczyMaDanyUklad(comparatorKartaWartosc);
 
-        System.out.println("Royal :" + royalFlushCounter);
-        System.out.println("Straight Flush: " + straightFlushCounter);
-        System.out.println("Kareta: " + fourOfAKindCounter);
-        System.out.println("FULL: " + fullHouseCounter);
-        System.out.println("Flush: " + flushCounter);
-        System.out.println("Straight: " + straightCounter);
-        System.out.println("Trójka: " + threeOfAKindCounter);
-        System.out.println("Dwie pary: " + twoPairCounter);
-        System.out.println("Jedna para: " + onePairCounter);
-        System.out.println("Wysoka karta: " + highCardCounter);
+//        System.out.println("Royal :" + royalFlushCounter);
+//        System.out.println("Straight Flush: " + straightFlushCounter);
+//        System.out.println("Kareta: " + fourOfAKindCounter);
+//        System.out.println("FULL: " + fullHouseCounter);
+//        System.out.println("Flush: " + flushCounter);
+//        System.out.println("Straight: " + straightCounter);
+//        System.out.println("Trójka: " + threeOfAKindCounter);
+//        System.out.println("Dwie pary: " + twoPairCounter);
+//        System.out.println("Jedna para: " + onePairCounter);
+//        System.out.println("Wysoka karta: " + highCardCounter);
 
         wynikSprawdzeniaDlaRoyalFlush();
 
