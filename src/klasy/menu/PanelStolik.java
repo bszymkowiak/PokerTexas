@@ -16,6 +16,8 @@ import java.awt.image.BufferedImage;
 import java.io.DataOutput;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 public class PanelStolik extends JPanel implements ActionListener {
     private File imageFile;
@@ -132,90 +134,232 @@ public class PanelStolik extends JPanel implements ActionListener {
     @Override
     public void paintComponent(Graphics g) {
 
-        super.paintComponent( g );
+        super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.drawImage( image, 0, 0, this );
-        Font f = new Font( Font.SANS_SERIF, Font.BOLD, 20 );
-        g.setFont( f );
-        g.setColor( Color.WHITE );
+        g2d.drawImage(image, 0, 0, this);
+        Font f = new Font(Font.SANS_SERIF, Font.BOLD, 20);
+        g.setFont(f);
+        g.setColor(Color.WHITE);
         var mess1 = "Limit Poker Texas";
-        g.drawString( mess1, 874, 300 );
+        g.drawString(mess1, 874, 300);
         var mess2 = "Ciemne: " + rozgrywka.getMalyBlind() + "$ / " + rozgrywka.getDuzyBlind() + "$ ";
-        g.drawString( mess2, 875, 325 );
+        g.drawString(mess2, 875, 325);
         var pula = "Pula: " + pulaGlowna + "$";
-        g.drawString( pula, 900, 465 );
+        g.drawString(pula, 900, 465);
 
 
-        dodajKartyStolFlop( g );
-        dodajKartyStolTurn( g );
-        dodajKartyStolRiver( g );
+        dodajKartyStolFlop(g);
+        dodajKartyStolTurn(g);
+        dodajKartyStolRiver(g);
 
-        g.setColor( Color.WHITE );
+        g.setColor(Color.WHITE);
 
-        dodaniePolGraczyZeWzgleduNaIchIlosc( g );
+        dodaniePolGraczyZeWzgleduNaIchIlosc(g);
 
-        if (rozgrywka.getGracze().get( 0 ).getKartyWRece().size() == 0) {
-
-            gracz0k1 = null;
-            gracz0k2 = null;
-
-
-            repaint();
-        }
-        if (rozgrywka.getGracze().get( 1 ).getKartyWRece().size() == 0) {
-
-            gracz1k1 = new ImageIcon().getImage();
-            gracz1k2 = new ImageIcon().getImage();
-
-            repaint();
-
-        }
-        if (rozgrywka.getGracze().get( 2 ).getKartyWRece().size() == 0) {
-
-            gracz2k1 = new ImageIcon().getImage();
-            gracz2k2 = new ImageIcon().getImage();
-
-            repaint();
-
-
-        }
-        if (rozgrywka.getGracze().get( 3 ).getKartyWRece().size() == 0) {
-
-            gracz3k1 = new ImageIcon().getImage();
-            gracz3k2 = new ImageIcon().getImage();
-
-            repaint();
-
-        }
-        if (rozgrywka.getGracze().get( 4 ).getKartyWRece().size() == 0) {
-
-            gracz4k1 = new ImageIcon().getImage();
-            gracz4k2 = new ImageIcon().getImage();
-
-            repaint();
-
-        }
-        if (rozgrywka.getGracze().get( 5 ).getKartyWRece().size() == 0) {
-
-            gracz5k1 = new ImageIcon().getImage();
-            gracz5k2 = new ImageIcon().getImage();
-
-            repaint();
-
-        }
+        dodanieKartGraczyIZetonow(g);
 
         dodajZetonSmallBlind( g );
         dodajZetonBibBlind( g );
         dodajZetonDealer( g );
 
-        dodajIloscPostawionychZetonowGracza0( g );
-        dodajIloscPostawionychZetonowGracza1( g );
-        dodajIloscPostawionychZetonowGracza2( g );
-        dodajIloscPostawionychZetonowGracza3( g );
-        dodajIloscPostawionychZetonowGracza4( g );
-        dodajIloscPostawionychZetonowGracza5( g );
 
 
+
+    }
+
+    private void dodanieKartGraczyIZetonow(Graphics g) {
+        if (rozgrywka.getGracze().size() == 2) {
+            if (rozgrywka.getGracze().get(0).getKartyWRece().size() == 0) {
+
+                gracz0k1 = null;
+                gracz0k2 = null;
+
+
+                repaint();
+            }
+            if (rozgrywka.getGracze().get(1).getKartyWRece().size() == 0) {
+
+                gracz1k1 = new ImageIcon().getImage();
+                gracz1k2 = new ImageIcon().getImage();
+
+                repaint();
+
+            }
+            dodajIloscPostawionychZetonowGracza0(g);
+            dodajIloscPostawionychZetonowGracza1(g);
+        } else if (rozgrywka.getGracze().size() == 3) {
+            if (rozgrywka.getGracze().get(0).getKartyWRece().size() == 0) {
+
+                gracz0k1 = null;
+                gracz0k2 = null;
+
+
+                repaint();
+            }
+            if (rozgrywka.getGracze().get(1).getKartyWRece().size() == 0) {
+
+                gracz1k1 = new ImageIcon().getImage();
+                gracz1k2 = new ImageIcon().getImage();
+
+                repaint();
+
+            }
+            if (rozgrywka.getGracze().get(2).getKartyWRece().size() == 0) {
+
+                gracz2k1 = new ImageIcon().getImage();
+                gracz2k2 = new ImageIcon().getImage();
+
+                repaint();
+
+
+            }
+            dodajIloscPostawionychZetonowGracza0(g);
+            dodajIloscPostawionychZetonowGracza1(g);
+            dodajIloscPostawionychZetonowGracza2(g);
+        } else if (rozgrywka.getGracze().size() == 4) {
+            if (rozgrywka.getGracze().get(0).getKartyWRece().size() == 0) {
+
+                gracz0k1 = null;
+                gracz0k2 = null;
+
+
+                repaint();
+            }
+            if (rozgrywka.getGracze().get(1).getKartyWRece().size() == 0) {
+
+                gracz1k1 = new ImageIcon().getImage();
+                gracz1k2 = new ImageIcon().getImage();
+
+                repaint();
+
+            }
+            if (rozgrywka.getGracze().get(2).getKartyWRece().size() == 0) {
+
+                gracz2k1 = new ImageIcon().getImage();
+                gracz2k2 = new ImageIcon().getImage();
+
+                repaint();
+
+
+            }
+            if (rozgrywka.getGracze().get(3).getKartyWRece().size() == 0) {
+
+                gracz3k1 = new ImageIcon().getImage();
+                gracz3k2 = new ImageIcon().getImage();
+
+                repaint();
+
+            }
+            dodajIloscPostawionychZetonowGracza0(g);
+            dodajIloscPostawionychZetonowGracza1(g);
+            dodajIloscPostawionychZetonowGracza2(g);
+            dodajIloscPostawionychZetonowGracza3(g);
+        } else if (rozgrywka.getGracze().size() == 5) {
+            if (rozgrywka.getGracze().get(0).getKartyWRece().size() == 0) {
+
+                gracz0k1 = null;
+                gracz0k2 = null;
+
+
+                repaint();
+            }
+            if (rozgrywka.getGracze().get(1).getKartyWRece().size() == 0) {
+
+                gracz1k1 = new ImageIcon().getImage();
+                gracz1k2 = new ImageIcon().getImage();
+
+                repaint();
+
+            }
+            if (rozgrywka.getGracze().get(2).getKartyWRece().size() == 0) {
+
+                gracz2k1 = new ImageIcon().getImage();
+                gracz2k2 = new ImageIcon().getImage();
+
+                repaint();
+
+
+            }
+            if (rozgrywka.getGracze().get(3).getKartyWRece().size() == 0) {
+
+                gracz3k1 = new ImageIcon().getImage();
+                gracz3k2 = new ImageIcon().getImage();
+
+                repaint();
+
+            }
+            if (rozgrywka.getGracze().get(4).getKartyWRece().size() == 0) {
+
+                gracz4k1 = new ImageIcon().getImage();
+                gracz4k2 = new ImageIcon().getImage();
+
+                repaint();
+
+            }
+            dodajIloscPostawionychZetonowGracza0(g);
+            dodajIloscPostawionychZetonowGracza1(g);
+            dodajIloscPostawionychZetonowGracza2(g);
+            dodajIloscPostawionychZetonowGracza3(g);
+            dodajIloscPostawionychZetonowGracza4(g);
+
+        } else if (rozgrywka.getGracze().size() == 6) {
+            if (rozgrywka.getGracze().get(0).getKartyWRece().size() == 0) {
+
+                gracz0k1 = null;
+                gracz0k2 = null;
+
+
+                repaint();
+            }
+            if (rozgrywka.getGracze().get(1).getKartyWRece().size() == 0) {
+
+                gracz1k1 = new ImageIcon().getImage();
+                gracz1k2 = new ImageIcon().getImage();
+
+                repaint();
+
+            }
+            if (rozgrywka.getGracze().get(2).getKartyWRece().size() == 0) {
+
+                gracz2k1 = new ImageIcon().getImage();
+                gracz2k2 = new ImageIcon().getImage();
+
+                repaint();
+
+
+            }
+            if (rozgrywka.getGracze().get(3).getKartyWRece().size() == 0) {
+
+                gracz3k1 = new ImageIcon().getImage();
+                gracz3k2 = new ImageIcon().getImage();
+
+                repaint();
+
+            }
+            if (rozgrywka.getGracze().get(4).getKartyWRece().size() == 0) {
+
+                gracz4k1 = new ImageIcon().getImage();
+                gracz4k2 = new ImageIcon().getImage();
+
+                repaint();
+
+            }
+            if (rozgrywka.getGracze().get(5).getKartyWRece().size() == 0) {
+
+                gracz5k1 = new ImageIcon().getImage();
+                gracz5k2 = new ImageIcon().getImage();
+
+                repaint();
+
+            }
+            dodajIloscPostawionychZetonowGracza0(g);
+            dodajIloscPostawionychZetonowGracza1(g);
+            dodajIloscPostawionychZetonowGracza2(g);
+            dodajIloscPostawionychZetonowGracza3(g);
+            dodajIloscPostawionychZetonowGracza4(g);
+            dodajIloscPostawionychZetonowGracza5(g);
+        }
+        ;
     }
 
     private void dodajPrzyciski(Border obramowanie) {
@@ -270,7 +414,6 @@ public class PanelStolik extends JPanel implements ActionListener {
 //        add( lobby );
 
     }
-
 
     private void przyciskBetAkcja() {
         bet.addActionListener( new ActionListener() {
@@ -329,13 +472,37 @@ public class PanelStolik extends JPanel implements ActionListener {
 //                            }
                             if (rozgrywka.getPobierzBlind() == 0) {
                                 naszRuchBet( naszGracz );
-                                sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP();
+                                try {
+                                    sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP();
+                                } catch (InterruptedException interruptedException) {
+                                    interruptedException.printStackTrace();
+                                } catch (SQLException throwables) {
+                                    throwables.printStackTrace();
+                                } catch (ClassNotFoundException classNotFoundException) {
+                                    classNotFoundException.printStackTrace();
+                                }
                             } else if (rozgrywka.getKtoBlind() == 0) {
                                 naszRuchBet( naszGracz );
-                                sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP();
+                                try {
+                                    sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP();
+                                } catch (InterruptedException interruptedException) {
+                                    interruptedException.printStackTrace();
+                                } catch (SQLException throwables) {
+                                    throwables.printStackTrace();
+                                } catch (ClassNotFoundException classNotFoundException) {
+                                    classNotFoundException.printStackTrace();
+                                }
                             } else {
                                 naszRuchBet( naszGracz );
-                                sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP();
+                                try {
+                                    sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP();
+                                } catch (InterruptedException interruptedException) {
+                                    interruptedException.printStackTrace();
+                                } catch (SQLException throwables) {
+                                    throwables.printStackTrace();
+                                } catch (ClassNotFoundException classNotFoundException) {
+                                    classNotFoundException.printStackTrace();
+                                }
                             }
                         }
                         repaint();
@@ -594,7 +761,15 @@ public class PanelStolik extends JPanel implements ActionListener {
                             } else if (rozgrywka.getPobierzBlind() == 0) {
                                 if (pierwszyObrot == true) {
                                     naszRuchBet( naszGracz );
-                                    ruchGraczyPoBigBlindDoNas();
+                                    try {
+                                        ruchGraczyPoBigBlindDoNas();
+                                    } catch (InterruptedException interruptedException) {
+                                        interruptedException.printStackTrace();
+                                    } catch (SQLException throwables) {
+                                        throwables.printStackTrace();
+                                    } catch (ClassNotFoundException classNotFoundException) {
+                                        classNotFoundException.printStackTrace();
+                                    }
                                 } else if (pierwszyObrot == false) {
                                     naszRuchBet( naszGracz );
                                     sprawdzeniePlusEwWylozenieKartNaStolTURN();
@@ -870,12 +1045,28 @@ public class PanelStolik extends JPanel implements ActionListener {
                             } else if (rozgrywka.getPobierzBlind() == 0) {
                                 if (pierwszyObrot == true) {
                                     naszRuchBet( naszGracz );
-                                    ruchGraczyPoBigBlindDoNas();
+                                    try {
+                                        ruchGraczyPoBigBlindDoNas();
+                                    } catch (InterruptedException interruptedException) {
+                                        interruptedException.printStackTrace();
+                                    } catch (SQLException throwables) {
+                                        throwables.printStackTrace();
+                                    } catch (ClassNotFoundException classNotFoundException) {
+                                        classNotFoundException.printStackTrace();
+                                    }
                                 } else if (pierwszyObrot == false) {
                                     naszRuchBet( naszGracz );
                                     sprawdzeniePlusEwWylozenieKartNaStolRiver();
                                     if (czyGraczeWlozyliTakaSamaIloscZetonowDoPuli == false) {
-                                        sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
+                                        try {
+                                            sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
+                                        } catch (InterruptedException interruptedException) {
+                                            interruptedException.printStackTrace();
+                                        } catch (SQLException throwables) {
+                                            throwables.printStackTrace();
+                                        } catch (ClassNotFoundException classNotFoundException) {
+                                            classNotFoundException.printStackTrace();
+                                        }
                                     }
                                 }
                             }
@@ -1181,12 +1372,28 @@ public class PanelStolik extends JPanel implements ActionListener {
                             } else if (rozgrywka.getPobierzBlind() == 0) {
                                 if (pierwszyObrot == true) {
                                     naszRuchBet( naszGracz );
-                                    ruchGraczyPoBigBlindDoNas();
+                                    try {
+                                        ruchGraczyPoBigBlindDoNas();
+                                    } catch (InterruptedException interruptedException) {
+                                        interruptedException.printStackTrace();
+                                    } catch (SQLException throwables) {
+                                        throwables.printStackTrace();
+                                    } catch (ClassNotFoundException classNotFoundException) {
+                                        classNotFoundException.printStackTrace();
+                                    }
                                 } else if (pierwszyObrot == false) {
                                     naszRuchBet( naszGracz );
                                     sprawdzenieIPokazanieKart();
                                     if (czyGraczeWlozyliTakaSamaIloscZetonowDoPuli == false) {
-                                        sprawdzeniePoNaszymRuchuIRuchyGraczyOstatniaLicytacja();
+                                        try {
+                                            sprawdzeniePoNaszymRuchuIRuchyGraczyOstatniaLicytacja();
+                                        } catch (InterruptedException interruptedException) {
+                                            interruptedException.printStackTrace();
+                                        } catch (SQLException throwables) {
+                                            throwables.printStackTrace();
+                                        } catch (ClassNotFoundException classNotFoundException) {
+                                            classNotFoundException.printStackTrace();
+                                        }
                                     }
                                 }
                             }
@@ -1233,13 +1440,37 @@ public class PanelStolik extends JPanel implements ActionListener {
 
                             if (rozgrywka.getPobierzBlind() == 0) {
                                 naszRuchCheck( naszGracz );
-                                sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP();
+                                try {
+                                    sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP();
+                                } catch (InterruptedException interruptedException) {
+                                    interruptedException.printStackTrace();
+                                } catch (SQLException throwables) {
+                                    throwables.printStackTrace();
+                                } catch (ClassNotFoundException classNotFoundException) {
+                                    classNotFoundException.printStackTrace();
+                                }
                             } else if (rozgrywka.getKtoBlind() == 0) {
                                 naszRuchCheck( naszGracz );
-                                sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP();
+                                try {
+                                    sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP();
+                                } catch (InterruptedException interruptedException) {
+                                    interruptedException.printStackTrace();
+                                } catch (SQLException throwables) {
+                                    throwables.printStackTrace();
+                                } catch (ClassNotFoundException classNotFoundException) {
+                                    classNotFoundException.printStackTrace();
+                                }
                             } else {
                                 naszRuchCheck( naszGracz );
-                                sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP();
+                                try {
+                                    sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP();
+                                } catch (InterruptedException interruptedException) {
+                                    interruptedException.printStackTrace();
+                                } catch (SQLException throwables) {
+                                    throwables.printStackTrace();
+                                } catch (ClassNotFoundException classNotFoundException) {
+                                    classNotFoundException.printStackTrace();
+                                }
                             }
                         }
                         repaint();
@@ -1493,11 +1724,27 @@ public class PanelStolik extends JPanel implements ActionListener {
 
                                 // od small blind zaczynamy ruchy, a pozniej tak samo, tylko ze warunkiem bedzie kartaT == null
                                 naszRuchCheck( naszGracz );
-                                ruchGraczyPoBigBlindDoNas();
+                                try {
+                                    ruchGraczyPoBigBlindDoNas();
+                                } catch (InterruptedException interruptedException) {
+                                    interruptedException.printStackTrace();
+                                } catch (SQLException throwables) {
+                                    throwables.printStackTrace();
+                                } catch (ClassNotFoundException classNotFoundException) {
+                                    classNotFoundException.printStackTrace();
+                                }
                             } else if (rozgrywka.getPobierzBlind() == 0) {
                                 if (pierwszyObrot == true) {
                                     naszRuchCheck( naszGracz );
-                                    ruchGraczyPoBigBlindDoNas();
+                                    try {
+                                        ruchGraczyPoBigBlindDoNas();
+                                    } catch (InterruptedException interruptedException) {
+                                        interruptedException.printStackTrace();
+                                    } catch (SQLException throwables) {
+                                        throwables.printStackTrace();
+                                    } catch (ClassNotFoundException classNotFoundException) {
+                                        classNotFoundException.printStackTrace();
+                                    }
                                 } else if (pierwszyObrot == false) {
                                     naszRuchCheck( naszGracz );
                                     sprawdzeniePlusEwWylozenieKartNaStolTURN();
@@ -1762,12 +2009,28 @@ public class PanelStolik extends JPanel implements ActionListener {
                             } else if (rozgrywka.getPobierzBlind() == 0) {
                                 if (pierwszyObrot == true) {
                                     naszRuchCheck( naszGracz );
-                                    ruchGraczyPoBigBlindDoNas();
+                                    try {
+                                        ruchGraczyPoBigBlindDoNas();
+                                    } catch (InterruptedException interruptedException) {
+                                        interruptedException.printStackTrace();
+                                    } catch (SQLException throwables) {
+                                        throwables.printStackTrace();
+                                    } catch (ClassNotFoundException classNotFoundException) {
+                                        classNotFoundException.printStackTrace();
+                                    }
                                 } else if (pierwszyObrot == false) {
                                     naszRuchCheck( naszGracz );
                                     sprawdzeniePlusEwWylozenieKartNaStolRiver();
                                     if (czyGraczeWlozyliTakaSamaIloscZetonowDoPuli == false) {
-                                        sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
+                                        try {
+                                            sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
+                                        } catch (InterruptedException interruptedException) {
+                                            interruptedException.printStackTrace();
+                                        } catch (SQLException throwables) {
+                                            throwables.printStackTrace();
+                                        } catch (ClassNotFoundException classNotFoundException) {
+                                            classNotFoundException.printStackTrace();
+                                        }
                                     }
                                 }
                             }
@@ -2073,12 +2336,28 @@ public class PanelStolik extends JPanel implements ActionListener {
                             } else if (rozgrywka.getPobierzBlind() == 0) {
                                 if (pierwszyObrot == true) {
                                     naszRuchCheck( naszGracz );
-                                    ruchGraczyPoBigBlindDoNas();
+                                    try {
+                                        ruchGraczyPoBigBlindDoNas();
+                                    } catch (InterruptedException interruptedException) {
+                                        interruptedException.printStackTrace();
+                                    } catch (SQLException throwables) {
+                                        throwables.printStackTrace();
+                                    } catch (ClassNotFoundException classNotFoundException) {
+                                        classNotFoundException.printStackTrace();
+                                    }
                                 } else if (pierwszyObrot == false) {
                                     naszRuchCheck( naszGracz );
                                     sprawdzenieIPokazanieKart();
                                     if (czyGraczeWlozyliTakaSamaIloscZetonowDoPuli == false) {
-                                        sprawdzeniePoNaszymRuchuIRuchyGraczyOstatniaLicytacja();
+                                        try {
+                                            sprawdzeniePoNaszymRuchuIRuchyGraczyOstatniaLicytacja();
+                                        } catch (InterruptedException interruptedException) {
+                                            interruptedException.printStackTrace();
+                                        } catch (SQLException throwables) {
+                                            throwables.printStackTrace();
+                                        } catch (ClassNotFoundException classNotFoundException) {
+                                            classNotFoundException.printStackTrace();
+                                        }
                                     }
                                 }
                             }
@@ -2165,7 +2444,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 //        }
 //    }
 
-    private void ruchGraczyPoBigBlindDoNas() {
+    private void ruchGraczyPoBigBlindDoNas() throws InterruptedException, SQLException, ClassNotFoundException {
         if (kartaF1 == null) {
             if (rozgrywka.getPobierzBlind() == 0) {
                 for (int i = rozgrywka.getPobierzBlind() + 1; i < rozgrywka.getGracze().size(); i++) {
@@ -2259,7 +2538,7 @@ public class PanelStolik extends JPanel implements ActionListener {
     }
 
 
-    private void ruchGraczyPoSmallBlindDoNas() {
+    private void ruchGraczyPoSmallBlindDoNas() throws InterruptedException, SQLException, ClassNotFoundException {
 
         if (rozgrywka.getPobierzBlind() == 0 && pierwszyObrot) {
             for (int i = rozgrywka.getKtoBlind(); i < rozgrywka.getGracze().size(); i++) {
@@ -2340,7 +2619,7 @@ public class PanelStolik extends JPanel implements ActionListener {
         }
     }
 
-    private void sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP() {
+    private void sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP() throws InterruptedException, SQLException, ClassNotFoundException {
 
         if (kartaF1 == null) {
 
@@ -2350,7 +2629,15 @@ public class PanelStolik extends JPanel implements ActionListener {
 
                 } else {
                     if (kartaF1 == null) {
-                        rozgrywka.ruchGracza( i );
+                        try {
+                            rozgrywka.ruchGracza( i );
+                        } catch (InterruptedException interruptedException) {
+                            interruptedException.printStackTrace();
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
                         System.out.println( i );
                         repaint();
                     }
@@ -2372,7 +2659,15 @@ public class PanelStolik extends JPanel implements ActionListener {
             for (int i = rozgrywka.getPobierzBlind() + 1; i < rozgrywka.getGracze().size(); i++) {
                 if (rozgrywka.getGracze().get( i ).getKartyWRece().size() != 0 && kartaF1 == null) {
 
-                    rozgrywka.ruchGracza( i );
+                    try {
+                        rozgrywka.ruchGracza( i );
+                    } catch (InterruptedException interruptedException) {
+                        interruptedException.printStackTrace();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
 
                     repaint();
 
@@ -2395,7 +2690,15 @@ public class PanelStolik extends JPanel implements ActionListener {
                 } else {
 
                     if (kartaT == null) {
-                        rozgrywka.ruchGracza( i );
+                        try {
+                            rozgrywka.ruchGracza( i );
+                        } catch (InterruptedException interruptedException) {
+                            interruptedException.printStackTrace();
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
                         repaint();
                     }
 
@@ -2413,7 +2716,15 @@ public class PanelStolik extends JPanel implements ActionListener {
         if (kartaT == null) {
             for (int i = rozgrywka.getPobierzBlind() + 1; i < rozgrywka.getGracze().size(); i++) {
                 if (rozgrywka.getGracze().get( i ).getKartyWRece().size() != 0 && kartaT == null) {
-                    rozgrywka.ruchGracza( i );
+                    try {
+                        rozgrywka.ruchGracza( i );
+                    } catch (InterruptedException interruptedException) {
+                        interruptedException.printStackTrace();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
                     repaint();
                     sprawdzeniePlusEwWylozenieKartNaStolTURN();
                 }
@@ -2424,7 +2735,7 @@ public class PanelStolik extends JPanel implements ActionListener {
         licytacjaWGrze = false;
     }
 
-    private void sprawdzeniePoNaszymRuchuIRuchyGraczyRiver() {
+    private void sprawdzeniePoNaszymRuchuIRuchyGraczyRiver() throws InterruptedException, SQLException, ClassNotFoundException {
 
         if (kartaR == null) {
 
@@ -2433,7 +2744,15 @@ public class PanelStolik extends JPanel implements ActionListener {
                 } else {
 
                     if (kartaR == null) {
-                        rozgrywka.ruchGracza( i );
+                        try {
+                            rozgrywka.ruchGracza( i );
+                        } catch (InterruptedException interruptedException) {
+                            interruptedException.printStackTrace();
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
                         repaint();
                     }
 
@@ -2461,7 +2780,7 @@ public class PanelStolik extends JPanel implements ActionListener {
         licytacjaWGrze = false;
     }
 
-    private void sprawdzeniePoNaszymRuchuIRuchyGraczyOstatniaLicytacja() {
+    private void sprawdzeniePoNaszymRuchuIRuchyGraczyOstatniaLicytacja() throws InterruptedException, SQLException, ClassNotFoundException {
         Gracz naszGracz = rozgrywka.getGracze().get( 0 );
         if (kartaF1 != null && kartaT != null && kartaR != null) {
 
@@ -2512,10 +2831,26 @@ public class PanelStolik extends JPanel implements ActionListener {
                 repaint();
             }
             if (!pierwszyObrot) {
-                sprawdzeniePlusEwWylozenieKartNaStolFLOP();
+                try {
+                    sprawdzeniePlusEwWylozenieKartNaStolFLOP();
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
                 pierwszyObrot = true;
             } else if (pierwszyObrot && rozgrywka.getPobierzBlind() == 0) {
-                sprawdzeniePlusEwWylozenieKartNaStolFLOP();
+                try {
+                    sprawdzeniePlusEwWylozenieKartNaStolFLOP();
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
 
         } else if (kartaT == null && kartaF1 != null) {
@@ -2580,10 +2915,26 @@ public class PanelStolik extends JPanel implements ActionListener {
 
 
             if (!pierwszyObrot) {
-                sprawdzeniePlusEwWylozenieKartNaStolFLOP();
+                try {
+                    sprawdzeniePlusEwWylozenieKartNaStolFLOP();
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
                 pierwszyObrot = true;
             } else if (pierwszyObrot && rozgrywka.getPobierzBlind() == 0) {
-                sprawdzeniePlusEwWylozenieKartNaStolFLOP();
+                try {
+                    sprawdzeniePlusEwWylozenieKartNaStolFLOP();
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (kartaT == null && kartaF1 != null) {
 
@@ -2634,10 +2985,26 @@ public class PanelStolik extends JPanel implements ActionListener {
 
 
             if (!pierwszyObrot) {
-                sprawdzeniePlusEwWylozenieKartNaStolFLOP();
+                try {
+                    sprawdzeniePlusEwWylozenieKartNaStolFLOP();
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
                 pierwszyObrot = true;
             } else if (pierwszyObrot && rozgrywka.getPobierzBlind() == 0) {
-                sprawdzeniePlusEwWylozenieKartNaStolFLOP();
+                try {
+                    sprawdzeniePlusEwWylozenieKartNaStolFLOP();
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -2733,7 +3100,7 @@ public class PanelStolik extends JPanel implements ActionListener {
         pierwszyObrot = false;
     }
 
-    private void sprawdzeniePlusEwWylozenieKartNaStolFLOP() {
+    private void sprawdzeniePlusEwWylozenieKartNaStolFLOP() throws InterruptedException, SQLException, ClassNotFoundException {
 
         wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza( wartoscTmp );
 
@@ -2809,7 +3176,15 @@ public class PanelStolik extends JPanel implements ActionListener {
                     czyGraczeWlozyliTakaSamaIloscZetonowDoPuli = false;
 
                     if (rozgrywka.getKtoBlind() != 0) {
-                        ruchGraczyPoSmallBlindDoNas();
+                        try {
+                            ruchGraczyPoSmallBlindDoNas();
+                        } catch (InterruptedException interruptedException) {
+                            interruptedException.printStackTrace();
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } else {
@@ -2851,7 +3226,15 @@ public class PanelStolik extends JPanel implements ActionListener {
                     czyGraczeWlozyliTakaSamaIloscZetonowDoPuli = false;
 
                     if (rozgrywka.getKtoBlind() != 0) {
-                        ruchGraczyPoSmallBlindDoNas();
+                        try {
+                            ruchGraczyPoSmallBlindDoNas();
+                        } catch (InterruptedException interruptedException) {
+                            interruptedException.printStackTrace();
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
 
@@ -3199,7 +3582,15 @@ public class PanelStolik extends JPanel implements ActionListener {
 
 
         for (int i = rozgrywka.getPobierzBlind() + 1; i < rozgrywka.getGracze().size(); i++) {
-            rozgrywka.ruchGracza( i );
+            try {
+                rozgrywka.ruchGracza( i );
+            } catch (InterruptedException interruptedException) {
+                interruptedException.printStackTrace();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
             repaint();
         }
 
