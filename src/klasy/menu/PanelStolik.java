@@ -2613,6 +2613,8 @@ public class PanelStolik extends JPanel implements ActionListener {
             czyZostalJedenGracz = true;
             System.out.println( "został jeden gracz. Koniec rozdania" );
 
+
+
             koniecRozdania();
 //            noweRozdanie();
             repaint();
@@ -3268,7 +3270,7 @@ public class PanelStolik extends JPanel implements ActionListener {
             if (czyGraczeWlozyliTakaSamaIloscZetonowDoPuli) {
                 if (czyZostalJedenGracz == false) {
                     System.out.println( "Gracze pokazuja karty" );
-//                    rozgrywka.sprawdzanieKart();
+                    rozgrywka.sprawdzanieKart();
 
                     for (Gracz g : rozgrywka.getGracze()) {
                         if (g.getKartyWRece().size() != 0) {
@@ -3438,19 +3440,66 @@ public class PanelStolik extends JPanel implements ActionListener {
     }
 
     private void dodajZetonSmallBlind(Graphics g) {
-        if (rozgrywka.getPobierzBlind() - 1 == 0) {
-            g.drawImage( smallBlind, 1200, 790, null );
-        } else if (rozgrywka.getPobierzBlind() - 1 == 1) {
-            g.drawImage( smallBlind, 670, 790, null );
-        } else if (rozgrywka.getPobierzBlind() - 1 == 2) {
-            g.drawImage( smallBlind, 320, 480, null );
-        } else if (rozgrywka.getPobierzBlind() - 1 == 3) {
-            g.drawImage( smallBlind, 650, 260, null );
-        } else if (rozgrywka.getPobierzBlind() - 1 == 4) {
-            g.drawImage( smallBlind, 1200, 260, null );
-        } else if (rozgrywka.getPobierzBlind() + 5 == 5) {
-            g.drawImage( smallBlind, 1570, 480, null );
+
+        if (rozgrywka.getGracze().size() == 2) {
+
+            if (rozgrywka.getPobierzBlind() - 1 == 0) {
+                g.drawImage(smallBlind, 1200, 790, null);
+            } else if (rozgrywka.getPobierzBlind() +1 == 1) {
+                g.drawImage(smallBlind, 670, 790, null);
+            }
+        }else if (rozgrywka.getGracze().size() == 3) {
+
+            if (rozgrywka.getPobierzBlind() - 1 == 0) {
+                g.drawImage(smallBlind, 1200, 790, null);
+            } else if (rozgrywka.getPobierzBlind() - 1 == 1) {
+                g.drawImage(smallBlind, 670, 790, null);
+            } else if (rozgrywka.getPobierzBlind() + 2 == 2) {
+                g.drawImage(smallBlind, 320, 480, null);
+            }
+        } else if (rozgrywka.getGracze().size() == 4) {
+
+            if (rozgrywka.getPobierzBlind() - 1 == 0) {
+                g.drawImage(smallBlind, 1200, 790, null);
+            } else if (rozgrywka.getPobierzBlind() - 1 == 1) {
+                g.drawImage(smallBlind, 670, 790, null);
+            } else if (rozgrywka.getPobierzBlind() - 1 == 2) {
+                g.drawImage(smallBlind, 320, 480, null);
+            } else if (rozgrywka.getPobierzBlind() + 3 == 3) {
+                g.drawImage(smallBlind, 650, 260, null);
+
+            }
+        } else if (rozgrywka.getGracze().size() == 5) {
+            if (rozgrywka.getPobierzBlind() - 1 == 0) {
+                g.drawImage(smallBlind, 1200, 790, null);
+            } else if (rozgrywka.getPobierzBlind() - 1 == 1) {
+                g.drawImage(smallBlind, 670, 790, null);
+            } else if (rozgrywka.getPobierzBlind() - 1 == 2) {
+                g.drawImage(smallBlind, 320, 480, null);
+            } else if (rozgrywka.getPobierzBlind() - 1 == 3) {
+                g.drawImage(smallBlind, 650, 260, null);
+            } else if (rozgrywka.getPobierzBlind() + 4 == 4) {
+                g.drawImage(smallBlind, 1200, 260, null);
+            }
+
+        } else if (rozgrywka.getGracze().size() == 6) {
+
+            if (rozgrywka.getPobierzBlind() - 1 == 0) {
+                g.drawImage(smallBlind, 1200, 790, null);
+            } else if (rozgrywka.getPobierzBlind() - 1 == 1) {
+                g.drawImage(smallBlind, 670, 790, null);
+            } else if (rozgrywka.getPobierzBlind() - 1 == 2) {
+                g.drawImage(smallBlind, 320, 480, null);
+            } else if (rozgrywka.getPobierzBlind() - 1 == 3) {
+                g.drawImage(smallBlind, 650, 260, null);
+            } else if (rozgrywka.getPobierzBlind() - 1 == 4) {
+                g.drawImage(smallBlind, 1200, 260, null);
+            } else if (rozgrywka.getPobierzBlind() + 5 == 5) {
+                g.drawImage(smallBlind, 1570, 480, null);
+            }
         }
+
+
     }
 
     private ImageIcon dodajZdjecieSmallBlind() {
@@ -3459,6 +3508,7 @@ public class PanelStolik extends JPanel implements ActionListener {
     }
 
     private void dodajZetonBibBlind(Graphics g) {
+
         if (rozgrywka.getPobierzBlind() == 0) {
             g.drawImage( bigBlind, 1200, 790, null );
         } else if (rozgrywka.getPobierzBlind() == 1) {
@@ -3480,19 +3530,66 @@ public class PanelStolik extends JPanel implements ActionListener {
     }
 
     private void dodajZetonDealer(Graphics g) {
-        if (rozgrywka.getPobierzBlind() - 2 == 0) {
-            g.drawImage( dealer, 1200, 790, null );
-        } else if (rozgrywka.getPobierzBlind() - 2 == 1) {
-            g.drawImage( dealer, 670, 790, null );
-        } else if (rozgrywka.getPobierzBlind() - 2 == 2) {
-            g.drawImage( dealer, 320, 480, null );
-        } else if (rozgrywka.getPobierzBlind() - 2 == 3) {
-            g.drawImage( dealer, 650, 260, null );
-        } else if (rozgrywka.getPobierzBlind() + 4 == 4) {
-            g.drawImage( dealer, 1200, 260, null );
-        } else if (rozgrywka.getPobierzBlind() + 4 == 5) {
-            g.drawImage( dealer, 1570, 480, null );
+
+        if (rozgrywka.getGracze().size() == 2) {
+
+            if (rozgrywka.getPobierzBlind() - 1 == 0) {
+                g.drawImage(dealer, 1150, 790, null);
+            } else if (rozgrywka.getPobierzBlind() + 1 == 1) {
+                g.drawImage(dealer, 720, 790, null);
+            }
+        }else if (rozgrywka.getGracze().size() == 3) {
+
+            if (rozgrywka.getPobierzBlind() - 2 == 0) {
+                g.drawImage(dealer, 1200, 790, null);
+            } else if (rozgrywka.getPobierzBlind() + 1 == 1) {
+                g.drawImage(dealer, 670, 790, null);
+            } else if (rozgrywka.getPobierzBlind() + 1 == 2) {
+                g.drawImage(dealer, 320, 480, null);
+            }
+        } else if (rozgrywka.getGracze().size() == 4) {
+
+            if (rozgrywka.getPobierzBlind() - 2 == 0) {
+                g.drawImage(dealer, 1200, 790, null);
+            } else if (rozgrywka.getPobierzBlind() - 2 == 1) {
+                g.drawImage(dealer, 670, 790, null);
+            } else if (rozgrywka.getPobierzBlind() + 2 == 2) {
+                g.drawImage(dealer, 320, 480, null);
+            } else if (rozgrywka.getPobierzBlind() + 2 == 3) {
+                g.drawImage(dealer, 650, 260, null);
+
+            }
+        } else if (rozgrywka.getGracze().size() == 5) {
+            if (rozgrywka.getPobierzBlind() - 2 == 0) {
+                g.drawImage(dealer, 1200, 790, null);
+            } else if (rozgrywka.getPobierzBlind() - 2 == 1) {
+                g.drawImage(dealer, 670, 790, null);
+            } else if (rozgrywka.getPobierzBlind() - 2 == 2) {
+                g.drawImage(dealer, 320, 480, null);
+            } else if (rozgrywka.getPobierzBlind() + 3 == 3) {
+                g.drawImage(dealer, 650, 260, null);
+            } else if (rozgrywka.getPobierzBlind() + 3 == 4) {
+                g.drawImage(dealer, 1200, 260, null);
+            }
+
+        } else if (rozgrywka.getGracze().size() == 6) {
+
+            if (rozgrywka.getPobierzBlind() - 2 == 0) {
+                g.drawImage(dealer, 1200, 790, null);
+            } else if (rozgrywka.getPobierzBlind() - 2 == 1) {
+                g.drawImage(dealer, 670, 790, null);
+            } else if (rozgrywka.getPobierzBlind() - 2 == 2) {
+                g.drawImage(dealer, 320, 480, null);
+            } else if (rozgrywka.getPobierzBlind() - 2 == 3) {
+                g.drawImage(dealer, 650, 260, null);
+            } else if (rozgrywka.getPobierzBlind() + 4 == 4) {
+                g.drawImage(dealer, 1200, 260, null);
+            } else if (rozgrywka.getPobierzBlind() + 4 == 5) {
+                g.drawImage(dealer, 1570, 480, null);
+            }
         }
+
+
     }
 
     private ImageIcon dodajZdjecieDealer() {
