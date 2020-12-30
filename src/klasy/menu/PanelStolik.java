@@ -2,6 +2,7 @@ package klasy.menu;
 
 import enumy.Kolor;
 import enumy.Wartosc;
+import klasy.BazaDanych;
 import klasy.Gracz;
 import klasy.Rozgrywka;
 import klasy.karty.TaliaKart;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class PanelStolik extends JPanel implements ActionListener {
     private File imageFile;
@@ -2823,6 +2825,18 @@ public class PanelStolik extends JPanel implements ActionListener {
 
         wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza( wartoscTmp );
 
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm:ss"));
+
+        rozgrywka.setLineBaza("[" + LocalDateTime.now().format(dateTimeFormatter) + "] " + rozgrywka.getGracze().get(0).getNick() + " wykonał/a bet.");
+
+        try {
+            new BazaDanych(rozgrywka.getMe());
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
         System.out.println( "Zrobiłem Bet" );
         if (kartaF1 == null) {
             if (naszGracz.getPulaZetonowGracza() <= wartoscTmp) {
@@ -2904,6 +2918,19 @@ public class PanelStolik extends JPanel implements ActionListener {
         wartoscTmp = rozgrywka.getGracze().get( 0 ).getPulaZetonowGracza();
 
         wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza( wartoscTmp );
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm:ss"));
+
+        rozgrywka.setLineBaza("[" + LocalDateTime.now().format(dateTimeFormatter) + "] " + rozgrywka.getGracze().get(0).getNick() + " wykonał/a check.");
+
+        try {
+            new BazaDanych(rozgrywka.getMe());
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
         System.out.println( "ZROBILEM ruch" );
         if (kartaF1 == null) {
 

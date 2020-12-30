@@ -55,6 +55,14 @@ public class Rozgrywka extends Gracz {
 
     }
 
+    public Rozgrywka getMe() {
+        return me;
+    }
+
+    public void setMe(Rozgrywka me) {
+        this.me = me;
+    }
+
     public String getLineBaza() {
         return lineBaza;
     }
@@ -358,6 +366,7 @@ public class Rozgrywka extends Gracz {
         int liczba = rand.nextInt(3);
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm:ss"));
+
 
         if (gracze.get(i).kartyWRece.size() != 0) {
             if (liczba == 0) {
