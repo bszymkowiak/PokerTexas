@@ -5,10 +5,15 @@ import enumy.Wartosc;
 import jdk.swing.interop.SwingInterOpUtils;
 import klasy.karty.Karta;
 import klasy.karty.TaliaKart;
+import klasy.menu.PanelStolik;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Rozgrywka extends Gracz {
@@ -40,6 +45,23 @@ public class Rozgrywka extends Gracz {
     public int pulaGlowna;
     int maxWartosc = 0;
 
+    private String lineBaza;
+
+    private Rozgrywka me;
+
+    public Rozgrywka() {
+
+        me = this;
+
+    }
+
+    public String getLineBaza() {
+        return lineBaza;
+    }
+
+    public void setLineBaza(String lineBaza) {
+        this.lineBaza = lineBaza;
+    }
 
     public int getKtoraRunda() {
         return ktoraRunda;
@@ -256,7 +278,7 @@ public class Rozgrywka extends Gracz {
         }
 
         if (!czyRozdalemBlind) {
-            ktoBlind = 5;//rand.nextInt(gracze.size());
+            ktoBlind = rand.nextInt(gracze.size());
             malyBlind = 10;
             duzyBlind = 20;
             czyRozdalemBlind = true;
@@ -330,20 +352,28 @@ public class Rozgrywka extends Gracz {
 
     }
 
-    public void ruchGracza(int i) {
+    public void ruchGracza(int i) throws InterruptedException, SQLException, ClassNotFoundException {
 
         Random rand = new Random();
         int liczba = rand.nextInt(3);
 
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm:ss"));
 
         if (gracze.get(i).kartyWRece.size() != 0) {
             if (liczba == 0) {
+
                 komputerFold(i);
+                lineBaza = ("[" + LocalDateTime.now().format(dateTimeFormatter) + "] " + gracze.get(i).getNick() + " wykonał/a fold.");
             } else if (liczba == 1) {
                 komputerCheck(i);
+                lineBaza = ("[" + LocalDateTime.now().format(dateTimeFormatter) + "] " + gracze.get(i).getNick() + " wykonał/a check.");
             } else if (liczba == 2) {
                 komputerBet(i);
+                lineBaza = ("[" + LocalDateTime.now().format(dateTimeFormatter) + "] " + gracze.get(i).getNick() + " wykonał/a bet.");
             }
+
+            new BazaDanych(me);
+
         }
     }
 
@@ -1884,7 +1914,7 @@ public class Rozgrywka extends Gracz {
                     }
                 }
                 for (int i = 0; i < playersWithTwoPair.size(); i++) {
-                    if (playersWithTwoPair.get(i).getWartoscKartGracza() == maxWartosc ) {
+                    if (playersWithTwoPair.get(i).getWartoscKartGracza() == maxWartosc) {
                         temp++;
                     }
                 }
@@ -1979,7 +2009,9 @@ public class Rozgrywka extends Gracz {
 
         wynikSprawdzenieDlaHighCard();
     }
+
 }
+
 
 
 
