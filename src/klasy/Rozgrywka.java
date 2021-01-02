@@ -6,7 +6,11 @@ import jdk.swing.interop.SwingInterOpUtils;
 import klasy.karty.Karta;
 import klasy.karty.TaliaKart;
 import klasy.menu.PanelStolik;
+import klasy.stoper.Stoper;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -41,6 +45,10 @@ public class Rozgrywka extends Gracz {
     private int twoPairCounter;
     private int onePairCounter;
     private int highCardCounter;
+
+
+    private Stoper stoper = new Stoper();
+
 
     public int pulaGlowna;
     int maxWartosc = 0;
@@ -277,6 +285,15 @@ public class Rozgrywka extends Gracz {
         this.ktoBlind = ktoBlind;
     }
 
+
+    public Stoper getStoper() {
+        return stoper;
+    }
+
+    public void setStoper(Stoper stoper) {
+        this.stoper = stoper;
+    }
+
     public void rozdajBlind() {
 
         for (Gracz g : gracze) {
@@ -294,9 +311,15 @@ public class Rozgrywka extends Gracz {
 
         ktoraRunda++;
 
-        if (ktoraRunda % 10 == 0) {
+        stoper.stop();
+
+
+        // pobrac dane z rozwijanej listy
+        if (stoper.pobierzWynik() >= 60) {
             malyBlind *= 2;
             duzyBlind *= 2;
+            stoper = new Stoper();
+            stoper.start();
         }
 
         gracze.get(ktoBlind + counter).setBlind(malyBlind);
@@ -324,7 +347,6 @@ public class Rozgrywka extends Gracz {
 
         int wartoscTmp = gracze.get(i).getPulaZetonowGracza();
 
-
         System.out.println(gracze.get(i).getNick() + " wykonuje check.");
 
         for (Gracz g : gracze) {
@@ -332,6 +354,10 @@ public class Rozgrywka extends Gracz {
                 wartoscTmp = g.getPulaZetonowGracza();
             }
         }
+
+
+
+
 
         if (gracze.get(i).getPulaZetonowGracza() < wartoscTmp && gracze.get(i).getKartyWRece().size() != 0) {
             gracze.get(i).setIloscZetonow(gracze.get(i).getIloscZetonow() - wartoscTmp + gracze.get(i).getPulaZetonowGracza());
@@ -385,6 +411,7 @@ public class Rozgrywka extends Gracz {
 
         }
     }
+
 
     private void wynikSprawdzeniaDlaFourOfAKind() {
         if (royalFlushCounter == 0 && straightFlushCounter == 0 && fourOfAKindCounter == 1) {
