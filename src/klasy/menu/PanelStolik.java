@@ -106,6 +106,10 @@ public class PanelStolik extends JPanel implements ActionListener {
 
         rozgrywka.getStoper().start();
 
+        rozgrywka.setCzasCiemnych(stolik.getRozgrywka().getCzasCiemnych());
+
+        System.out.println(rozgrywka.getCzasCiemnych());
+
     }
 
     public Rozgrywka getRozgrywka() {

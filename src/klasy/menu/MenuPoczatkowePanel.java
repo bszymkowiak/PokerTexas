@@ -28,6 +28,7 @@ public class MenuPoczatkowePanel extends JPanel {
     private Rozgrywka rozgrywka;
     JComboBox<Object> iloscPrzeciwnikowCombo;
     JComboBox<Object> iloscZetonowStart;
+    JComboBox<Object> czasCiemnych;
     private MenuPoczatkowePanel me;
     String kolorRewers = "";
 
@@ -165,16 +166,27 @@ public class MenuPoczatkowePanel extends JPanel {
     }
 
     private void dodajListeCzasuCiemnych(Border obramowanie, Font sansbold20) {
-        var czasCiemnych = new JComboBox<Integer>();
+        czasCiemnych = new JComboBox<>();
+        czasCiemnych.addItem("Wybierz czas:");
         czasCiemnych.addItem(5);
         czasCiemnych.addItem(8);
         czasCiemnych.addItem(10);
         czasCiemnych.addItem(15);
         czasCiemnych.setBackground(Color.GRAY);
-        czasCiemnych.setBounds(1005, 448, 50, 30);
+        czasCiemnych.setBounds(1005, 448, 165, 30);
         czasCiemnych.setFont(sansbold20);
         czasCiemnych.setBorder(obramowanie);
         add(czasCiemnych);
+
+        czasCiemnych.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    int c = (Integer) e.getItemSelectable().getSelectedObjects()[0];
+                    rozgrywka.setCzasCiemnych(c);
+                }
+            }
+        });
     }
 
     private void dodajPrzyciski(MenuPoczatkowe menuPoczatkowe, Border obramowanie) {
@@ -239,6 +251,10 @@ public class MenuPoczatkowePanel extends JPanel {
                 } else if (Objects.equals(iloscZetonowStart.getSelectedItem(), "ilość żetonów:")) {
 
                     JOptionPane.showMessageDialog(null, "Podaj ilość żetonów!", "Błąd ilości żetonów.", JOptionPane.INFORMATION_MESSAGE);
+
+                } else if (Objects.equals(czasCiemnych.getSelectedItem(), "wybierz czas:")) {
+
+                    JOptionPane.showMessageDialog(null, "Podaj po jakim czasię mają się zwiększać BigBlind i SmallBlind!", "Błąd czasu ciemnych", JOptionPane.INFORMATION_MESSAGE);
 
                 } else {
 

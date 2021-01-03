@@ -34,6 +34,7 @@ public class Rozgrywka extends Gracz {
     private int duzyBlind;
     private int counter = 0;
     private boolean czyRozdalemBlind;
+    private int czasCiemnych;
 
     private int royalFlushCounter;
     private int straightFlushCounter;
@@ -45,7 +46,6 @@ public class Rozgrywka extends Gracz {
     private int twoPairCounter;
     private int onePairCounter;
     private int highCardCounter;
-
 
     private Stoper stoper = new Stoper();
 
@@ -61,6 +61,14 @@ public class Rozgrywka extends Gracz {
 
         me = this;
 
+    }
+
+    public int getCzasCiemnych() {
+        return czasCiemnych;
+    }
+
+    public void setCzasCiemnych(int czasCiemnych) {
+        this.czasCiemnych = czasCiemnych;
     }
 
     public Rozgrywka getMe() {
@@ -315,7 +323,7 @@ public class Rozgrywka extends Gracz {
 
 
         // pobrac dane z rozwijanej listy
-        if (stoper.pobierzWynik() >= 60) {
+        if (stoper.pobierzWynik() >= czasCiemnych * 60) {
             malyBlind *= 2;
             duzyBlind *= 2;
             stoper = new Stoper();
