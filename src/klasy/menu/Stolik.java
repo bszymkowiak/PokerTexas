@@ -13,6 +13,7 @@ class Stolik extends JPanel {
 
     private Rozgrywka rozgrywka;
     private String imieGracza;
+    String kolorRewers;
 
 
     public Stolik(MenuPoczatkowePanel menuPoczatkowePanel) {
@@ -27,6 +28,9 @@ class Stolik extends JPanel {
     private void dodajTlo(MenuPoczatkowePanel menuPoczatkowePanel) {
         setRozgrywka(menuPoczatkowePanel.getRozgrywka());
         imieGracza = menuPoczatkowePanel.getImieGracza();
+
+        kolorRewers = menuPoczatkowePanel.grupa.getSelection().getActionCommand();
+        System.out.println(kolorRewers);
 
 
         window = new JFrame("Poker Texas");

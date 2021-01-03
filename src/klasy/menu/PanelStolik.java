@@ -6,6 +6,7 @@ import klasy.BazaDanych;
 import klasy.Gracz;
 import klasy.Rozgrywka;
 import klasy.karty.TaliaKart;
+import klasy.stoper.Stoper;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -44,6 +45,7 @@ public class PanelStolik extends JPanel implements ActionListener {
     private Image gracz4k2;
     private Image gracz5k1;
     private Image gracz5k2;
+
     Image kartaF1;
     Image kartaF2;
     Image kartaF3;
@@ -63,6 +65,7 @@ public class PanelStolik extends JPanel implements ActionListener {
     private int iloscGraczyZKartami;
     private boolean czyZostalJedenGracz;
 
+    String kolorRewers;
 
     Border obramowanie = BorderFactory.createEmptyBorder();
 
@@ -82,19 +85,30 @@ public class PanelStolik extends JPanel implements ActionListener {
 
         me = this;
         this.stolik = stolik;
-        setLayout( null );
+        setLayout(null);
 
+        kolorRewers = stolik.kolorRewers;
 
-        setRozgrywka( stolik.getRozgrywka() );
+        setRozgrywka(stolik.getRozgrywka());
 
-        rozgrywka.setLiczbaGraczy( stolik.getRozgrywka().getLiczbaGraczy() );
+        rozgrywka.setLiczbaGraczy(stolik.getRozgrywka().getLiczbaGraczy());
 
-        getRozgrywka().dodajGraczy( stolik.getRozgrywka().getIloscZetonow() );
+        getRozgrywka().dodajGraczy(stolik.getRozgrywka().getIloscZetonow());
 
-        getRozgrywka().getGracze().get( 0 ).setNick( stolik.getImieGracza() );
+        getRozgrywka().getGracze().get(0).setNick(stolik.getImieGracza());
 
         dodajTlo();
-        dodajPrzyciski( obramowanie );
+        dodajPrzyciski(obramowanie);
+
+        getRozgrywka().rozdajKartyDoReki(rozgrywka.getTaliaKart());
+
+        dodajZdjeciaKartGraczy();
+
+        rozgrywka.getStoper().start();
+
+        rozgrywka.setCzasCiemnych(stolik.getRozgrywka().getCzasCiemnych());
+
+        System.out.println(rozgrywka.getCzasCiemnych());
 
     }
 
@@ -109,28 +123,28 @@ public class PanelStolik extends JPanel implements ActionListener {
 
     public Image zapiszObrazDlaKartStol(int i) {
 
-        Kolor kolorKartyWReku = rozgrywka.getKartyStol().get( i ).getKolor();
-        Wartosc numerKartyWReku = rozgrywka.getKartyStol().get( i ).getWartosc();
+        Kolor kolorKartyWReku = rozgrywka.getKartyStol().get(i).getKolor();
+        Wartosc numerKartyWReku = rozgrywka.getKartyStol().get(i).getWartosc();
 
-        return zwrocZdjecieKartyOKolorzeIWartosci( numerKartyWReku, kolorKartyWReku );
+        return zwrocZdjecieKartyOKolorzeIWartosci(numerKartyWReku, kolorKartyWReku);
 
     }
 
     public Image zapiszObrazDlaGraczy(int i) {
 
-        Kolor kolorKartyWReku = rozgrywka.getGracze().get( 0 ).getKartyWRece().get( i ).getKolor();
-        Wartosc numerKartyWReku = rozgrywka.getGracze().get( 0 ).getKartyWRece().get( i ).getWartosc();
+        Kolor kolorKartyWReku = rozgrywka.getGracze().get(0).getKartyWRece().get(i).getKolor();
+        Wartosc numerKartyWReku = rozgrywka.getGracze().get(0).getKartyWRece().get(i).getWartosc();
 
-        return zwrocZdjecieKartyOKolorzeIWartosci( numerKartyWReku, kolorKartyWReku );
+        return zwrocZdjecieKartyOKolorzeIWartosci(numerKartyWReku, kolorKartyWReku);
     }
 
     private Image zwrocZdjecieKartyOKolorzeIWartosci(Wartosc numerKarty, Kolor kolor) {
-        return new ImageIcon( "zdjecia\\karty\\" + kolor.toString().toLowerCase() + "\\" + numerKarty.getWartosc() + ".jpg" ).getImage();
+        return new ImageIcon("zdjecia\\karty\\" + kolor.toString().toLowerCase() + "\\" + numerKarty.getWartosc() + ".jpg").getImage();
     }
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension( 1920, 1080 );
+        return new Dimension(1920, 1080);
     }
 
     @Override
@@ -160,16 +174,15 @@ public class PanelStolik extends JPanel implements ActionListener {
 
         dodanieKartGraczyIZetonow(g);
 
-        dodajZetonSmallBlind( g );
-        dodajZetonBibBlind( g );
-        dodajZetonDealer( g );
-
-
+        dodajZetonSmallBlind(g);
+        dodajZetonBibBlind(g);
+        dodajZetonDealer(g);
 
 
     }
 
     private void dodanieKartGraczyIZetonow(Graphics g) {
+
         if (rozgrywka.getGracze().size() == 2) {
             if (rozgrywka.getGracze().get(0).getKartyWRece().size() == 0) {
 
@@ -201,6 +214,7 @@ public class PanelStolik extends JPanel implements ActionListener {
             if (rozgrywka.getGracze().get(1).getKartyWRece().size() == 0) {
 
                 gracz1k1 = new ImageIcon().getImage();
+
                 gracz1k2 = new ImageIcon().getImage();
 
                 repaint();
@@ -371,43 +385,44 @@ public class PanelStolik extends JPanel implements ActionListener {
 //        wpisPuli.setFont( new Font( "SansSerif", Font.BOLD, 18 ) );
 //        add( wpisPuli );
 
-        fold = new JButton( new ImageIcon( "zdjecia\\fold.jpg" ) );
-        fold.setBounds( 1422, 930, 134, 80 );
-        fold.setBackground( Color.GRAY );
-        fold.setFont( new Font( "SansSerif", Font.BOLD, 25 ) );
-        fold.setBorder( obramowanie );
-        add( fold );
-        fold.setVisible( true );
+        fold = new JButton(new ImageIcon("zdjecia\\fold.jpg"));
+        fold.setBounds(1422, 930, 134, 80);
+        fold.setBackground(Color.GRAY);
+        fold.setFont(new Font("SansSerif", Font.BOLD, 25));
+        fold.setBorder(obramowanie);
+        add(fold);
+        fold.setVisible(true);
         przyciskFoldAkcja();
 
-        check = new JButton( new ImageIcon( "zdjecia\\check.jpg" ) );
-        check.setBounds( 1576, 930, 134, 80 );
-        check.setBackground( Color.GRAY );
-        check.setFont( new Font( "SansSerif", Font.BOLD, 25 ) );
-        check.setBorder( obramowanie );
-        add( check );
-        check.setVisible( true );
+        check = new JButton(new ImageIcon("zdjecia\\check.jpg"));
+        check.setBounds(1576, 930, 134, 80);
+        check.setBackground(Color.GRAY);
+        check.setFont(new Font("SansSerif", Font.BOLD, 25));
+        check.setBorder(obramowanie);
+        add(check);
+        check.setVisible(true);
         przyciskCheckAkcja();
 
-        bet = new JButton( new ImageIcon( "zdjecia\\bet.jpg" ) );
-        bet.setBounds( 1730, 930, 134, 80 );
-        bet.setBackground( Color.GRAY );
-        bet.setFont( new Font( "SansSerif", Font.BOLD, 25 ) );
-        bet.setBorder( obramowanie );
-        add( bet );
-        bet.setVisible( true );
+        bet = new JButton(new ImageIcon("zdjecia\\bet.jpg"));
+        bet.setBounds(1730, 930, 134, 80);
+        bet.setBackground(Color.GRAY);
+        bet.setFont(new Font("SansSerif", Font.BOLD, 25));
+        bet.setBorder(obramowanie);
+        add(bet);
+        bet.setVisible(true);
         przyciskBetAkcja();
 
-        graj = new JButton( new ImageIcon( "zdjecia\\graj2.jpg" ) );
-        graj.setBounds( 877, 686, 243, 83 );
-        graj.setBorder( obramowanie );
-        add( graj );
-        graj.addActionListener( this );
+        graj = new JButton(new ImageIcon("zdjecia\\graj2.jpg"));
+        graj.setBounds(877, 686, 243, 83);
+        graj.setBorder(obramowanie);
+        add(graj);
+        graj.setVisible(false);
+        graj.addActionListener(this);
 
-        mojeZetony = new JTextField( iloscMoichZetonow );
+        mojeZetony = new JTextField(iloscMoichZetonow);
 //        mojeZetony.setBounds(1576, 890, 134, 30);
 //        mojeZetony.setFont( new Font ("SansSerif", Font.BOLD, 18) );
-        add( mojeZetony );
+        add(mojeZetony);
 
 //        JButton lobby = new JButton( "LOBBY" );
 //        lobby.setBackground( Color.GRAY );
@@ -418,17 +433,17 @@ public class PanelStolik extends JPanel implements ActionListener {
     }
 
     private void przyciskBetAkcja() {
-        bet.addActionListener( new ActionListener() {
+        bet.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Gracz naszGracz = rozgrywka.getGracze().get( 0 );
+                Gracz naszGracz = rozgrywka.getGracze().get(0);
                 if (naszGracz.getKartyWRece().size() != 0) {
 
-                    System.out.println( pierwszyObrot + "    wartosc pierwszego obrotuuuuu" );
+                    System.out.println(pierwszyObrot + "    wartosc pierwszego obrotuuuuu");
 
                     wartoscTmp = 0;
 
-                    System.out.println( pierwszyObrot + "pierwszy obrot" );
+                    System.out.println(pierwszyObrot + "pierwszy obrot");
 
 
                     if (kartaF1 == null) {
@@ -473,7 +488,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 //                                }
 //                            }
                             if (rozgrywka.getPobierzBlind() == 0) {
-                                naszRuchBet( naszGracz );
+                                naszRuchBet(naszGracz);
                                 try {
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP();
                                 } catch (InterruptedException interruptedException) {
@@ -484,7 +499,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                                     classNotFoundException.printStackTrace();
                                 }
                             } else if (rozgrywka.getKtoBlind() == 0) {
-                                naszRuchBet( naszGracz );
+                                naszRuchBet(naszGracz);
                                 try {
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP();
                                 } catch (InterruptedException interruptedException) {
@@ -495,7 +510,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                                     classNotFoundException.printStackTrace();
                                 }
                             } else {
-                                naszRuchBet( naszGracz );
+                                naszRuchBet(naszGracz);
                                 try {
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP();
                                 } catch (InterruptedException interruptedException) {
@@ -511,7 +526,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 
                     } else if (kartaT == null && kartaF1 != null) {
 
-                        System.out.println( "WCHODZE DO KARTA T " );
+                        System.out.println("WCHODZE DO KARTA T ");
 
                         licytacjaWGrze = true;
                         while (licytacjaWGrze) {
@@ -758,11 +773,11 @@ public class PanelStolik extends JPanel implements ActionListener {
 //                    }
 
                                 // od small blind zaczynamy ruchy, a pozniej tak samo, tylko ze warunkiem bedzie kartaT == null
-                                naszRuchBet( naszGracz );
+                                naszRuchBet(naszGracz);
                                 sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
                             } else if (rozgrywka.getPobierzBlind() == 0) {
                                 if (pierwszyObrot == true) {
-                                    naszRuchBet( naszGracz );
+                                    naszRuchBet(naszGracz);
                                     try {
                                         ruchGraczyPoBigBlindDoNas();
                                     } catch (InterruptedException interruptedException) {
@@ -773,19 +788,19 @@ public class PanelStolik extends JPanel implements ActionListener {
                                         classNotFoundException.printStackTrace();
                                     }
                                 } else if (pierwszyObrot == false) {
-                                    naszRuchBet( naszGracz );
+                                    naszRuchBet(naszGracz);
                                     sprawdzeniePlusEwWylozenieKartNaStolTURN();
                                     if (czyGraczeWlozyliTakaSamaIloscZetonowDoPuli == false) {
                                         sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
                                     }
                                 }
 
-                            }else{
+                            } else {
                                 if (pierwszyObrot == true) {
-                                    naszRuchBet( naszGracz );
+                                    naszRuchBet(naszGracz);
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
                                 } else if (pierwszyObrot == false) {
-                                    naszRuchBet( naszGracz );
+                                    naszRuchBet(naszGracz);
                                     sprawdzeniePlusEwWylozenieKartNaStolTURN();
                                     if (czyGraczeWlozyliTakaSamaIloscZetonowDoPuli == false) {
                                         sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
@@ -796,7 +811,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                         }
                     } else if (kartaR == null && kartaT != null && kartaF1 != null) {
 
-                        System.out.println( "WCHODZE DO KARTA R " );
+                        System.out.println("WCHODZE DO KARTA R ");
 
                         licytacjaWGrze = true;
 
@@ -1046,7 +1061,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                                 // od small blind zaczynamy ruchy, a pozniej tak samo, tylko ze warunkiem bedzie kartaT == null
                             } else if (rozgrywka.getPobierzBlind() == 0) {
                                 if (pierwszyObrot == true) {
-                                    naszRuchBet( naszGracz );
+                                    naszRuchBet(naszGracz);
                                     try {
                                         ruchGraczyPoBigBlindDoNas();
                                     } catch (InterruptedException interruptedException) {
@@ -1057,7 +1072,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                                         classNotFoundException.printStackTrace();
                                     }
                                 } else if (pierwszyObrot == false) {
-                                    naszRuchBet( naszGracz );
+                                    naszRuchBet(naszGracz);
                                     sprawdzeniePlusEwWylozenieKartNaStolRiver();
                                     if (czyGraczeWlozyliTakaSamaIloscZetonowDoPuli == false) {
                                         try {
@@ -1123,7 +1138,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 //                    }
                     } else if (kartaR != null && kartaT != null && kartaF1 != null) {
 
-                        System.out.println( "Juz ostatnia karta na stole " );
+                        System.out.println("Juz ostatnia karta na stole ");
 
                         licytacjaWGrze = true;
 
@@ -1373,7 +1388,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                                 // od small blind zaczynamy ruchy, a pozniej tak samo, tylko ze warunkiem bedzie kartaT == null
                             } else if (rozgrywka.getPobierzBlind() == 0) {
                                 if (pierwszyObrot == true) {
-                                    naszRuchBet( naszGracz );
+                                    naszRuchBet(naszGracz);
                                     try {
                                         ruchGraczyPoBigBlindDoNas();
                                     } catch (InterruptedException interruptedException) {
@@ -1384,7 +1399,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                                         classNotFoundException.printStackTrace();
                                     }
                                 } else if (pierwszyObrot == false) {
-                                    naszRuchBet( naszGracz );
+                                    naszRuchBet(naszGracz);
                                     sprawdzenieIPokazanieKart();
                                     if (czyGraczeWlozyliTakaSamaIloscZetonowDoPuli == false) {
                                         try {
@@ -1405,17 +1420,17 @@ public class PanelStolik extends JPanel implements ActionListener {
                     }
                 }
             }
-        } );
+        });
     }
 
     private void przyciskCheckAkcja() {
-        check.addActionListener( new ActionListener() {
+        check.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                Gracz naszGracz = rozgrywka.getGracze().get( 0 );
+                Gracz naszGracz = rozgrywka.getGracze().get(0);
                 if (naszGracz.getKartyWRece().size() != 0) {
-                    System.out.println( pierwszyObrot + "    wartosc pierwszego obrotuuuuu" );
+                    System.out.println(pierwszyObrot + "    wartosc pierwszego obrotuuuuu");
 
                     wartoscTmp = 0;
 
@@ -1441,7 +1456,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 //                        }
 
                             if (rozgrywka.getPobierzBlind() == 0) {
-                                naszRuchCheck( naszGracz );
+                                naszRuchCheck(naszGracz);
                                 try {
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP();
                                 } catch (InterruptedException interruptedException) {
@@ -1452,7 +1467,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                                     classNotFoundException.printStackTrace();
                                 }
                             } else if (rozgrywka.getKtoBlind() == 0) {
-                                naszRuchCheck( naszGracz );
+                                naszRuchCheck(naszGracz);
                                 try {
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP();
                                 } catch (InterruptedException interruptedException) {
@@ -1463,7 +1478,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                                     classNotFoundException.printStackTrace();
                                 }
                             } else {
-                                naszRuchCheck( naszGracz );
+                                naszRuchCheck(naszGracz);
                                 try {
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP();
                                 } catch (InterruptedException interruptedException) {
@@ -1478,7 +1493,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                         repaint();
                     } else if (kartaT == null && kartaF1 != null) {
 
-                        System.out.println( "WCHODZE DO KARTA T " );
+                        System.out.println("WCHODZE DO KARTA T ");
 
                         licytacjaWGrze = true;
                         while (licytacjaWGrze) {
@@ -1725,7 +1740,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 //                    }
 
                                 // od small blind zaczynamy ruchy, a pozniej tak samo, tylko ze warunkiem bedzie kartaT == null
-                                naszRuchCheck( naszGracz );
+                                naszRuchCheck(naszGracz);
                                 try {
                                     ruchGraczyPoBigBlindDoNas();
                                 } catch (InterruptedException interruptedException) {
@@ -1737,7 +1752,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                                 }
                             } else if (rozgrywka.getPobierzBlind() == 0) {
                                 if (pierwszyObrot == true) {
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchCheck(naszGracz);
                                     try {
                                         ruchGraczyPoBigBlindDoNas();
                                     } catch (InterruptedException interruptedException) {
@@ -1748,7 +1763,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                                         classNotFoundException.printStackTrace();
                                     }
                                 } else if (pierwszyObrot == false) {
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchCheck(naszGracz);
                                     sprawdzeniePlusEwWylozenieKartNaStolTURN();
                                     if (czyGraczeWlozyliTakaSamaIloscZetonowDoPuli == false) {
                                         sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
@@ -1760,7 +1775,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                         }
                     } else if (kartaR == null && kartaT != null && kartaF1 != null) {
 
-                        System.out.println( "WCHODZE DO KARTA R " );
+                        System.out.println("WCHODZE DO KARTA R ");
 
                         licytacjaWGrze = true;
 
@@ -2010,7 +2025,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                                 // od small blind zaczynamy ruchy, a pozniej tak samo, tylko ze warunkiem bedzie kartaT == null
                             } else if (rozgrywka.getPobierzBlind() == 0) {
                                 if (pierwszyObrot == true) {
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchCheck(naszGracz);
                                     try {
                                         ruchGraczyPoBigBlindDoNas();
                                     } catch (InterruptedException interruptedException) {
@@ -2021,7 +2036,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                                         classNotFoundException.printStackTrace();
                                     }
                                 } else if (pierwszyObrot == false) {
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchCheck(naszGracz);
                                     sprawdzeniePlusEwWylozenieKartNaStolRiver();
                                     if (czyGraczeWlozyliTakaSamaIloscZetonowDoPuli == false) {
                                         try {
@@ -2087,7 +2102,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 //                    }
                     } else if (kartaR != null && kartaT != null && kartaF1 != null) {
 
-                        System.out.println( "Juz ostatnia karta na stole " );
+                        System.out.println("Juz ostatnia karta na stole ");
 
                         licytacjaWGrze = true;
 
@@ -2337,7 +2352,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                                 // od small blind zaczynamy ruchy, a pozniej tak samo, tylko ze warunkiem bedzie kartaT == null
                             } else if (rozgrywka.getPobierzBlind() == 0) {
                                 if (pierwszyObrot == true) {
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchCheck(naszGracz);
                                     try {
                                         ruchGraczyPoBigBlindDoNas();
                                     } catch (InterruptedException interruptedException) {
@@ -2348,7 +2363,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                                         classNotFoundException.printStackTrace();
                                     }
                                 } else if (pierwszyObrot == false) {
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchCheck(naszGracz);
                                     sprawdzenieIPokazanieKart();
                                     if (czyGraczeWlozyliTakaSamaIloscZetonowDoPuli == false) {
                                         try {
@@ -2369,21 +2384,21 @@ public class PanelStolik extends JPanel implements ActionListener {
                     }
                 }
             }
-        } );
+        });
     }
 
     private void przyciskFoldAkcja() {
-        fold.addActionListener( new ActionListener() {
+        fold.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
                 pulaGlowna = 0;
                 for (Gracz g : rozgrywka.getGracze()) {
-                    g.setPulaZetonowGracza( 0 );
-                    g.setBlind( 0 );
+                    g.setPulaZetonowGracza(0);
+                    g.setBlind(0);
                 }
 
-                rozgrywka.setTaliaKart( new TaliaKart() );
+                rozgrywka.setTaliaKart(new TaliaKart());
 
                 rozgrywka.usunKartyZReki();
                 rozgrywka.usunKartyStol();
@@ -2395,10 +2410,10 @@ public class PanelStolik extends JPanel implements ActionListener {
                 kartaR = null;
 
 
-                rozgrywka.rozdajKartyDoReki( rozgrywka.getTaliaKart() );
+                rozgrywka.rozdajKartyDoReki(rozgrywka.getTaliaKart());
 
-                gracz0k1 = new ImageIcon( zapiszObrazDlaGraczy( 0 ) ).getImage();
-                gracz0k2 = new ImageIcon( zapiszObrazDlaGraczy( 1 ) ).getImage();
+                gracz0k1 = new ImageIcon(zapiszObrazDlaGraczy(0)).getImage();
+                gracz0k2 = new ImageIcon(zapiszObrazDlaGraczy(1)).getImage();
 
                 rozgrywka.rozdajBlind();
                 dodajZdjecieSmallBlind();
@@ -2406,8 +2421,8 @@ public class PanelStolik extends JPanel implements ActionListener {
 
                 for (Gracz g : rozgrywka.getGracze()) {
                     if (g.getIloscZetonow() < 0) {
-                        rozgrywka.getGracze().remove( g );
-                        rozgrywka.setLiczbaGraczy( rozgrywka.getLiczbaGraczy() - 1 );
+                        rozgrywka.getGracze().remove(g);
+                        rozgrywka.setLiczbaGraczy(rozgrywka.getLiczbaGraczy() - 1);
                     }
                 }
 
@@ -2419,7 +2434,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                 repaint();
 
                 for (Gracz g : rozgrywka.getGracze()) {
-                    System.out.println( g.getNick() + "            " + g.getBlind() );
+                    System.out.println(g.getNick() + "            " + g.getBlind());
                 }
 
 
@@ -2429,7 +2444,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 
             }
 
-        } );
+        });
 
     }
 
@@ -2450,12 +2465,12 @@ public class PanelStolik extends JPanel implements ActionListener {
         if (kartaF1 == null) {
             if (rozgrywka.getPobierzBlind() == 0) {
                 for (int i = rozgrywka.getPobierzBlind() + 1; i < rozgrywka.getGracze().size(); i++) {
-                    if (rozgrywka.getGracze().get( i ).getKartyWRece().size() != 0) {
-                        if (rozgrywka.getKtoBlind() == 5 && rozgrywka.getGracze().get( 5 ).getKartyWRece().size() != 0) {
+                    if (rozgrywka.getGracze().get(i).getKartyWRece().size() != 0) {
+                        if (rozgrywka.getKtoBlind() == 5 && rozgrywka.getGracze().get(5).getKartyWRece().size() != 0) {
                             sprawdzeniePlusEwWylozenieKartNaStolFLOP();
                             repaint();
                         } else {
-                            rozgrywka.ruchGracza( i );
+                            rozgrywka.ruchGracza(i);
                             sprawdzeniePlusEwWylozenieKartNaStolFLOP();
                             repaint();
                         }
@@ -2469,15 +2484,15 @@ public class PanelStolik extends JPanel implements ActionListener {
         } else if (kartaT == null && kartaF1 != null) {
             if (rozgrywka.getPobierzBlind() == 0) {
                 for (int i = (rozgrywka.getPobierzBlind() + 1); i < rozgrywka.getGracze().size(); i++) {
-                    if (rozgrywka.getGracze().get( i ).getKartyWRece().size() != 0) {
-                        wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza( wartoscTmp );
+                    if (rozgrywka.getGracze().get(i).getKartyWRece().size() != 0) {
+                        wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
                         if (i == 5) {
-                            if (rozgrywka.getGracze().get( 5 ).getPulaZetonowGracza() < wartoscTmp) {
-                                rozgrywka.ruchGracza( i );
+                            if (rozgrywka.getGracze().get(5).getPulaZetonowGracza() < wartoscTmp) {
+                                rozgrywka.ruchGracza(i);
                                 repaint();
                             }
                         } else {
-                            rozgrywka.ruchGracza( i );
+                            rozgrywka.ruchGracza(i);
                             repaint();
                             System.out.println();
                         }
@@ -2493,15 +2508,15 @@ public class PanelStolik extends JPanel implements ActionListener {
         } else if (kartaR == null && kartaT != null && kartaF1 != null) {
             if (rozgrywka.getPobierzBlind() == 0) {
                 for (int i = (rozgrywka.getPobierzBlind() + 1); i < rozgrywka.getGracze().size(); i++) {
-                    if (rozgrywka.getGracze().get( i ).getKartyWRece().size() != 0) {
-                        wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza( wartoscTmp );
+                    if (rozgrywka.getGracze().get(i).getKartyWRece().size() != 0) {
+                        wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
                         if (i == 5) {
-                            if (rozgrywka.getGracze().get( 5 ).getPulaZetonowGracza() < wartoscTmp) {
-                                rozgrywka.ruchGracza( i );
+                            if (rozgrywka.getGracze().get(5).getPulaZetonowGracza() < wartoscTmp) {
+                                rozgrywka.ruchGracza(i);
                                 repaint();
                             }
                         } else {
-                            rozgrywka.ruchGracza( i );
+                            rozgrywka.ruchGracza(i);
                             repaint();
                             System.out.println();
                         }
@@ -2516,15 +2531,15 @@ public class PanelStolik extends JPanel implements ActionListener {
         } else if (kartaR != null && kartaT != null && kartaF1 != null) {
             if (rozgrywka.getPobierzBlind() == 0) {
                 for (int i = (rozgrywka.getPobierzBlind() + 1); i < rozgrywka.getGracze().size(); i++) {
-                    if (rozgrywka.getGracze().get( i ).getKartyWRece().size() != 0) {
-                        wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza( wartoscTmp );
+                    if (rozgrywka.getGracze().get(i).getKartyWRece().size() != 0) {
+                        wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
                         if (i == 5) {
-                            if (rozgrywka.getGracze().get( 5 ).getPulaZetonowGracza() < wartoscTmp) {
-                                rozgrywka.ruchGracza( i );
+                            if (rozgrywka.getGracze().get(5).getPulaZetonowGracza() < wartoscTmp) {
+                                rozgrywka.ruchGracza(i);
                                 repaint();
                             }
                         } else {
-                            rozgrywka.ruchGracza( i );
+                            rozgrywka.ruchGracza(i);
                             repaint();
                             System.out.println();
                         }
@@ -2544,8 +2559,8 @@ public class PanelStolik extends JPanel implements ActionListener {
 
         if (rozgrywka.getPobierzBlind() == 0 && pierwszyObrot) {
             for (int i = rozgrywka.getKtoBlind(); i < rozgrywka.getGracze().size(); i++) {
-                if (rozgrywka.getGracze().get( i ).getKartyWRece().size() != 0 && i != 0) {
-                    rozgrywka.ruchGracza( i );
+                if (rozgrywka.getGracze().get(i).getKartyWRece().size() != 0 && i != 0) {
+                    rozgrywka.ruchGracza(i);
                     repaint();
                 }
             }
@@ -2558,15 +2573,15 @@ public class PanelStolik extends JPanel implements ActionListener {
 //            }
         } else if (rozgrywka.getPobierzBlind() != 0) {
             for (int i = rozgrywka.getKtoBlind(); i < rozgrywka.getGracze().size(); i++) {
-                if (rozgrywka.getGracze().get( i ).getKartyWRece().size() != 0 && i != 0) {
-                    rozgrywka.ruchGracza( i );
+                if (rozgrywka.getGracze().get(i).getKartyWRece().size() != 0 && i != 0) {
+                    rozgrywka.ruchGracza(i);
                     repaint();
                 }
             }
         } else if (rozgrywka.getKtoBlind() == 0) {
             for (int i = rozgrywka.getPobierzBlind(); i < rozgrywka.getGracze().size(); i++) {
-                if (rozgrywka.getGracze().get( i ).getKartyWRece().size() != 0 && i != 0) {
-                    rozgrywka.ruchGracza( i );
+                if (rozgrywka.getGracze().get(i).getKartyWRece().size() != 0 && i != 0) {
+                    rozgrywka.ruchGracza(i);
                     repaint();
                 }
             }
@@ -2613,8 +2628,7 @@ public class PanelStolik extends JPanel implements ActionListener {
         }
         if (iloscGraczyWGrze == 1) {
             czyZostalJedenGracz = true;
-            System.out.println( "został jeden gracz. Koniec rozdania" );
-
+            System.out.println("został jeden gracz. Koniec rozdania");
 
 
             koniecRozdania();
@@ -2634,7 +2648,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                 } else {
                     if (kartaF1 == null) {
                         try {
-                            rozgrywka.ruchGracza( i );
+                            rozgrywka.ruchGracza(i);
                         } catch (InterruptedException interruptedException) {
                             interruptedException.printStackTrace();
                         } catch (SQLException throwables) {
@@ -2642,7 +2656,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();
                         }
-                        System.out.println( i );
+                        System.out.println(i);
                         repaint();
                     }
 
@@ -2661,10 +2675,10 @@ public class PanelStolik extends JPanel implements ActionListener {
 
         if (kartaF1 == null) {
             for (int i = rozgrywka.getPobierzBlind() + 1; i < rozgrywka.getGracze().size(); i++) {
-                if (rozgrywka.getGracze().get( i ).getKartyWRece().size() != 0 && kartaF1 == null) {
+                if (rozgrywka.getGracze().get(i).getKartyWRece().size() != 0 && kartaF1 == null) {
 
                     try {
-                        rozgrywka.ruchGracza( i );
+                        rozgrywka.ruchGracza(i);
                     } catch (InterruptedException interruptedException) {
                         interruptedException.printStackTrace();
                     } catch (SQLException throwables) {
@@ -2695,7 +2709,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 
                     if (kartaT == null) {
                         try {
-                            rozgrywka.ruchGracza( i );
+                            rozgrywka.ruchGracza(i);
                         } catch (InterruptedException interruptedException) {
                             interruptedException.printStackTrace();
                         } catch (SQLException throwables) {
@@ -2719,9 +2733,9 @@ public class PanelStolik extends JPanel implements ActionListener {
 
         if (kartaT == null) {
             for (int i = rozgrywka.getPobierzBlind() + 1; i < rozgrywka.getGracze().size(); i++) {
-                if (rozgrywka.getGracze().get( i ).getKartyWRece().size() != 0 && kartaT == null) {
+                if (rozgrywka.getGracze().get(i).getKartyWRece().size() != 0 && kartaT == null) {
                     try {
-                        rozgrywka.ruchGracza( i );
+                        rozgrywka.ruchGracza(i);
                     } catch (InterruptedException interruptedException) {
                         interruptedException.printStackTrace();
                     } catch (SQLException throwables) {
@@ -2749,7 +2763,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 
                     if (kartaR == null) {
                         try {
-                            rozgrywka.ruchGracza( i );
+                            rozgrywka.ruchGracza(i);
                         } catch (InterruptedException interruptedException) {
                             interruptedException.printStackTrace();
                         } catch (SQLException throwables) {
@@ -2772,8 +2786,8 @@ public class PanelStolik extends JPanel implements ActionListener {
 
         if (kartaR == null && rozgrywka.getPobierzBlind() == 0) {
             for (int i = rozgrywka.getPobierzBlind() + 1; i < rozgrywka.getGracze().size(); i++) {
-                if (rozgrywka.getGracze().get( i ).getKartyWRece().size() != 0 && i != 0 && kartaR == null) {
-                    rozgrywka.ruchGracza( i );
+                if (rozgrywka.getGracze().get(i).getKartyWRece().size() != 0 && i != 0 && kartaR == null) {
+                    rozgrywka.ruchGracza(i);
                     repaint();
                     sprawdzeniePlusEwWylozenieKartNaStolRiver();
                 }
@@ -2785,7 +2799,7 @@ public class PanelStolik extends JPanel implements ActionListener {
     }
 
     private void sprawdzeniePoNaszymRuchuIRuchyGraczyOstatniaLicytacja() throws InterruptedException, SQLException, ClassNotFoundException {
-        Gracz naszGracz = rozgrywka.getGracze().get( 0 );
+        Gracz naszGracz = rozgrywka.getGracze().get(0);
         if (kartaF1 != null && kartaT != null && kartaR != null) {
 
             for (int i = 0; i <= rozgrywka.getPobierzBlind(); i++) {
@@ -2793,7 +2807,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                 } else {
 
                     if (kartaR != null) {
-                        rozgrywka.ruchGracza( i );
+                        rozgrywka.ruchGracza(i);
                         repaint();
                     }
 
@@ -2809,8 +2823,8 @@ public class PanelStolik extends JPanel implements ActionListener {
 
         if (kartaR != null && rozgrywka.getPobierzBlind() == 0) {
             for (int i = rozgrywka.getPobierzBlind() + 1; i < rozgrywka.getGracze().size(); i++) {
-                if (rozgrywka.getGracze().get( i ).getKartyWRece().size() != 0 && i != 0 && kartaR == null) {
-                    rozgrywka.ruchGracza( i );
+                if (rozgrywka.getGracze().get(i).getKartyWRece().size() != 0 && i != 0 && kartaR == null) {
+                    rozgrywka.ruchGracza(i);
                     repaint();
                     sprawdzenieIPokazanieKart();
                 }
@@ -2821,9 +2835,9 @@ public class PanelStolik extends JPanel implements ActionListener {
     }
 
     private void naszRuchBet(Gracz naszGracz) {
-        wartoscTmp = rozgrywka.getGracze().get( 0 ).getPulaZetonowGracza();
+        wartoscTmp = rozgrywka.getGracze().get(0).getPulaZetonowGracza();
 
-        wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza( wartoscTmp );
+        wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm:ss"));
 
@@ -2837,11 +2851,11 @@ public class PanelStolik extends JPanel implements ActionListener {
             e.printStackTrace();
         }
 
-        System.out.println( "Zrobiłem Bet" );
+        System.out.println("Zrobiłem Bet");
         if (kartaF1 == null) {
             if (naszGracz.getPulaZetonowGracza() <= wartoscTmp) {
-                naszGracz.setIloscZetonow( naszGracz.getIloscZetonow() - (wartoscTmp + rozgrywka.getDuzyBlind()) + naszGracz.getPulaZetonowGracza() );
-                naszGracz.setPulaZetonowGracza( (wartoscTmp + rozgrywka.getDuzyBlind()) );
+                naszGracz.setIloscZetonow(naszGracz.getIloscZetonow() - (wartoscTmp + rozgrywka.getDuzyBlind()) + naszGracz.getPulaZetonowGracza());
+                naszGracz.setPulaZetonowGracza((wartoscTmp + rozgrywka.getDuzyBlind()));
                 repaint();
                 licytacjaWGrze = false;
                 repaint();
@@ -2872,8 +2886,8 @@ public class PanelStolik extends JPanel implements ActionListener {
         } else if (kartaT == null && kartaF1 != null) {
 
             if (naszGracz.getPulaZetonowGracza() <= wartoscTmp) {
-                naszGracz.setIloscZetonow( naszGracz.getIloscZetonow() - (wartoscTmp + rozgrywka.getDuzyBlind()) + naszGracz.getPulaZetonowGracza() );
-                naszGracz.setPulaZetonowGracza( (wartoscTmp + rozgrywka.getDuzyBlind()) );
+                naszGracz.setIloscZetonow(naszGracz.getIloscZetonow() - (wartoscTmp + rozgrywka.getDuzyBlind()) + naszGracz.getPulaZetonowGracza());
+                naszGracz.setPulaZetonowGracza((wartoscTmp + rozgrywka.getDuzyBlind()));
                 repaint();
                 licytacjaWGrze = false;
                 repaint();
@@ -2883,8 +2897,8 @@ public class PanelStolik extends JPanel implements ActionListener {
         } else if (kartaR == null && kartaT != null && kartaF1 != null) {
 
             if (naszGracz.getPulaZetonowGracza() <= wartoscTmp) {
-                naszGracz.setIloscZetonow( naszGracz.getIloscZetonow() - (wartoscTmp + rozgrywka.getDuzyBlind()) + naszGracz.getPulaZetonowGracza() );
-                naszGracz.setPulaZetonowGracza( (wartoscTmp + rozgrywka.getDuzyBlind()) );
+                naszGracz.setIloscZetonow(naszGracz.getIloscZetonow() - (wartoscTmp + rozgrywka.getDuzyBlind()) + naszGracz.getPulaZetonowGracza());
+                naszGracz.setPulaZetonowGracza((wartoscTmp + rozgrywka.getDuzyBlind()));
                 repaint();
                 licytacjaWGrze = false;
                 repaint();
@@ -2893,8 +2907,8 @@ public class PanelStolik extends JPanel implements ActionListener {
         } else if (kartaR != null && kartaT != null && kartaF1 != null) {
 
             if (naszGracz.getPulaZetonowGracza() <= wartoscTmp) {
-                naszGracz.setIloscZetonow( naszGracz.getIloscZetonow() - (wartoscTmp + rozgrywka.getDuzyBlind()) + naszGracz.getPulaZetonowGracza() );
-                naszGracz.setPulaZetonowGracza( (wartoscTmp + rozgrywka.getDuzyBlind()) );
+                naszGracz.setIloscZetonow(naszGracz.getIloscZetonow() - (wartoscTmp + rozgrywka.getDuzyBlind()) + naszGracz.getPulaZetonowGracza());
+                naszGracz.setPulaZetonowGracza((wartoscTmp + rozgrywka.getDuzyBlind()));
                 repaint();
                 licytacjaWGrze = false;
                 repaint();
@@ -2915,9 +2929,10 @@ public class PanelStolik extends JPanel implements ActionListener {
     }
 
     private void naszRuchCheck(Gracz naszGracz) {
-        wartoscTmp = rozgrywka.getGracze().get( 0 ).getPulaZetonowGracza();
 
-        wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza( wartoscTmp );
+        wartoscTmp = rozgrywka.getGracze().get(0).getPulaZetonowGracza();
+
+        wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm:ss"));
 
@@ -2931,13 +2946,13 @@ public class PanelStolik extends JPanel implements ActionListener {
             e.printStackTrace();
         }
 
-        System.out.println( "ZROBILEM ruch" );
+        System.out.println("ZROBILEM ruch");
+
         if (kartaF1 == null) {
 
-
             if (naszGracz.getPulaZetonowGracza() < wartoscTmp) {
-                naszGracz.setIloscZetonow( naszGracz.getIloscZetonow() - wartoscTmp + naszGracz.getPulaZetonowGracza() );
-                naszGracz.setPulaZetonowGracza( wartoscTmp );
+                naszGracz.setIloscZetonow(naszGracz.getIloscZetonow() - wartoscTmp + naszGracz.getPulaZetonowGracza());
+                naszGracz.setPulaZetonowGracza(wartoscTmp);
                 licytacjaWGrze = false;
                 repaint();
             }
@@ -2968,8 +2983,8 @@ public class PanelStolik extends JPanel implements ActionListener {
         } else if (kartaT == null && kartaF1 != null) {
 
             if (naszGracz.getPulaZetonowGracza() < wartoscTmp) {
-                naszGracz.setIloscZetonow( naszGracz.getIloscZetonow() - wartoscTmp + naszGracz.getPulaZetonowGracza() );
-                naszGracz.setPulaZetonowGracza( wartoscTmp );
+                naszGracz.setIloscZetonow(naszGracz.getIloscZetonow() - wartoscTmp + naszGracz.getPulaZetonowGracza());
+                naszGracz.setPulaZetonowGracza(wartoscTmp);
                 repaint();
             } else if (naszGracz.getPulaZetonowGracza() == wartoscTmp && rozgrywka.getPobierzBlind() == 0) {
             }
@@ -2977,16 +2992,16 @@ public class PanelStolik extends JPanel implements ActionListener {
         } else if (kartaR == null && kartaT != null && kartaF1 != null) {
 
             if (naszGracz.getPulaZetonowGracza() < wartoscTmp) {
-                naszGracz.setIloscZetonow( naszGracz.getIloscZetonow() - wartoscTmp + naszGracz.getPulaZetonowGracza() );
-                naszGracz.setPulaZetonowGracza( wartoscTmp );
+                naszGracz.setIloscZetonow(naszGracz.getIloscZetonow() - wartoscTmp + naszGracz.getPulaZetonowGracza());
+                naszGracz.setPulaZetonowGracza(wartoscTmp);
                 repaint();
             } else if (naszGracz.getPulaZetonowGracza() == wartoscTmp && rozgrywka.getPobierzBlind() == 0) {
             }
         } else if (kartaR != null && kartaT != null && kartaF1 != null) {
 
             if (naszGracz.getPulaZetonowGracza() < wartoscTmp) {
-                naszGracz.setIloscZetonow( naszGracz.getIloscZetonow() - wartoscTmp + naszGracz.getPulaZetonowGracza() );
-                naszGracz.setPulaZetonowGracza( wartoscTmp );
+                naszGracz.setIloscZetonow(naszGracz.getIloscZetonow() - wartoscTmp + naszGracz.getPulaZetonowGracza());
+                naszGracz.setPulaZetonowGracza(wartoscTmp);
                 repaint();
             } else if (naszGracz.getPulaZetonowGracza() == wartoscTmp && rozgrywka.getPobierzBlind() == 0) {
             }
@@ -2998,16 +3013,16 @@ public class PanelStolik extends JPanel implements ActionListener {
 
         if (kartaF1 == null) {
 
-            System.out.println( "ZROBILEM ruch" );
+            System.out.println("ZROBILEM ruch");
 
-            wartoscTmp = rozgrywka.getGracze().get( 0 ).getPulaZetonowGracza();
+            wartoscTmp = rozgrywka.getGracze().get(0).getPulaZetonowGracza();
 
-            wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza( wartoscTmp );
+            wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
 
 
             if (naszGracz.getPulaZetonowGracza() < wartoscTmp) {
-                naszGracz.setIloscZetonow( naszGracz.getIloscZetonow() - wartoscTmp + naszGracz.getPulaZetonowGracza() );
-                naszGracz.setPulaZetonowGracza( wartoscTmp );
+                naszGracz.setIloscZetonow(naszGracz.getIloscZetonow() - wartoscTmp + naszGracz.getPulaZetonowGracza());
+                naszGracz.setPulaZetonowGracza(wartoscTmp);
                 licytacjaWGrze = false;
                 repaint();
             }
@@ -3042,16 +3057,16 @@ public class PanelStolik extends JPanel implements ActionListener {
 
         if (kartaT == null) {
 
-            System.out.println( "ZROBILEM ruch" );
+            System.out.println("ZROBILEM ruch");
 
-            wartoscTmp = rozgrywka.getGracze().get( 0 ).getPulaZetonowGracza();
+            wartoscTmp = rozgrywka.getGracze().get(0).getPulaZetonowGracza();
 
-            wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza( wartoscTmp );
+            wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
 
 
             if (naszGracz.getPulaZetonowGracza() < wartoscTmp) {
-                naszGracz.setIloscZetonow( naszGracz.getIloscZetonow() - wartoscTmp + naszGracz.getPulaZetonowGracza() );
-                naszGracz.setPulaZetonowGracza( wartoscTmp );
+                naszGracz.setIloscZetonow(naszGracz.getIloscZetonow() - wartoscTmp + naszGracz.getPulaZetonowGracza());
+                naszGracz.setPulaZetonowGracza(wartoscTmp);
 
                 repaint();
             } else if (naszGracz.getPulaZetonowGracza() == wartoscTmp && rozgrywka.getPobierzBlind() == 0) {
@@ -3097,31 +3112,31 @@ public class PanelStolik extends JPanel implements ActionListener {
     private void naszRuchPoWylozeniuPiecuKArtNaStol(Gracz naszGracz) {
 
         if (kartaR == null) {
-            System.out.println( pierwszyObrot + "   pierwszy obrot wartosc" );
-            System.out.println( "ZROBILEM RUCH" );
+            System.out.println(pierwszyObrot + "   pierwszy obrot wartosc");
+            System.out.println("ZROBILEM RUCH");
 
-            wartoscTmp = rozgrywka.getGracze().get( 0 ).getPulaZetonowGracza();
+            wartoscTmp = rozgrywka.getGracze().get(0).getPulaZetonowGracza();
 
-            wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza( wartoscTmp );
+            wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
 
 
             if (naszGracz.getPulaZetonowGracza() < wartoscTmp) {
-                naszGracz.setIloscZetonow( naszGracz.getIloscZetonow() - wartoscTmp + naszGracz.getPulaZetonowGracza() );
-                naszGracz.setPulaZetonowGracza( wartoscTmp );
+                naszGracz.setIloscZetonow(naszGracz.getIloscZetonow() - wartoscTmp + naszGracz.getPulaZetonowGracza());
+                naszGracz.setPulaZetonowGracza(wartoscTmp);
                 licytacjaWGrze = false;
                 repaint();
             }
 
             if (!pierwszyObrot) {
-                System.out.println( "SPRAWDZENIE RAZ to moze jest tutaj kurde" );
+                System.out.println("SPRAWDZENIE RAZ to moze jest tutaj kurde");
                 sprawdzenieIPokazanieKart();
             } else if (!pierwszyObrot && rozgrywka.getPobierzBlind() == 0) {
                 sprawdzenieIPokazanieKart();
-                System.out.println( "o co tu chodzi" );
+                System.out.println("o co tu chodzi");
             } else if (pierwszyObrot) {
                 pierwszyObrot = false;
 //                sprawdzeniePoNaszymRuchuIRuchyGraczyOstatniaLicytacja();
-                System.out.println( "cos tu nie gra" );
+                System.out.println("cos tu nie gra");
 
             }
 
@@ -3131,7 +3146,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 
     private void sprawdzeniePlusEwWylozenieKartNaStolFLOP() throws InterruptedException, SQLException, ClassNotFoundException {
 
-        wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza( wartoscTmp );
+        wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
 
         czyGraczeWlozyliTakaSamaIloscZetonowDoPuli = true;
         sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
@@ -3151,10 +3166,10 @@ public class PanelStolik extends JPanel implements ActionListener {
             if (czyZostalJedenGracz == false) {
                 if (czyGraczeWlozyliTakaSamaIloscZetonowDoPuli) {
 
-                    System.out.print( "POKAZUJE KARTY" );
-                    kartaF1 = new ImageIcon( zapiszObrazDlaKartStol( 0 ) ).getImage();
-                    kartaF2 = new ImageIcon( zapiszObrazDlaKartStol( 1 ) ).getImage();
-                    kartaF3 = new ImageIcon( zapiszObrazDlaKartStol( 2 ) ).getImage();
+                    System.out.print("POKAZUJE KARTY");
+                    kartaF1 = new ImageIcon(zapiszObrazDlaKartStol(0)).getImage();
+                    kartaF2 = new ImageIcon(zapiszObrazDlaKartStol(1)).getImage();
+                    kartaF3 = new ImageIcon(zapiszObrazDlaKartStol(2)).getImage();
 
                     dodajZetonyGraczyDoPuli();
 
@@ -3175,7 +3190,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 
     private void sprawdzeniePlusEwWylozenieKartNaStolTURN() {
 
-        wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza( wartoscTmp );
+        wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
 
         czyGraczeWlozyliTakaSamaIloscZetonowDoPuli = true;
 
@@ -3194,8 +3209,8 @@ public class PanelStolik extends JPanel implements ActionListener {
             if (czyZostalJedenGracz == false) {
                 if (czyGraczeWlozyliTakaSamaIloscZetonowDoPuli) {
 
-                    System.out.println( "POKAZUJE KARTY" );
-                    kartaT = new ImageIcon( zapiszObrazDlaKartStol( 3 ) ).getImage();
+                    System.out.println("POKAZUJE KARTY");
+                    kartaT = new ImageIcon(zapiszObrazDlaKartStol(3)).getImage();
 
                     dodajZetonyGraczyDoPuli();
 
@@ -3225,7 +3240,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 
     private void sprawdzeniePlusEwWylozenieKartNaStolRiver() {
 
-        wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza( wartoscTmp );
+        wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
 
         czyGraczeWlozyliTakaSamaIloscZetonowDoPuli = true;
 
@@ -3244,8 +3259,8 @@ public class PanelStolik extends JPanel implements ActionListener {
             if (czyZostalJedenGracz == false) {
                 if (czyGraczeWlozyliTakaSamaIloscZetonowDoPuli) {
 
-                    System.out.println( "POKAZUJE KARTY" );
-                    kartaR = new ImageIcon( zapiszObrazDlaKartStol( 4 ) ).getImage();
+                    System.out.println("POKAZUJE KARTY");
+                    kartaR = new ImageIcon(zapiszObrazDlaKartStol(4)).getImage();
 
                     dodajZetonyGraczyDoPuli();
 
@@ -3276,7 +3291,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 
     private void sprawdzenieIPokazanieKart() {
 
-        wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza( wartoscTmp );
+        wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
 
         czyGraczeWlozyliTakaSamaIloscZetonowDoPuli = true;
 
@@ -3296,7 +3311,7 @@ public class PanelStolik extends JPanel implements ActionListener {
             sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
             if (czyGraczeWlozyliTakaSamaIloscZetonowDoPuli) {
                 if (czyZostalJedenGracz == false) {
-                    System.out.println( "Gracze pokazuja karty" );
+                    System.out.println("Gracze pokazuja karty");
                     rozgrywka.sprawdzanieKart();
 
                     for (Gracz g : rozgrywka.getGracze()) {
@@ -3354,116 +3369,116 @@ public class PanelStolik extends JPanel implements ActionListener {
     private void dodaniePolGraczyZeWzgleduNaIchIlosc(Graphics g) {
 
         if (rozgrywka.getLiczbaGraczy() == 2) {
-            g.drawString( rozgrywka.getGracze().get( 0 ).getNick(), 1400, 870 );
-            g.drawImage( gracz0k1, 1375, 731, null );
-            g.drawImage( gracz0k2, 1449, 731, null );
-            g.drawString( rozgrywka.getGracze().get( 1 ).getNick(), 425, 870 );
-            g.drawImage( gracz1k1, 405, 731, null );
-            g.drawImage( gracz1k2, 479, 731, null );
-            g.drawString( String.valueOf( rozgrywka.getGracze().get( 0 ).getIloscZetonow() ), 1430, 907 );
-            g.drawString( String.valueOf( rozgrywka.getGracze().get( 1 ).getIloscZetonow() ), 460, 907 );
+            g.drawString(rozgrywka.getGracze().get(0).getNick(), 1400, 870);
+            g.drawImage(gracz0k1, 1375, 731, null);
+            g.drawImage(gracz0k2, 1449, 731, null);
+            g.drawString(rozgrywka.getGracze().get(1).getNick(), 425, 870);
+            g.drawImage(gracz1k1, 405, 731, null);
+            g.drawImage(gracz1k2, 479, 731, null);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(0).getIloscZetonow()), 1430, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(1).getIloscZetonow()), 460, 907);
 
 
         } else if (rozgrywka.getLiczbaGraczy() == 3) {
 
-            g.drawString( rozgrywka.getGracze().get( 0 ).getNick(), 1400, 870 );
-            g.drawString( rozgrywka.getGracze().get( 1 ).getNick(), 425, 870 );
-            g.drawString( rozgrywka.getGracze().get( 2 ).getNick(), 70, 525 );
-            g.drawImage( gracz0k1, 1375, 731, null );
-            g.drawImage( gracz0k2, 1449, 731, null );
-            g.drawImage( gracz1k1, 405, 731, null );
-            g.drawImage( gracz1k2, 479, 731, null );
-            g.drawImage( gracz2k1, 60, 387, null );
-            g.drawImage( gracz2k2, 134, 387, null );
-            g.drawString( String.valueOf( rozgrywka.getGracze().get( 0 ).getIloscZetonow() ), 1430, 907 );
-            g.drawString( String.valueOf( rozgrywka.getGracze().get( 1 ).getIloscZetonow() ), 460, 907 );
-            g.drawString( String.valueOf( rozgrywka.getGracze().get( 2 ).getIloscZetonow() ), 115, 562 );
+            g.drawString(rozgrywka.getGracze().get(0).getNick(), 1400, 870);
+            g.drawString(rozgrywka.getGracze().get(1).getNick(), 425, 870);
+            g.drawString(rozgrywka.getGracze().get(2).getNick(), 70, 525);
+            g.drawImage(gracz0k1, 1375, 731, null);
+            g.drawImage(gracz0k2, 1449, 731, null);
+            g.drawImage(gracz1k1, 405, 731, null);
+            g.drawImage(gracz1k2, 479, 731, null);
+            g.drawImage(gracz2k1, 60, 387, null);
+            g.drawImage(gracz2k2, 134, 387, null);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(0).getIloscZetonow()), 1430, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(1).getIloscZetonow()), 460, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(2).getIloscZetonow()), 115, 562);
 
         } else if (rozgrywka.getLiczbaGraczy() == 4) {
-            g.drawString( rozgrywka.getGracze().get( 0 ).getNick(), 1400, 870 );
-            g.drawString( rozgrywka.getGracze().get( 1 ).getNick(), 425, 870 );
-            g.drawString( rozgrywka.getGracze().get( 2 ).getNick(), 70, 525 );
-            g.drawString( rozgrywka.getGracze().get( 3 ).getNick(), 425, 183 );
-            g.drawImage( gracz0k1, 1375, 731, null );
-            g.drawImage( gracz0k2, 1449, 731, null );
-            g.drawImage( gracz1k1, 405, 731, null );
-            g.drawImage( gracz1k2, 479, 731, null );
-            g.drawImage( gracz2k1, 60, 387, null );
-            g.drawImage( gracz2k2, 134, 387, null );
-            g.drawImage( gracz3k1, 405, 45, null );
-            g.drawImage( gracz3k2, 479, 45, null );
-            g.drawString( String.valueOf( rozgrywka.getGracze().get( 0 ).getIloscZetonow() ), 1430, 907 );
-            g.drawString( String.valueOf( rozgrywka.getGracze().get( 1 ).getIloscZetonow() ), 460, 907 );
-            g.drawString( String.valueOf( rozgrywka.getGracze().get( 2 ).getIloscZetonow() ), 115, 562 );
-            g.drawString( String.valueOf( rozgrywka.getGracze().get( 3 ).getIloscZetonow() ), 460, 220 );
+            g.drawString(rozgrywka.getGracze().get(0).getNick(), 1400, 870);
+            g.drawString(rozgrywka.getGracze().get(1).getNick(), 425, 870);
+            g.drawString(rozgrywka.getGracze().get(2).getNick(), 70, 525);
+            g.drawString(rozgrywka.getGracze().get(3).getNick(), 425, 183);
+            g.drawImage(gracz0k1, 1375, 731, null);
+            g.drawImage(gracz0k2, 1449, 731, null);
+            g.drawImage(gracz1k1, 405, 731, null);
+            g.drawImage(gracz1k2, 479, 731, null);
+            g.drawImage(gracz2k1, 60, 387, null);
+            g.drawImage(gracz2k2, 134, 387, null);
+            g.drawImage(gracz3k1, 405, 45, null);
+            g.drawImage(gracz3k2, 479, 45, null);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(0).getIloscZetonow()), 1430, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(1).getIloscZetonow()), 460, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(2).getIloscZetonow()), 115, 562);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(3).getIloscZetonow()), 460, 220);
 
 
         } else if (rozgrywka.getLiczbaGraczy() == 5) {
-            g.drawString( rozgrywka.getGracze().get( 0 ).getNick(), 1400, 870 );
-            g.drawString( rozgrywka.getGracze().get( 1 ).getNick(), 425, 870 );
-            g.drawString( rozgrywka.getGracze().get( 2 ).getNick(), 70, 525 );
-            g.drawString( rozgrywka.getGracze().get( 3 ).getNick(), 425, 183 );
-            g.drawString( rozgrywka.getGracze().get( 4 ).getNick(), 1400, 183 );
-            g.drawImage( gracz0k1, 1375, 731, null );
-            g.drawImage( gracz0k2, 1449, 731, null );
-            g.drawImage( gracz1k1, 405, 731, null );
-            g.drawImage( gracz1k2, 479, 731, null );
-            g.drawImage( gracz2k1, 60, 387, null );
-            g.drawImage( gracz2k2, 134, 387, null );
-            g.drawImage( gracz3k1, 405, 45, null );
-            g.drawImage( gracz3k2, 479, 45, null );
-            g.drawImage( gracz4k1, 1375, 45, null );
-            g.drawImage( gracz4k2, 1449, 45, null );
-            g.drawString( String.valueOf( rozgrywka.getGracze().get( 0 ).getIloscZetonow() ), 1430, 907 );
-            g.drawString( String.valueOf( rozgrywka.getGracze().get( 1 ).getIloscZetonow() ), 460, 907 );
-            g.drawString( String.valueOf( rozgrywka.getGracze().get( 2 ).getIloscZetonow() ), 115, 562 );
-            g.drawString( String.valueOf( rozgrywka.getGracze().get( 3 ).getIloscZetonow() ), 460, 220 );
-            g.drawString( String.valueOf( rozgrywka.getGracze().get( 4 ).getIloscZetonow() ), 1430, 220 );
+            g.drawString(rozgrywka.getGracze().get(0).getNick(), 1400, 870);
+            g.drawString(rozgrywka.getGracze().get(1).getNick(), 425, 870);
+            g.drawString(rozgrywka.getGracze().get(2).getNick(), 70, 525);
+            g.drawString(rozgrywka.getGracze().get(3).getNick(), 425, 183);
+            g.drawString(rozgrywka.getGracze().get(4).getNick(), 1400, 183);
+            g.drawImage(gracz0k1, 1375, 731, null);
+            g.drawImage(gracz0k2, 1449, 731, null);
+            g.drawImage(gracz1k1, 405, 731, null);
+            g.drawImage(gracz1k2, 479, 731, null);
+            g.drawImage(gracz2k1, 60, 387, null);
+            g.drawImage(gracz2k2, 134, 387, null);
+            g.drawImage(gracz3k1, 405, 45, null);
+            g.drawImage(gracz3k2, 479, 45, null);
+            g.drawImage(gracz4k1, 1375, 45, null);
+            g.drawImage(gracz4k2, 1449, 45, null);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(0).getIloscZetonow()), 1430, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(1).getIloscZetonow()), 460, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(2).getIloscZetonow()), 115, 562);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(3).getIloscZetonow()), 460, 220);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(4).getIloscZetonow()), 1430, 220);
 
         } else if (rozgrywka.getLiczbaGraczy() == 6) {
 
-            g.drawString( rozgrywka.getGracze().get( 0 ).getNick(), 1400, 870 );
-            g.drawString( rozgrywka.getGracze().get( 1 ).getNick(), 425, 870 );
-            g.drawString( rozgrywka.getGracze().get( 2 ).getNick(), 70, 525 );
-            g.drawString( rozgrywka.getGracze().get( 3 ).getNick(), 425, 183 );
-            g.drawString( rozgrywka.getGracze().get( 4 ).getNick(), 1400, 183 );
-            g.drawString( rozgrywka.getGracze().get( 5 ).getNick(), 1750, 525 );
-            g.drawImage( gracz0k1, 1375, 731, null );
-            g.drawImage( gracz0k2, 1449, 731, null );
-            g.drawImage( gracz1k1, 405, 731, null );
-            g.drawImage( gracz1k2, 479, 731, null );
-            g.drawImage( gracz2k1, 60, 387, null );
-            g.drawImage( gracz2k2, 134, 387, null );
-            g.drawImage( gracz3k1, 405, 45, null );
-            g.drawImage( gracz3k2, 479, 45, null );
-            g.drawImage( gracz4k1, 1375, 45, null );
-            g.drawImage( gracz4k2, 1449, 45, null );
-            g.drawImage( gracz5k1, 1720, 387, null );
-            g.drawImage( gracz5k2, 1794, 387, null );
-            g.drawString( String.valueOf( rozgrywka.getGracze().get( 0 ).getIloscZetonow() ), 1430, 907 );
-            g.drawString( String.valueOf( rozgrywka.getGracze().get( 1 ).getIloscZetonow() ), 460, 907 );
-            g.drawString( String.valueOf( rozgrywka.getGracze().get( 2 ).getIloscZetonow() ), 115, 562 );
-            g.drawString( String.valueOf( rozgrywka.getGracze().get( 3 ).getIloscZetonow() ), 460, 220 );
-            g.drawString( String.valueOf( rozgrywka.getGracze().get( 4 ).getIloscZetonow() ), 1430, 220 );
-            g.drawString( String.valueOf( rozgrywka.getGracze().get( 5 ).getIloscZetonow() ), 1775, 562 );
+            g.drawString(rozgrywka.getGracze().get(0).getNick(), 1400, 870);
+            g.drawString(rozgrywka.getGracze().get(1).getNick(), 425, 870);
+            g.drawString(rozgrywka.getGracze().get(2).getNick(), 70, 525);
+            g.drawString(rozgrywka.getGracze().get(3).getNick(), 425, 183);
+            g.drawString(rozgrywka.getGracze().get(4).getNick(), 1400, 183);
+            g.drawString(rozgrywka.getGracze().get(5).getNick(), 1750, 525);
+            g.drawImage(gracz0k1, 1375, 731, null);
+            g.drawImage(gracz0k2, 1449, 731, null);
+            g.drawImage(gracz1k1, 405, 731, null);
+            g.drawImage(gracz1k2, 479, 731, null);
+            g.drawImage(gracz2k1, 60, 387, null);
+            g.drawImage(gracz2k2, 134, 387, null);
+            g.drawImage(gracz3k1, 405, 45, null);
+            g.drawImage(gracz3k2, 479, 45, null);
+            g.drawImage(gracz4k1, 1375, 45, null);
+            g.drawImage(gracz4k2, 1449, 45, null);
+            g.drawImage(gracz5k1, 1720, 387, null);
+            g.drawImage(gracz5k2, 1794, 387, null);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(0).getIloscZetonow()), 1430, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(1).getIloscZetonow()), 460, 907);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(2).getIloscZetonow()), 115, 562);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(3).getIloscZetonow()), 460, 220);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(4).getIloscZetonow()), 1430, 220);
+            g.drawString(String.valueOf(rozgrywka.getGracze().get(5).getIloscZetonow()), 1775, 562);
         }
 
     }
 
     private void dodajKartyStolFlop(Graphics g) {
 
-        g.drawImage( kartaF1, 777, 487, null );
-        g.drawImage( kartaF2, 851, 487, null );
-        g.drawImage( kartaF3, 925, 487, null );
+        g.drawImage(kartaF1, 777, 487, null);
+        g.drawImage(kartaF2, 851, 487, null);
+        g.drawImage(kartaF3, 925, 487, null);
 
     }
 
     private void dodajKartyStolTurn(Graphics g) {
-        g.drawImage( kartaT, 999, 487, null );
+        g.drawImage(kartaT, 999, 487, null);
     }
 
     private void dodajKartyStolRiver(Graphics g) {
-        g.drawImage( kartaR, 1073, 487, null );
+        g.drawImage(kartaR, 1073, 487, null);
     }
 
     private void dodajZetonSmallBlind(Graphics g) {
@@ -3472,10 +3487,10 @@ public class PanelStolik extends JPanel implements ActionListener {
 
             if (rozgrywka.getPobierzBlind() - 1 == 0) {
                 g.drawImage(smallBlind, 1200, 790, null);
-            } else if (rozgrywka.getPobierzBlind() +1 == 1) {
+            } else if (rozgrywka.getPobierzBlind() + 1 == 1) {
                 g.drawImage(smallBlind, 670, 790, null);
             }
-        }else if (rozgrywka.getGracze().size() == 3) {
+        } else if (rozgrywka.getGracze().size() == 3) {
 
             if (rozgrywka.getPobierzBlind() - 1 == 0) {
                 g.drawImage(smallBlind, 1200, 790, null);
@@ -3530,30 +3545,30 @@ public class PanelStolik extends JPanel implements ActionListener {
     }
 
     private ImageIcon dodajZdjecieSmallBlind() {
-        smallBlind = new ImageIcon( "zdjecia\\sb.jpg" ).getImage();
-        return new ImageIcon( smallBlind );
+        smallBlind = new ImageIcon("zdjecia\\sb.jpg").getImage();
+        return new ImageIcon(smallBlind);
     }
 
     private void dodajZetonBibBlind(Graphics g) {
 
         if (rozgrywka.getPobierzBlind() == 0) {
-            g.drawImage( bigBlind, 1200, 790, null );
+            g.drawImage(bigBlind, 1200, 790, null);
         } else if (rozgrywka.getPobierzBlind() == 1) {
-            g.drawImage( bigBlind, 670, 790, null );
+            g.drawImage(bigBlind, 670, 790, null);
         } else if (rozgrywka.getPobierzBlind() == 2) {
-            g.drawImage( bigBlind, 320, 480, null );
+            g.drawImage(bigBlind, 320, 480, null);
         } else if (rozgrywka.getPobierzBlind() == 3) {
-            g.drawImage( bigBlind, 650, 260, null );
+            g.drawImage(bigBlind, 650, 260, null);
         } else if (rozgrywka.getPobierzBlind() == 4) {
-            g.drawImage( bigBlind, 1200, 260, null );
+            g.drawImage(bigBlind, 1200, 260, null);
         } else if (rozgrywka.getPobierzBlind() == 5) {
-            g.drawImage( bigBlind, 1570, 480, null );
+            g.drawImage(bigBlind, 1570, 480, null);
         }
     }
 
     private ImageIcon dodajZdjecieBigBlind() {
-        bigBlind = new ImageIcon( "zdjecia\\bb.jpg" ).getImage();
-        return new ImageIcon( bigBlind );
+        bigBlind = new ImageIcon("zdjecia\\bb.jpg").getImage();
+        return new ImageIcon(bigBlind);
     }
 
     private void dodajZetonDealer(Graphics g) {
@@ -3565,7 +3580,7 @@ public class PanelStolik extends JPanel implements ActionListener {
             } else if (rozgrywka.getPobierzBlind() + 1 == 1) {
                 g.drawImage(dealer, 720, 790, null);
             }
-        }else if (rozgrywka.getGracze().size() == 3) {
+        } else if (rozgrywka.getGracze().size() == 3) {
 
             if (rozgrywka.getPobierzBlind() - 2 == 0) {
                 g.drawImage(dealer, 1200, 790, null);
@@ -3620,57 +3635,53 @@ public class PanelStolik extends JPanel implements ActionListener {
     }
 
     private ImageIcon dodajZdjecieDealer() {
-        dealer = new ImageIcon( "zdjecia\\dealer.jpg" ).getImage();
-        return new ImageIcon( dealer );
+        dealer = new ImageIcon("zdjecia\\dealer.jpg").getImage();
+        return new ImageIcon(dealer);
     }
 
     private void dodajIloscPostawionychZetonowGracza0(Graphics g) {
-        if (rozgrywka.getGracze().get( 0 ).getPulaZetonowGracza() > 0) {
-            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get( 0 ).getPulaZetonowGracza() + betB) + "$";
-            g.drawString( iloscZetonowPostawionych, 1215, 710 );
+        if (rozgrywka.getGracze().get(0).getPulaZetonowGracza() > 0) {
+            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get(0).getPulaZetonowGracza() + betB) + "$";
+            g.drawString(iloscZetonowPostawionych, 1215, 710);
         }
     }
 
     private void dodajIloscPostawionychZetonowGracza1(Graphics g) {
-        if (rozgrywka.getGracze().get( 1 ).getPulaZetonowGracza() > 0) {
-            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get( 1 ).getPulaZetonowGracza()) + "$";
-            g.drawString( iloscZetonowPostawionych, 680, 710 );
+        if (rozgrywka.getGracze().get(1).getPulaZetonowGracza() > 0) {
+            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get(1).getPulaZetonowGracza()) + "$";
+            g.drawString(iloscZetonowPostawionych, 680, 710);
         }
     }
 
     private void dodajIloscPostawionychZetonowGracza2(Graphics g) {
-        if (rozgrywka.getGracze().get( 2 ).getPulaZetonowGracza() > 0) {
-            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get( 2 ).getPulaZetonowGracza()) + "$";
-            g.drawString( iloscZetonowPostawionych, 450, 520 );
+        if (rozgrywka.getGracze().get(2).getPulaZetonowGracza() > 0) {
+            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get(2).getPulaZetonowGracza()) + "$";
+            g.drawString(iloscZetonowPostawionych, 450, 520);
         }
     }
 
     private void dodajIloscPostawionychZetonowGracza3(Graphics g) {
-        if (rozgrywka.getGracze().get( 3 ).getPulaZetonowGracza() > 0) {
-            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get( 3 ).getPulaZetonowGracza()) + "$";
-            g.drawString( iloscZetonowPostawionych, 680, 360 );
+        if (rozgrywka.getGracze().get(3).getPulaZetonowGracza() > 0) {
+            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get(3).getPulaZetonowGracza()) + "$";
+            g.drawString(iloscZetonowPostawionych, 680, 360);
         }
     }
 
     private void dodajIloscPostawionychZetonowGracza4(Graphics g) {
-        if (rozgrywka.getGracze().get( 4 ).getPulaZetonowGracza() > 0) {
-            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get( 4 ).getPulaZetonowGracza()) + "$";
-            g.drawString( iloscZetonowPostawionych, 1215, 360 );
+        if (rozgrywka.getGracze().get(4).getPulaZetonowGracza() > 0) {
+            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get(4).getPulaZetonowGracza()) + "$";
+            g.drawString(iloscZetonowPostawionych, 1215, 360);
         }
     }
 
     private void dodajIloscPostawionychZetonowGracza5(Graphics g) {
-        if (rozgrywka.getGracze().get( 5 ).getPulaZetonowGracza() > 0) {
-            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get( 5 ).getPulaZetonowGracza()) + "$";
-            g.drawString( iloscZetonowPostawionych, 1420, 520 );
+        if (rozgrywka.getGracze().get(5).getPulaZetonowGracza() > 0) {
+            var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get(5).getPulaZetonowGracza()) + "$";
+            g.drawString(iloscZetonowPostawionych, 1420, 520);
         }
     }
 
     private void noweRozdanie() {
-
-        getRozgrywka().rozdajKartyDoReki( rozgrywka.getTaliaKart() );
-
-        dodajZdjeciaKartGraczy();
 
         getRozgrywka().rozdajFlop();
         getRozgrywka().rozdajTurn();
@@ -3681,33 +3692,20 @@ public class PanelStolik extends JPanel implements ActionListener {
         dodajZdjecieSmallBlind();
         dodajZdjecieBigBlind();
 
-
-//        JButton button = new JButton();
-//        button.setBounds(877, 686, 243, 83);
-//        button.setBorder(obramowanie);
-//        add(button);
-//        button.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//
-//                System.out.println("KRUSASDSADASD");
-//                button.setVisible(false);
-//
-//            }
-//        });
-
         dodajZdjecieDealer();
 
-        System.out.println( rozgrywka.getPobierzBlind() );
+        System.out.println(rozgrywka.getPobierzBlind());
 
-        System.out.println( "Pobierz blind :" + rozgrywka.getPobierzBlind() );
-        System.out.println( "KTO BLIND " + rozgrywka.getKtoBlind() );
+        System.out.println("Pobierz blind :" + rozgrywka.getPobierzBlind());
+        System.out.println("KTO BLIND " + rozgrywka.getKtoBlind());
         pierwszyObrot = true;
 
 
         for (int i = rozgrywka.getPobierzBlind() + 1; i < rozgrywka.getGracze().size(); i++) {
             try {
-                rozgrywka.ruchGracza( i );
+
+                rozgrywka.ruchGracza(i);
+                repaint();
             } catch (InterruptedException interruptedException) {
                 interruptedException.printStackTrace();
             } catch (SQLException throwables) {
@@ -3715,7 +3713,7 @@ public class PanelStolik extends JPanel implements ActionListener {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            repaint();
+
         }
 
 //        dodajZetonyGraczaDoPuli();
@@ -3731,11 +3729,11 @@ public class PanelStolik extends JPanel implements ActionListener {
 
         pulaGlowna = 0;
         for (Gracz g : rozgrywka.getGracze()) {
-            g.setPulaZetonowGracza( 0 );
-            g.setBlind( 0 );
+            g.setPulaZetonowGracza(0);
+            g.setBlind(0);
         }
 
-        rozgrywka.setTaliaKart( new TaliaKart() );
+        rozgrywka.setTaliaKart(new TaliaKart());
 
         rozgrywka.usunKartyZReki();
         rozgrywka.usunKartyStol();
@@ -3746,7 +3744,7 @@ public class PanelStolik extends JPanel implements ActionListener {
         kartaT = null;
         kartaR = null;
 
-        graj.setVisible( true );
+        graj.setVisible(true);
 
         repaint();
 
@@ -3756,7 +3754,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 
         for (Gracz g : rozgrywka.getGracze()) {
             pulaGlowna += g.getPulaZetonowGracza();
-            g.setPulaZetonowGracza( 0 );
+            g.setPulaZetonowGracza(0);
         }
     }
 
@@ -3782,18 +3780,279 @@ public class PanelStolik extends JPanel implements ActionListener {
 //            }
 //        };
 //        new Timer(delay, taskPerformer1).start();
-        gracz0k1 = new ImageIcon( zapiszObrazDlaGraczy( 0 ) ).getImage();
-        gracz1k1 = new ImageIcon( "zdjecia\\Green_back.jpg" ).getImage();
-        gracz2k1 = new ImageIcon( "zdjecia\\Green_back.jpg" ).getImage();
-        gracz3k1 = new ImageIcon( "zdjecia\\Green_back.jpg" ).getImage();
-        gracz4k1 = new ImageIcon( "zdjecia\\Green_back.jpg" ).getImage();
-        gracz5k1 = new ImageIcon( "zdjecia\\Green_back.jpg" ).getImage();
-        gracz0k2 = new ImageIcon( zapiszObrazDlaGraczy( 1 ) ).getImage();
-        gracz1k2 = new ImageIcon( "zdjecia\\Green_back.jpg" ).getImage();
-        gracz2k2 = new ImageIcon( "zdjecia\\Green_back.jpg" ).getImage();
-        gracz3k2 = new ImageIcon( "zdjecia\\Green_back.jpg" ).getImage();
-        gracz4k2 = new ImageIcon( "zdjecia\\Green_back.jpg" ).getImage();
-        gracz5k2 = new ImageIcon( "zdjecia\\Green_back.jpg" ).getImage();
+
+        int czas = 200;
+
+        gracz0k1 = new ImageIcon(zapiszObrazDlaGraczy(0)).getImage();
+
+        Thread tGracz1k1 = new Thread() {
+            public void run() {
+
+                try {
+                    Thread.sleep(czas);
+                } catch (InterruptedException ignored) {
+                }
+
+                SwingUtilities.invokeLater(
+                        new Runnable() {
+                            public void run() {
+
+                                gracz1k1 = new ImageIcon(kolorRewers).getImage();
+                                repaint();
+
+                                Thread tGracz2k1 = new Thread() {
+                                    public void run() {
+
+                                        try {
+                                            Thread.sleep(czas);
+                                        } catch (InterruptedException ignored) {
+                                        }
+
+                                        SwingUtilities.invokeLater(
+                                                new Runnable() {
+                                                    public void run() {
+
+                                                        gracz2k1 = new ImageIcon(kolorRewers).getImage();
+                                                        repaint();
+
+                                                        Thread tGracz3k1 = new Thread() {
+                                                            public void run() {
+
+                                                                try {
+                                                                    Thread.sleep(czas);
+                                                                } catch (InterruptedException ignored) {
+                                                                }
+
+                                                                SwingUtilities.invokeLater(
+                                                                        new Runnable() {
+                                                                            public void run() {
+
+                                                                                gracz3k1 = new ImageIcon(kolorRewers).getImage();
+                                                                                repaint();
+
+                                                                                Thread tGracz4k1 = new Thread() {
+                                                                                    public void run() {
+
+                                                                                        try {
+                                                                                            Thread.sleep(czas);
+                                                                                        } catch (InterruptedException ignored) {
+                                                                                        }
+
+                                                                                        SwingUtilities.invokeLater(
+                                                                                                new Runnable() {
+                                                                                                    public void run() {
+
+                                                                                                        gracz4k1 = new ImageIcon(kolorRewers).getImage();
+                                                                                                        repaint();
+
+                                                                                                        Thread tGracz5k1 = new Thread() {
+                                                                                                            public void run() {
+
+                                                                                                                try {
+                                                                                                                    Thread.sleep(czas);
+                                                                                                                } catch (InterruptedException ignored) {
+                                                                                                                }
+
+                                                                                                                SwingUtilities.invokeLater(
+                                                                                                                        new Runnable() {
+                                                                                                                            public void run() {
+
+                                                                                                                                gracz5k1 = new ImageIcon(kolorRewers).getImage();
+                                                                                                                                repaint();
+
+                                                                                                                                Thread tGracz0k2 = new Thread() {
+                                                                                                                                    public void run() {
+
+                                                                                                                                        try {
+                                                                                                                                            Thread.sleep(czas);
+                                                                                                                                        } catch (InterruptedException ignored) {
+                                                                                                                                        }
+
+                                                                                                                                        SwingUtilities.invokeLater(
+                                                                                                                                                new Runnable() {
+                                                                                                                                                    public void run() {
+
+                                                                                                                                                        gracz0k2 = new ImageIcon(zapiszObrazDlaGraczy(1)).getImage();
+                                                                                                                                                        repaint();
+
+                                                                                                                                                        Thread tGracz1k2 = new Thread() {
+                                                                                                                                                            public void run() {
+
+                                                                                                                                                                try {
+                                                                                                                                                                    Thread.sleep(czas);
+                                                                                                                                                                } catch (InterruptedException ignored) {
+                                                                                                                                                                }
+
+                                                                                                                                                                SwingUtilities.invokeLater(
+                                                                                                                                                                        new Runnable() {
+                                                                                                                                                                            public void run() {
+
+                                                                                                                                                                                gracz1k2 = new ImageIcon(kolorRewers).getImage();
+                                                                                                                                                                                repaint();
+
+                                                                                                                                                                                Thread tGracz2k2 = new Thread() {
+                                                                                                                                                                                    public void run() {
+
+                                                                                                                                                                                        try {
+                                                                                                                                                                                            Thread.sleep(czas);
+                                                                                                                                                                                        } catch (InterruptedException ignored) {
+                                                                                                                                                                                        }
+
+                                                                                                                                                                                        SwingUtilities.invokeLater(
+                                                                                                                                                                                                new Runnable() {
+                                                                                                                                                                                                    public void run() {
+
+                                                                                                                                                                                                        gracz2k2 = new ImageIcon(kolorRewers).getImage();
+                                                                                                                                                                                                        repaint();
+
+                                                                                                                                                                                                        Thread tGracz3k2 = new Thread() {
+                                                                                                                                                                                                            public void run() {
+
+                                                                                                                                                                                                                try {
+                                                                                                                                                                                                                    Thread.sleep(czas);
+                                                                                                                                                                                                                } catch (InterruptedException ignored) {
+                                                                                                                                                                                                                }
+
+                                                                                                                                                                                                                SwingUtilities.invokeLater(
+                                                                                                                                                                                                                        new Runnable() {
+                                                                                                                                                                                                                            public void run() {
+
+                                                                                                                                                                                                                                gracz3k2 = new ImageIcon(kolorRewers).getImage();
+                                                                                                                                                                                                                                repaint();
+                                                                                                                                                                                                                                Thread tGracz4k2 = new Thread() {
+                                                                                                                                                                                                                                    public void run() {
+
+                                                                                                                                                                                                                                        try {
+                                                                                                                                                                                                                                            Thread.sleep(czas);
+                                                                                                                                                                                                                                        } catch (InterruptedException ignored) {
+                                                                                                                                                                                                                                        }
+
+                                                                                                                                                                                                                                        SwingUtilities.invokeLater(
+                                                                                                                                                                                                                                                new Runnable() {
+                                                                                                                                                                                                                                                    public void run() {
+
+                                                                                                                                                                                                                                                        gracz4k2 = new ImageIcon(kolorRewers).getImage();
+                                                                                                                                                                                                                                                        repaint();
+
+                                                                                                                                                                                                                                                        Thread tGracz5k2 = new Thread() {
+                                                                                                                                                                                                                                                            public void run() {
+
+                                                                                                                                                                                                                                                                try {
+                                                                                                                                                                                                                                                                    Thread.sleep(czas);
+                                                                                                                                                                                                                                                                } catch (InterruptedException ignored) {
+                                                                                                                                                                                                                                                                }
+
+                                                                                                                                                                                                                                                                SwingUtilities.invokeLater(
+                                                                                                                                                                                                                                                                        new Runnable() {
+                                                                                                                                                                                                                                                                            public void run() {
+
+                                                                                                                                                                                                                                                                                gracz5k2 = new ImageIcon(kolorRewers).getImage();
+                                                                                                                                                                                                                                                                                graj.setVisible(true);
+                                                                                                                                                                                                                                                                                repaint();
+
+                                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                                );
+                                                                                                                                                                                                                                                            }
+
+
+                                                                                                                                                                                                                                                        };
+                                                                                                                                                                                                                                                        tGracz5k2.start();
+                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                        );
+                                                                                                                                                                                                                                    }
+
+
+                                                                                                                                                                                                                                };
+                                                                                                                                                                                                                                tGracz4k2.start();
+                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                );
+                                                                                                                                                                                                            }
+
+
+                                                                                                                                                                                                        };
+                                                                                                                                                                                                        tGracz3k2.start();
+                                                                                                                                                                                                    }
+                                                                                                                                                                                                }
+                                                                                                                                                                                        );
+                                                                                                                                                                                    }
+
+
+                                                                                                                                                                                };
+                                                                                                                                                                                tGracz2k2.start();
+                                                                                                                                                                            }
+                                                                                                                                                                        }
+                                                                                                                                                                );
+                                                                                                                                                            }
+
+
+                                                                                                                                                        };
+                                                                                                                                                        tGracz1k2.start();
+
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                        );
+                                                                                                                                    }
+
+
+                                                                                                                                };
+                                                                                                                                tGracz0k2.start();
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                );
+                                                                                                            }
+
+
+                                                                                                        };
+                                                                                                        tGracz5k1.start();
+                                                                                                    }
+                                                                                                }
+                                                                                        );
+                                                                                    }
+
+
+                                                                                };
+                                                                                tGracz4k1.start();
+                                                                            }
+                                                                        }
+                                                                );
+                                                            }
+
+
+                                                        };
+                                                        tGracz3k1.start();
+                                                    }
+                                                }
+                                        );
+                                    }
+
+
+                                };
+                                tGracz2k1.start();
+
+                            }
+                        }
+                );
+            }
+
+
+        };
+        tGracz1k1.start();
+        repaint();
+
+//        gracz1k1 = new ImageIcon( "zdjecia\\Green_back.jpg" ).getImage();
+//        gracz2k1 = new ImageIcon( "zdjecia\\Green_back.jpg" ).getImage();
+//        gracz3k1 = new ImageIcon( "zdjecia\\Green_back.jpg" ).getImage();
+//        gracz4k1 = new ImageIcon( "zdjecia\\Green_back.jpg" ).getImage();
+//        gracz5k1 = new ImageIcon( "zdjecia\\Green_back.jpg" ).getImage();
+//        gracz0k2 = new ImageIcon( zapiszObrazDlaGraczy( 1 ) ).getImage();
+//        gracz1k2 = new ImageIcon( "zdjecia\\Green_back.jpg" ).getImage();
+//        gracz2k2 = new ImageIcon( "zdjecia\\Green_back.jpg" ).getImage();
+//        gracz3k2 = new ImageIcon( "zdjecia\\Green_back.jpg" ).getImage();
+//        gracz4k2 = new ImageIcon( "zdjecia\\Green_back.jpg" ).getImage();
+//        gracz5k2 = new ImageIcon( "zdjecia\\Green_back.jpg" ).getImage();
 
     }
 
@@ -3832,12 +4091,12 @@ public class PanelStolik extends JPanel implements ActionListener {
 
     private void dodajTlo() {
 
-        imageFile = new File( "zdjecia\\stol_final.jpg" );
+        imageFile = new File("zdjecia\\stol_final.jpg");
 
         try {
-            image = ImageIO.read( imageFile );
+            image = ImageIO.read(imageFile);
         } catch (IOException e) {
-            System.err.println( "Blad odczytu obrazka" );
+            System.err.println("Blad odczytu obrazka");
             e.printStackTrace();
         }
     }
@@ -3852,10 +4111,9 @@ public class PanelStolik extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        graj.setVisible( false );
+        graj.setVisible(false);
 
         noweRozdanie();
-
 
     }
 

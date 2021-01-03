@@ -10,6 +10,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.Objects;
 
 public class MenuPoczatkowePanel extends JPanel {
@@ -20,12 +21,16 @@ public class MenuPoczatkowePanel extends JPanel {
     private MenuPoczatkowe menuPoczatkowe;
     private JTextField imieGr;
 
+    ButtonGroup grupa = new ButtonGroup();
+
     private String imieGracza;
 
     private Rozgrywka rozgrywka;
     JComboBox<Object> iloscPrzeciwnikowCombo;
     JComboBox<Object> iloscZetonowStart;
+    JComboBox<Object> czasCiemnych;
     private MenuPoczatkowePanel me;
+    String kolorRewers = "";
 
 
     public MenuPoczatkowePanel(MenuPoczatkowe menuPoczatkowe) {
@@ -37,9 +42,6 @@ public class MenuPoczatkowePanel extends JPanel {
         Border obramowanie = BorderFactory.createEmptyBorder();
         var sansbold20 = new Font("SansSerif", Font.BOLD, 20);
         setRozgrywka(menuPoczatkowe.getRozgrywka());
-
-
-
 
         dodajTlo();
         dodajPoleImie(obramowanie, sansbold20);
@@ -164,49 +166,66 @@ public class MenuPoczatkowePanel extends JPanel {
     }
 
     private void dodajListeCzasuCiemnych(Border obramowanie, Font sansbold20) {
-        var czasCiemnych = new JComboBox<Integer>();
+        czasCiemnych = new JComboBox<>();
+        czasCiemnych.addItem("Wybierz czas:");
         czasCiemnych.addItem(5);
         czasCiemnych.addItem(8);
         czasCiemnych.addItem(10);
         czasCiemnych.addItem(15);
         czasCiemnych.setBackground(Color.GRAY);
-        czasCiemnych.setBounds(1005, 448, 50, 30);
+        czasCiemnych.setBounds(1005, 448, 165, 30);
         czasCiemnych.setFont(sansbold20);
         czasCiemnych.setBorder(obramowanie);
         add(czasCiemnych);
+
+        czasCiemnych.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    int c = (Integer) e.getItemSelectable().getSelectedObjects()[0];
+                    rozgrywka.setCzasCiemnych(c);
+                }
+            }
+        });
     }
 
     private void dodajPrzyciski(MenuPoczatkowe menuPoczatkowe, Border obramowanie) {
-        ButtonGroup grupa = new ButtonGroup();
 
         JRadioButton blue = new JRadioButton("", true);
         blue.setBounds(1028, 630, 20, 20);
         blue.setBackground(Color.GRAY);
+        blue.setActionCommand("zdjecia\\\\Mblue.jpg");
         add(blue);
 
         JRadioButton gray = new JRadioButton("", false);
         gray.setBounds(1098, 630, 20, 20);
         gray.setBackground(Color.GRAY);
+        gray.setActionCommand("zdjecia\\\\Mgray.jpg");
         add(gray);
 
         JRadioButton green = new JRadioButton("", false);
         green.setBounds(1163, 630, 20, 20);
         green.setBackground(Color.GRAY);
+        green.setActionCommand("zdjecia\\\\Mgreen.jpg");
         add(green);
 
         JRadioButton purple = new JRadioButton("", false);
         purple.setBounds(1238, 630, 20, 20);
         purple.setBackground(Color.GRAY);
+        purple.setActionCommand("zdjecia\\\\Mpurple.jpg");
         add(purple);
+
 
         JRadioButton red = new JRadioButton("", false);
         red.setBounds(1308, 630, 20, 20);
         red.setBackground(Color.GRAY);
+        red.setActionCommand("zdjecia\\\\Mred.jpg");
         add(red);
 
         JRadioButton yellow = new JRadioButton("", false);
         yellow.setBounds(1378, 630, 20, 20);
         yellow.setBackground(Color.GRAY);
+        yellow.setActionCommand("zdjecia\\\\Myellow.jpg");
         add(yellow);
 
         grupa.add(blue);
@@ -232,6 +251,10 @@ public class MenuPoczatkowePanel extends JPanel {
                 } else if (Objects.equals(iloscZetonowStart.getSelectedItem(), "ilość żetonów:")) {
 
                     JOptionPane.showMessageDialog(null, "Podaj ilość żetonów!", "Błąd ilości żetonów.", JOptionPane.INFORMATION_MESSAGE);
+
+                } else if (Objects.equals(czasCiemnych.getSelectedItem(), "wybierz czas:")) {
+
+                    JOptionPane.showMessageDialog(null, "Podaj po jakim czasię mają się zwiększać BigBlind i SmallBlind!", "Błąd czasu ciemnych", JOptionPane.INFORMATION_MESSAGE);
 
                 } else {
 
