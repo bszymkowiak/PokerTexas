@@ -8,3 +8,5 @@ Zastosowania aplikacji:
 
 Zrzuty ekranu z gry:
 
+
+
