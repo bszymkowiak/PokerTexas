@@ -11,6 +11,8 @@ Zrzuty ekranu z gry:
 <p align="center">
   <img src="https://raw.githubusercontent.com/bszymkowiak/PokerTexas/master/zdjecia/screenshots/1.PNG" title="menu">
   <img src="https://raw.githubusercontent.com/bszymkowiak/PokerTexas/master/zdjecia/screenshots/2.PNG" title="bladPrzeciwnikow">
-  <img src="https://raw.githubusercontent.com/bszymkowiak/PokerTexas/master/zdjecia/screenshots/3.PNG" title="rozgrywka">
-  <img src="https://raw.githubusercontent.com/bszymkowiak/PokerTexas/master/zdjecia/screenshots/4.PNG" title="rozgrywkaCd">
+  <img src="https://raw.githubusercontent.com/bszymkowiak/PokerTexas/master/zdjecia/screenshots/4.PNG" title="rozgrywka">
+  <img src="https://raw.githubusercontent.com/bszymkowiak/PokerTexas/master/zdjecia/screenshots/3.PNG" title="rozgrywkaCd">
 </p>
+
+Aplikacja jest stale udoskonalana. Zmiany będą aktualizowane.
