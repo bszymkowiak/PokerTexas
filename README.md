@@ -8,11 +8,9 @@ Zastosowania aplikacji:
 
 Zrzuty ekranu z gry:
 
-![Screenshot](1.png)
-
-![Screenshot](2.png)
-
-![Screenshot](3.png)
-
-![Screenshot](4.png)
-
+<p align="center">
+  <img src="https://raw.githubusercontent.com/bszymkowiak/PokerTexas/master/zdjecia/screenshots/1.PNG" title="menu">
+  <img src="https://raw.githubusercontent.com/bszymkowiak/PokerTexas/master/zdjecia/screenshots/2.PNG" title="bladPrzeciwnikow">
+  <img src="https://raw.githubusercontent.com/bszymkowiak/PokerTexas/master/zdjecia/screenshots/3.PNG="rozgrywka">
+  <img src="https://raw.githubusercontent.com/bszymkowiak/PokerTexas/master/zdjecia/screenshots/4.PNG" title="rozgrywkaCd">
+</p>
