@@ -56,15 +56,15 @@ public class PanelStolik extends JPanel implements ActionListener {
     private Image bigBlind;
     private Image dealer;
     int pulaGlowna;
-    int wpisDoPuli;
     private int wartoscTmp;
 
     private boolean pierwszyObrot = true;
     private boolean licytacjaWGrze;
     private boolean pierwszeRuchyGraczyPoFold = true;
     private String zwyciezca = "";
-    private int iloscGraczyZKartami;
     private boolean czyZostalJedenGracz;
+
+    boolean pierwszaTura = true;
 
 
     String kolorRewers;
@@ -4504,6 +4504,9 @@ public class PanelStolik extends JPanel implements ActionListener {
 
         graj.setVisible( true );
 
+
+        pierwszaTura = false;
+
         repaint();
 
     }
@@ -4870,6 +4873,25 @@ public class PanelStolik extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         graj.setVisible(false);
+
+        if (!pierwszaTura) {
+            getRozgrywka().rozdajKartyDoReki(rozgrywka.getTaliaKart());
+            gracz0k1 = new ImageIcon(zapiszObrazDlaGraczy(0)).getImage();
+            gracz0k2 = new ImageIcon(zapiszObrazDlaGraczy(1)).getImage();
+            gracz1k1 = new ImageIcon(kolorRewers).getImage();
+            gracz1k2 = new ImageIcon(kolorRewers).getImage();
+            gracz2k1 = new ImageIcon(kolorRewers).getImage();
+            gracz2k2 = new ImageIcon(kolorRewers).getImage();
+            gracz3k1 = new ImageIcon(kolorRewers).getImage();
+            gracz3k2 = new ImageIcon(kolorRewers).getImage();
+            gracz4k1 = new ImageIcon(kolorRewers).getImage();
+            gracz4k2 = new ImageIcon(kolorRewers).getImage();
+            gracz5k1 = new ImageIcon(kolorRewers).getImage();
+            gracz5k2 = new ImageIcon(kolorRewers).getImage();
+
+
+
+        }
 
         noweRozdanie();
 

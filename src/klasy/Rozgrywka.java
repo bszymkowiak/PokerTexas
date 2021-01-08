@@ -398,7 +398,7 @@ public class Rozgrywka extends Gracz {
     {
 
         Random rand = new Random();
-        int liczba =1;//rand.nextInt(3);
+        int liczba = rand.nextInt(3);
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm:ss"));
 
@@ -1012,6 +1012,7 @@ public class Rozgrywka extends Gracz {
                 }
             }
         }
+
     }
 
     private void checkRoyalFlush(Gracz g) {
@@ -1144,15 +1145,14 @@ public class Rozgrywka extends Gracz {
 
         Comparator<Karta> comparatorKartaWartosc = Comparator.comparing(Karta::getWartosc).reversed();
 
+        g.kartyWRece.addAll(getKartyStol());
         g.kartyWRece.sort(comparatorKartaWartosc);
         ArrayList<Karta> kartyWReceCopy = new ArrayList<>(g.kartyWRece);
-
-//        System.out.println("Po sortowaniu.");
-//        System.out.println(kartyWReceCopy);
 
         for (int i = 0; i < 3; i++) {
             for (int j = 14; j > 2; j--) {
                 if (czyFourOfAKind(g, j, i)) {
+                    System.out.println("sprawdzam \n i = " + i + "\n j = " + j);
                     g.listaTmp.add(kartyWReceCopy.get(i));
                     g.listaTmp.add(kartyWReceCopy.get(i + 1));
                     g.listaTmp.add(kartyWReceCopy.get(i + 2));
@@ -2023,16 +2023,16 @@ public class Rozgrywka extends Gracz {
 
         sprawdzamIleGraczyMaDanyUklad(comparatorKartaWartosc);
 
-//        System.out.println("Royal :" + royalFlushCounter);
-//        System.out.println("Straight Flush: " + straightFlushCounter);
-//        System.out.println("Kareta: " + fourOfAKindCounter);
-//        System.out.println("FULL: " + fullHouseCounter);
-//        System.out.println("Flush: " + flushCounter);
-//        System.out.println("Straight: " + straightCounter);
-//        System.out.println("Trójka: " + threeOfAKindCounter);
-//        System.out.println("Dwie pary: " + twoPairCounter);
-//        System.out.println("Jedna para: " + onePairCounter);
-//        System.out.println("Wysoka karta: " + highCardCounter);
+        System.out.println("Royal :" + royalFlushCounter);
+        System.out.println("Straight Flush: " + straightFlushCounter);
+        System.out.println("Kareta: " + fourOfAKindCounter);
+        System.out.println("FULL: " + fullHouseCounter);
+        System.out.println("Flush: " + flushCounter);
+        System.out.println("Straight: " + straightCounter);
+        System.out.println("Trójka: " + threeOfAKindCounter);
+        System.out.println("Dwie pary: " + twoPairCounter);
+        System.out.println("Jedna para: " + onePairCounter);
+        System.out.println("Wysoka karta: " + highCardCounter);
 
         wynikSprawdzeniaDlaRoyalFlush();
 
@@ -2053,6 +2053,9 @@ public class Rozgrywka extends Gracz {
         wynikSprawdzenieDlaOnePair();
 
         wynikSprawdzenieDlaHighCard();
+
+
+
     }
 
 }
