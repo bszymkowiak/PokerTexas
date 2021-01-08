@@ -311,7 +311,7 @@ public class Rozgrywka extends Gracz {
         }
 
         if (!czyRozdalemBlind) {
-            ktoBlind = rand.nextInt(gracze.size());
+            ktoBlind = 0;//;rand.nextInt(gracze.size());
             malyBlind = 10;
             duzyBlind = 20;
             czyRozdalemBlind = true;
@@ -394,10 +394,11 @@ public class Rozgrywka extends Gracz {
 
     }
 
-    public void ruchGracza(int i) throws InterruptedException, SQLException, ClassNotFoundException {
+    public void ruchGracza(int i) //throws InterruptedException, SQLException, ClassNotFoundException
+    {
 
         Random rand = new Random();
-        int liczba = rand.nextInt(3);
+        int liczba =1;//rand.nextInt(3);
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm:ss"));
 
@@ -415,7 +416,7 @@ public class Rozgrywka extends Gracz {
                 lineBaza = ("[" + LocalDateTime.now().format(dateTimeFormatter) + "] " + gracze.get(i).getNick() + " wykonał/a bet.");
             }
 
-            new BazaDanych(me);
+           // new BazaDanych(me);
 
         }
     }
