@@ -313,7 +313,7 @@ public class Rozgrywka extends Gracz {
         }
 
         if (!czyRozdalemBlind) {
-            ktoBlind = 1;//rand.nextInt(gracze.size());
+            ktoBlind = rand.nextInt(gracze.size());
             malyBlind = 10;
             duzyBlind = 20;
             czyRozdalemBlind = true;
