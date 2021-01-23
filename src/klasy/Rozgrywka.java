@@ -356,6 +356,7 @@ public class Rozgrywka extends Gracz {
     public void komputerCheck(int i) {
 
         int wartoscTmp = gracze.get(i).getPulaZetonowGracza();
+        int roznica = duzyBlind - gracze.get( i ).getIloscZetonow();
 
         System.out.println(gracze.get(i).getNick() + " wykonuje check.");
 
@@ -365,13 +366,14 @@ public class Rozgrywka extends Gracz {
             }
         }
 
-
-
-
-
-        if (gracze.get(i).getPulaZetonowGracza() < wartoscTmp && gracze.get(i).getKartyWRece().size() != 0) {
-            gracze.get(i).setIloscZetonow(gracze.get(i).getIloscZetonow() - wartoscTmp + gracze.get(i).getPulaZetonowGracza());
-            gracze.get(i).setPulaZetonowGracza(wartoscTmp);
+        if((gracze.get( i ).getIloscZetonow() - duzyBlind) <0){
+            gracze.get(i).setIloscZetonow(gracze.get(i).getIloscZetonow() - roznica + gracze.get(i).getPulaZetonowGracza());
+            gracze.get(i).setPulaZetonowGracza(roznica);
+        }else {
+            if (gracze.get( i ).getPulaZetonowGracza() < wartoscTmp && gracze.get( i ).getKartyWRece().size() != 0) {
+                gracze.get( i ).setIloscZetonow( gracze.get( i ).getIloscZetonow() - wartoscTmp + gracze.get( i ).getPulaZetonowGracza() );
+                gracze.get( i ).setPulaZetonowGracza( wartoscTmp );
+            }
         }
 
     }
@@ -381,6 +383,7 @@ public class Rozgrywka extends Gracz {
         System.out.println(gracze.get(i).getNick() + " wykonuje bet.");
 
         int wartoscTmp = gracze.get(i).getPulaZetonowGracza();
+        int roznica;
 
         for (Gracz g : gracze) {
             if (g.getPulaZetonowGracza() >= wartoscTmp) {
@@ -388,10 +391,16 @@ public class Rozgrywka extends Gracz {
             }
         }
 
-        wartoscTmp += 20;
+        wartoscTmp += duzyBlind;
+        roznica = wartoscTmp - gracze.get( i ).getIloscZetonow();
 
-        gracze.get(i).setIloscZetonow(gracze.get(i).getIloscZetonow() - wartoscTmp + gracze.get(i).getPulaZetonowGracza());
-        gracze.get(i).setPulaZetonowGracza(wartoscTmp);
+        if((gracze.get( i ).getIloscZetonow() - wartoscTmp) <0){
+            gracze.get(i).setPulaZetonowGracza(gracze.get( i ).getIloscZetonow());
+            gracze.get(i).setIloscZetonow(0);
+        }else {
+            gracze.get( i ).setIloscZetonow( gracze.get( i ).getIloscZetonow() - wartoscTmp + gracze.get( i ).getPulaZetonowGracza() );
+            gracze.get( i ).setPulaZetonowGracza( wartoscTmp );
+        }
 
 
     }
@@ -406,23 +415,34 @@ public class Rozgrywka extends Gracz {
 
 
         if (gracze.get(i).kartyWRece.size() != 0) {
-            if (liczba == 0) {
+            if (gracze.get( i ).getIloscZetonow() == 0) {
+                gracze.get( i ).setIloscZetonow( 0 );
+            } else {
+                if (liczba == 0) {
 
-                komputerFold(i);
-                lineBaza = ("[" + LocalDateTime.now().format(dateTimeFormatter) + "] " + gracze.get(i).getNick() + " wykonał/a fold.");
-                doHistorii=gracze.get(i).getNick() + " wykonał/a FOLD \n";
-            } else if (liczba == 1) {
-                komputerCheck(i);
-                lineBaza = ("[" + LocalDateTime.now().format(dateTimeFormatter) + "] " + gracze.get(i).getNick() + " wykonał/a check.");
-                doHistorii=gracze.get(i).getNick() + " wykonał/a CHECK/CALL \n";
-            } else if (liczba == 2) {
-                komputerBet(i);
-                lineBaza = ("[" + LocalDateTime.now().format(dateTimeFormatter) + "] " + gracze.get(i).getNick() + " wykonał/a bet.");
-                doHistorii=gracze.get(i).getNick() + " wykonał/a BET \n";
+                    komputerFold( i );
+                    lineBaza = ("[" + LocalDateTime.now().format( dateTimeFormatter ) + "] " + gracze.get( i ).getNick() + " wykonał/a fold.");
+                    doHistorii = gracze.get( i ).getNick() + " wykonał/a FOLD \n";
+                } else if (liczba == 1) {
+                    if(gracze.get( i ).getIloscZetonow() == 0){
+                    }
+                    else {
+                        komputerCheck( i );
+                        lineBaza = ("[" + LocalDateTime.now().format( dateTimeFormatter ) + "] " + gracze.get( i ).getNick() + " wykonał/a check.");
+                        doHistorii = gracze.get( i ).getNick() + " wykonał/a CHECK/CALL \n";
+                    }
+                } else if (liczba == 2) {
+                    if (gracze.get( i ).getIloscZetonow() == 0) {
+                    } else {
+                        komputerBet( i );
+                        lineBaza = ("[" + LocalDateTime.now().format( dateTimeFormatter ) + "] " + gracze.get( i ).getNick() + " wykonał/a bet.");
+                        doHistorii = gracze.get( i ).getNick() + " wykonał/a BET \n";
+                    }
+                }
+
+                // new BazaDanych(me);
+
             }
-
-           // new BazaDanych(me);
-
         }
     }
 

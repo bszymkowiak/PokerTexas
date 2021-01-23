@@ -67,6 +67,10 @@ public class PanelStolik extends JPanel implements ActionListener {
     private boolean pierwszyObrotRiver = true;
     private boolean pierwszyObrotOstatnia = true;
     private boolean isLicytacjaWGrzeFlop;
+    private boolean kartyFlop;
+    private boolean kartaTurn;
+    private boolean kartaRiver;
+    private boolean drugaLicytacja;
 
 
     boolean pierwszaTura = true;
@@ -406,7 +410,7 @@ public class PanelStolik extends JPanel implements ActionListener {
         fold.setBorder(obramowanie);
         add(fold);
         fold.setVisible(true);
-//        przyciskFoldAkcja();
+        przyciskFoldAkcja();
 
         check = new JButton(new ImageIcon("zdjecia\\check.jpg"));
         check.setBounds(1576, 930, 134, 80);
@@ -447,7 +451,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 //        ruch.setBounds( 798,930,324,87 );
 //        ruch.setBorder( obramowanie );
 //        add(ruch);
-//        ruch.setVisible( true );
+//        ruch.setVisible( false );
 //        ruch.addActionListener( this );
 //        przyciskRuchGracza();
 
@@ -473,52 +477,28 @@ public class PanelStolik extends JPanel implements ActionListener {
                 Gracz naszGracz = rozgrywka.getGracze().get(0);
                 if (naszGracz.getKartyWRece().size() != 0) {
 
-                    System.out.println(pierwszyObrot + "    wartosc pierwszego obrotuuuuu");
-                    System.out.println(pierwszyObrotTurn + "    wartosc pierwszego obrotuuuuu TURN");
-                    System.out.println(pierwszyObrotRiver + "    wartosc pierwszego obrotuuuuu  RIVER");
-                    System.out.println(pierwszyObrotOstatnia + "    wartosc pierwszego obrotuuuuu  OSTATNIA");
-
                     wartoscTmp = 0;
 
-                    if (kartaF1 == null) {
+                    if (!kartyFlop) {
 
                         licytacjaWGrze = true;
 
                         while (licytacjaWGrze) {
 
-                            if(iloscRuchowNaFlopie<1){
-                                pierwszyObrot=false;
-                            }else{
-                                pierwszyObrot=true;
-                            }
-                            if (pierwszyObrot==true) {
-                                if(rozgrywka.getPobierzBlind()==5){
                                     naszRuchBet( naszGracz );
-                                    ruchGraczyPoNasDoBigBling();
-                                }else{
-                                    naszRuchBet( naszGracz );
-                                    ruchGraczyPoNasDoBigBling();
-                                }
+                                    sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP();
                                 repaint();
 
-
-
-
-                            }else if(pierwszyObrot==false){
-                                naszRuchBet( naszGracz );
-                                sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP();
                             }
-                        }
 
-                        repaint();
-                    } else if (kartaT == null && kartaF1 != null) {
+                    } else if (!kartaTurn && kartyFlop) {
 
                         System.out.println("WCHODZE DO KARTA T ");
 
                         licytacjaWGrze = true;
                         while (licytacjaWGrze) {
 
-                            if(iloscRuchowNaTurn<1){
+                            if(iloscRuchowNaTurn<2){
                                 pierwszyObrotTurn=false;
                             }else{
                                 pierwszyObrotTurn=true;
@@ -536,49 +516,21 @@ public class PanelStolik extends JPanel implements ActionListener {
                                     naszRuchBet(naszGracz);
                                     ruchGraczyPoSmallBlindDoNas();
 
-                                }else if(rozgrywka.getPobierzBlind()==2){
-                                    naszRuchBet(naszGracz);
-                                    sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
-                                }else if(rozgrywka.getPobierzBlind()==5){
-                                    naszRuchBet(naszGracz);
-                                    sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
-                                }else if(rozgrywka.getPobierzBlind()==3){
-                                    naszRuchBet(naszGracz);
-                                    sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
-                                }else if(rozgrywka.getPobierzBlind()==4){
-                                    naszRuchBet(naszGracz);
+                                }else {
+                                    naszRuchBet( naszGracz );
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
                                 }
 
                             }
                             else if (pierwszyObrotTurn==false) {
-                                if (rozgrywka.getPobierzBlind() == 1) {
 
-                                    naszRuchBet(naszGracz);
+                                    naszRuchBet( naszGracz );
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
-
-                                }else if(rozgrywka.getPobierzBlind()==0){
-                                    naszRuchBet(naszGracz);
-                                    sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
-                                }else if (rozgrywka.getPobierzBlind() == 2) {
-                                    naszRuchBet(naszGracz);
-                                    sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
-                                }else if (rozgrywka.getPobierzBlind() ==3){
-                                    naszRuchBet(naszGracz);
-                                    sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
-                                }else if (rozgrywka.getPobierzBlind() ==4){
-                                    naszRuchBet(naszGracz);
-                                    sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
-                                }else if (rozgrywka.getPobierzBlind() ==5){
-                                    naszRuchBet(naszGracz);
-                                    sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
-                                }
 
                                 repaint();
-                                pierwszyObrot = false;
                             }
                         }
-                    } else if (kartaR == null && kartaT != null && kartaF1 != null) {
+                    } else if (!kartaRiver && kartaTurn && kartyFlop) {
 
                         System.out.println("WCHODZE DO KARTA R ");
 
@@ -603,50 +555,26 @@ public class PanelStolik extends JPanel implements ActionListener {
                                     naszRuchBet(naszGracz);
                                     ruchGraczyPoSmallBlindDoNas();
 
-                                }else if(rozgrywka.getPobierzBlind()==5){
-                                    naszRuchBet(naszGracz);
+                                }else {
+                                    naszRuchBet( naszGracz );
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
 
-                                }else if(rozgrywka.getPobierzBlind()==2){
-                                    naszRuchBet(naszGracz);
-                                    sprawdzeniePlusEwWylozenieKartNaStolRiver();
-                                }else if(rozgrywka.getPobierzBlind()==3){
-                                    naszRuchBet(naszGracz);
-                                    sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
-                                }else if(rozgrywka.getPobierzBlind()==4){
-                                    naszRuchBet(naszGracz);
-                                    sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
                                 }
                             }
                             else if (pierwszyObrotRiver==false) {
-                                if (rozgrywka.getPobierzBlind() == 1) {
 
-                                    naszRuchBet(naszGracz);
-                                    sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
 
-                                }else if (rozgrywka.getPobierzBlind() == 0) {
-                                    naszRuchBet(naszGracz);
-                                    sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
-                                }else if (rozgrywka.getPobierzBlind() == 2) {
-                                    naszRuchBet(naszGracz);
-                                    sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
-                                }else if (rozgrywka.getPobierzBlind() ==4){
-                                    naszRuchBet(naszGracz);
-                                    sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
-                                }else if(rozgrywka.getPobierzBlind()==5){
-                                    naszRuchBet(naszGracz);
-                                    sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
-                                }else if(rozgrywka.getPobierzBlind()==3){
-                                    naszRuchBet(naszGracz);
-                                    sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
-                                }
+                                naszRuchBet( naszGracz );
+                                sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
+
+
 
                                 repaint();
                                 pierwszyObrot = false;
                             }
                         }
 
-                    } else if (kartaR != null && kartaT != null && kartaF1 != null) {
+                    } else if (kartaRiver && kartaTurn && kartyFlop) {
 
                         System.out.println("Juz ostatnia karta na stole ");
 
@@ -666,27 +594,13 @@ public class PanelStolik extends JPanel implements ActionListener {
                                     naszRuchBet(naszGracz);
                                     ruchGraczyPoSmallBlindDoNas();
 
-                                }else if(rozgrywka.getPobierzBlind()==5){
-                                    naszRuchBet(naszGracz);
-                                    sprawdzeniePoNaszymRuchuIRuchyGraczyOstatniaLicytacja();
-
-                                }else if(rozgrywka.getPobierzBlind()==1){
-                                    naszRuchBet(naszGracz);
-                                    ruchGraczyPoSmallBlindDoNas();
-
-                                }else if(rozgrywka.getPobierzBlind()==2){
-                                    naszRuchBet(naszGracz);
-                                    sprawdzenieIPokazanieKart();
-                                }else if(rozgrywka.getPobierzBlind()==3){
-                                    naszRuchBet(naszGracz);
-                                    sprawdzeniePoNaszymRuchuIRuchyGraczyOstatniaLicytacja();
-                                }else if(rozgrywka.getPobierzBlind()==4){
+                                }else{
                                     naszRuchBet(naszGracz);
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyOstatniaLicytacja();
                                 }
                             }else if(pierwszyObrotOstatnia==false){
                                 naszRuchBet(naszGracz);
-                                sprawdzenieIPokazanieKart();
+                                sprawdzeniePoNaszymRuchuIRuchyGraczyOstatniaLicytacja();
                                 rozgrywka.sprawdzanieKart();
                                 historia.append( rozgrywka.wygranaGracza );
                             }
@@ -704,6 +618,148 @@ public class PanelStolik extends JPanel implements ActionListener {
 
     private void przyciskCheckAkcja() {
         check.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Gracz naszGracz = rozgrywka.getGracze().get(0);
+                if (naszGracz.getKartyWRece().size() != 0) {
+
+                    wartoscTmp = 0;
+
+                    if (!kartyFlop) {
+
+                        licytacjaWGrze = true;
+
+                        while (licytacjaWGrze) {
+
+                            naszRuchCheck( naszGracz );
+                            sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP();
+
+                            repaint();
+                        }
+                    } else if (!kartaTurn && kartyFlop) {
+
+                        System.out.println("WCHODZE DO KARTA T ");
+
+                        licytacjaWGrze = true;
+                        while (licytacjaWGrze) {
+
+                            if(iloscRuchowNaTurn<2){
+                                pierwszyObrotTurn=false;
+                            }else{
+                                pierwszyObrotTurn=true;
+                            }
+
+                            if(pierwszyObrotTurn==true ){
+                                if (rozgrywka.getPobierzBlind() == 0) {
+                                    naszRuchCheck(naszGracz);
+                                    ruchGraczyPoBigBlindDoNas();
+
+
+
+                                }else if (rozgrywka.getPobierzBlind()== 1) {
+
+                                    naszRuchCheck(naszGracz);
+                                    ruchGraczyPoSmallBlindDoNas();
+
+                                }else {
+                                    naszRuchCheck( naszGracz );
+                                    sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
+                                }
+
+                            }
+                            else if (pierwszyObrotTurn==false) {
+                                    naszRuchCheck( naszGracz );
+                                    sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
+
+                                repaint();
+                            }
+                        }
+                    } else if (!kartaRiver && kartaTurn && kartyFlop) {
+
+                        System.out.println("WCHODZE DO KARTA R ");
+
+                        licytacjaWGrze = true;
+
+                        while (licytacjaWGrze) {
+
+                            if(iloscRuchowNaRiver<1){
+                                pierwszyObrotRiver=false;
+                            }else{
+                                pierwszyObrotRiver=true;
+                            }
+
+                            if(pierwszyObrotRiver==true ){
+                                if (rozgrywka.getPobierzBlind() == 0) {
+                                    naszRuchCheck(naszGracz);
+                                    ruchGraczyPoBigBlindDoNas();
+
+
+                                }else if (rozgrywka.getPobierzBlind() ==1) {
+
+                                    naszRuchCheck(naszGracz);
+                                    ruchGraczyPoSmallBlindDoNas();
+
+                                }else{
+                                    naszRuchCheck( naszGracz );
+                                    sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
+
+                                }
+                            }
+                            else if (pierwszyObrotRiver==false) {
+
+
+                                naszRuchCheck( naszGracz );
+                                sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
+
+
+
+                                repaint();
+                                pierwszyObrot = false;
+                            }
+                        }
+
+                    } else if (kartaRiver && kartaTurn && kartyFlop) {
+
+                        System.out.println("Juz ostatnia karta na stole ");
+
+                        licytacjaWGrze = true;
+
+                        while (licytacjaWGrze) {
+                            if(iloscRuchowOstatnia<2){
+                                pierwszyObrotOstatnia=false;
+                            }else{
+                                pierwszyObrotOstatnia=true;
+                            }
+                            if(pierwszyObrotOstatnia==true ) {
+                                if (rozgrywka.getPobierzBlind() == 0) {
+                                    naszRuchCheck( naszGracz );
+                                    ruchGraczyPoBigBlindDoNas();
+                                }else if (rozgrywka.getPobierzBlind() == 1) {
+                                    naszRuchCheck(naszGracz);
+                                    ruchGraczyPoSmallBlindDoNas();
+
+                                }else{
+                                    naszRuchCheck( naszGracz );
+                                    sprawdzeniePoNaszymRuchuIRuchyGraczyOstatniaLicytacja();
+                                }
+                            }else if(pierwszyObrotOstatnia==false){
+                                naszRuchCheck( naszGracz );
+                                sprawdzeniePoNaszymRuchuIRuchyGraczyOstatniaLicytacja();
+                                historia.append( rozgrywka.wygranaGracza );
+                                repaint();
+                            }
+                        }
+
+                    }
+
+                }
+            }
+        });
+    }
+
+
+    private void przyciskFoldAkcja() {
+        fold.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Gracz naszGracz = rozgrywka.getGracze().get(0);
@@ -727,13 +783,13 @@ public class PanelStolik extends JPanel implements ActionListener {
                             }
                             if (pierwszyObrot==true) {
                                 if(rozgrywka.getPobierzBlind()==5){
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchFold( naszGracz );
                                     ruchGraczyPoNasDoBigBling();
                                 }else if(rozgrywka.getPobierzBlind()==0){
-                                  naszRuchCheck( naszGracz );
-                                  sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP();
+                                    naszRuchFold( naszGracz );
+                                    sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP();
                                 } else{
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchFold( naszGracz );
                                     ruchGraczyPoNasDoBigBling();
                                 }
                                 repaint();
@@ -742,7 +798,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 
 
                             }else if(pierwszyObrot==false){
-                                naszRuchCheck( naszGracz );
+                                naszRuchFold( naszGracz );
                                 sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP();
                             }
                         }
@@ -765,7 +821,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 
                             if(pierwszyObrotTurn==true ){
                                 if (rozgrywka.getPobierzBlind() == 0) {
-                                    naszRuchCheck(naszGracz);
+                                    naszRuchFold( naszGracz );
                                     ruchGraczyPoBigBlindDoNas();
 
 
@@ -776,16 +832,16 @@ public class PanelStolik extends JPanel implements ActionListener {
                                     ruchGraczyPoSmallBlindDoNas();
 
                                 }else if(rozgrywka.getPobierzBlind()==2){
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchFold( naszGracz );
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
                                 }else if(rozgrywka.getPobierzBlind()==5){
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchFold( naszGracz );
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
                                 }else if(rozgrywka.getPobierzBlind()==3){
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchFold( naszGracz );
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
                                 }else if(rozgrywka.getPobierzBlind()==4){
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchFold( naszGracz );
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
                                 }
 
@@ -793,28 +849,27 @@ public class PanelStolik extends JPanel implements ActionListener {
                             else if (pierwszyObrotTurn==false) {
                                 if (rozgrywka.getPobierzBlind() == 1) {
 
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchFold( naszGracz );
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
 
                                 }else if(rozgrywka.getPobierzBlind()==0){
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchFold( naszGracz );
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
                                 }else if (rozgrywka.getPobierzBlind() == 2) {
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchFold( naszGracz );
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
                                 }else if (rozgrywka.getPobierzBlind() ==3){
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchFold( naszGracz );
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
                                 }else if (rozgrywka.getPobierzBlind() ==4){
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchFold( naszGracz );
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
                                 }else if (rozgrywka.getPobierzBlind() ==5){
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchFold( naszGracz );
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyTURN();
                                 }
 
                                 repaint();
-                                pierwszyObrot = false;
                             }
                         }
                     } else if (kartaR == null && kartaT != null && kartaF1 != null) {
@@ -835,52 +890,37 @@ public class PanelStolik extends JPanel implements ActionListener {
 
                             if(pierwszyObrotRiver==true ){
                                 if (rozgrywka.getPobierzBlind() == 0) {
-                                    naszRuchCheck(naszGracz);
+                                    naszRuchFold( naszGracz );
                                     ruchGraczyPoBigBlindDoNas();
 
 
                                 }else if (rozgrywka.getPobierzBlind() ==1) {
 
-                                    naszRuchCheck(naszGracz);
+                                    naszRuchFold( naszGracz );
                                     ruchGraczyPoSmallBlindDoNas();
 
                                 }else if(rozgrywka.getPobierzBlind()==5){
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchFold( naszGracz );
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
 
                                 }else if(rozgrywka.getPobierzBlind()==2){
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchFold( naszGracz );
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
                                 }else if(rozgrywka.getPobierzBlind()==3){
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchFold( naszGracz );
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
                                 }else if(rozgrywka.getPobierzBlind()==4){
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchFold( naszGracz );
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
                                 }
                             }
                             else if (pierwszyObrotRiver==false) {
-//                                if (rozgrywka.getPobierzBlind() == 1) {
 
-                                naszRuchCheck( naszGracz );
+
+                                naszRuchFold( naszGracz );
                                 sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
 
-//                                }else if (rozgrywka.getPobierzBlind() == 0) {
-//                                    naszRuchCheck( naszGracz );
-//                                    sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
-//                                }else if (rozgrywka.getPobierzBlind() == 2) {
-//                                    naszRuchCheck( naszGracz );
-//                                    sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
-//                                }else if (rozgrywka.getPobierzBlind() ==4){
-//                                    naszRuchCheck( naszGracz );
-//                                    sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
-//                                }else if(rozgrywka.getPobierzBlind()==5){
-//                                    naszRuchCheck( naszGracz );
-//                                    sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
-//                                }else if(rozgrywka.getPobierzBlind()==3){
-//                                    naszRuchCheck( naszGracz );
-//                                    sprawdzeniePoNaszymRuchuIRuchyGraczyRiver();
-//                                }
+
 
                                 repaint();
                                 pierwszyObrot = false;
@@ -901,28 +941,28 @@ public class PanelStolik extends JPanel implements ActionListener {
                             }
                             if(pierwszyObrotOstatnia==true ) {
                                 if (rozgrywka.getPobierzBlind() == 0) {
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchFold( naszGracz );
                                     ruchGraczyPoBigBlindDoNas();
                                 }else if (rozgrywka.getPobierzBlind() == 1) {
-                                    naszRuchCheck(naszGracz);
+                                    naszRuchFold( naszGracz );
                                     ruchGraczyPoSmallBlindDoNas();
 
                                 }else if(rozgrywka.getPobierzBlind()==5){
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchFold( naszGracz );
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyOstatniaLicytacja();
 
                                 }else if(rozgrywka.getPobierzBlind()==2){
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchFold( naszGracz );
                                     sprawdzenieIPokazanieKart();
                                 }else if(rozgrywka.getPobierzBlind()==3){
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchFold( naszGracz );
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyOstatniaLicytacja();
                                 }else if(rozgrywka.getPobierzBlind()==4){
-                                    naszRuchCheck( naszGracz );
+                                    naszRuchFold( naszGracz );
                                     sprawdzeniePoNaszymRuchuIRuchyGraczyOstatniaLicytacja();
                                 }
                             }else if(pierwszyObrotOstatnia==false){
-                                naszRuchCheck( naszGracz );
+                                naszRuchFold( naszGracz );
                                 sprawdzeniePoNaszymRuchuIRuchyGraczyOstatniaLicytacja();
 //                                rozgrywka.sprawdzanieKart();
                                 historia.append( rozgrywka.wygranaGracza );
@@ -940,21 +980,22 @@ public class PanelStolik extends JPanel implements ActionListener {
         });
     }
 
+
     private void ruchGraczyPoBigBlindDoNas()  {
 
-        if (kartaF1 == null) {
+        if (!kartyFlop) {
 //            if (rozgrywka.getPobierzBlind() == 0) {
                 for (int i = (rozgrywka.getPobierzBlind() + 1); i < rozgrywka.getGracze().size(); i++) {
                     wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
                     if (rozgrywka.getGracze().get(i).getKartyWRece().size() != 0 && rozgrywka.getGracze().get( i ).getPulaZetonowGracza() <wartoscTmp) {
                         if ( i ==5 && rozgrywka.getKtoBlind() == 5 && rozgrywka.getGracze().get(5).getKartyWRece().size() != 0) {
                             rozgrywka.ruchGracza( i );
-                            System.out.println("to jest kurwa tutaj ruch graczy po big blind do nas");
+//                            System.out.println("to jest kurwa tutaj ruch graczy po big blind do nas");
                             sprawdzeniePlusEwWylozenieKartNaStolFLOP();
                             repaint();
                         } else {
                             rozgrywka.ruchGracza(i);
-                            System.out.println("ruch gracze w ruchu graczy po big blind do nas");
+//                            System.out.println("ruch gracze w ruchu graczy po big blind do nas");
                             historia.append( rozgrywka.doHistorii );
                             sprawdzeniePlusEwWylozenieKartNaStolFLOP();
                             repaint();
@@ -966,7 +1007,7 @@ public class PanelStolik extends JPanel implements ActionListener {
             licytacjaWGrze = false;
             sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
 
-        } else if (kartaT == null && kartaF1 != null) {
+        } else if (!kartaTurn && kartyFlop) {
             if (rozgrywka.getPobierzBlind() == 0) {
                 for (int i = (rozgrywka.getPobierzBlind() + 1); i < rozgrywka.getGracze().size(); i++) {
                     wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
@@ -974,14 +1015,14 @@ public class PanelStolik extends JPanel implements ActionListener {
                         if (i == 5) {
                             if (rozgrywka.getGracze().get(5).getPulaZetonowGracza() < wartoscTmp) {
                                 rozgrywka.ruchGracza(5);
-                                System.out.println("ruch gracze w ruchu graczy po big blind do nas");
+//                                System.out.println("ruch gracze w ruchu graczy po big blind do nas");
                                 historia.append( rozgrywka.doHistorii );
                                 iloscRuchowNaTurn--;
                                 repaint();
                             }
                         } else {
                             rozgrywka.ruchGracza(i);
-                            System.out.println("ruch gracze w ruchu graczy po big blind do nas");
+//                            System.out.println("ruch gracze w ruchu graczy po big blind do nas");
                             historia.append( rozgrywka.doHistorii );
                             iloscRuchowNaTurn--;
                             repaint();
@@ -999,7 +1040,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 
 
 
-        } else if (kartaR == null && kartaT != null && kartaF1 != null) {
+        } else if (!kartaRiver && kartaTurn && kartyFlop) {
             if (rozgrywka.getPobierzBlind() == 0) {
                 for (int i = (rozgrywka.getPobierzBlind() + 1); i < rozgrywka.getGracze().size(); i++) {
                     wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
@@ -1007,14 +1048,14 @@ public class PanelStolik extends JPanel implements ActionListener {
                         if (i == 5) {
                             if (rozgrywka.getGracze().get(5).getPulaZetonowGracza() < wartoscTmp) {
                                 rozgrywka.ruchGracza(i);
-                                System.out.println("ruch gracze w ruchu graczy po big blind do nas");
+//                                System.out.println("ruch gracze w ruchu graczy po big blind do nas");
                                 historia.append( rozgrywka.doHistorii );
                                 iloscRuchowNaRiver--;
                                 repaint();
                             }
                         } else {
                             rozgrywka.ruchGracza(i);
-                            System.out.println("ruch gracze w ruchu graczy po big blind do nas");
+//                            System.out.println("ruch gracze w ruchu graczy po big blind do nas");
                             historia.append( rozgrywka.doHistorii );
                             iloscRuchowNaRiver--;
                             repaint();
@@ -1030,7 +1071,7 @@ public class PanelStolik extends JPanel implements ActionListener {
             sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
 
 
-        } else if (kartaR != null && kartaT != null && kartaF1 != null) {
+        } else if (kartaRiver && kartaTurn && kartyFlop) {
             if (rozgrywka.getPobierzBlind() == 0) {
                 for (int i = (rozgrywka.getPobierzBlind() + 1); i < rozgrywka.getGracze().size(); i++) {
                     wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
@@ -1038,14 +1079,14 @@ public class PanelStolik extends JPanel implements ActionListener {
                         if (i == 5) {
                             if (rozgrywka.getGracze().get(5).getPulaZetonowGracza() < wartoscTmp) {
                                 rozgrywka.ruchGracza(i);
-                                System.out.println("ruch gracze w ruchu graczy po big blind do nas");
+//                                System.out.println("ruch gracze w ruchu graczy po big blind do nas");
                                 historia.append( rozgrywka.doHistorii );
                                 iloscRuchowOstatnia--;
                                 repaint();
                             }
                         } else {
                             rozgrywka.ruchGracza(i);
-                            System.out.println("ruch gracze w ruchu graczy po big blind do nas");
+//                            System.out.println("ruch gracze w ruchu graczy po big blind do nas");
                             historia.append( rozgrywka.doHistorii );
                             iloscRuchowOstatnia--;
                             repaint();
@@ -1068,23 +1109,26 @@ public class PanelStolik extends JPanel implements ActionListener {
     private void ruchGraczyPoNasDoBigBling(){
         for(int i = 1; i <= rozgrywka.getPobierzBlind(); i++){
 
-            if(kartaF1==null){
+            if(!kartyFlop){
                 rozgrywka.ruchGracza( i );
-                System.out.println("ruch graczy po nas do bb");
+                historia.append( rozgrywka.doHistorii );
+//                System.out.println("ruch graczy po nas do bb");
                 iloscRuchowNaFlopie--;
                 if(iloscRuchowNaFlopie<1)
                     pierwszyObrot=false;
             }
-            if(kartaF1!=null && kartaT==null) {
+            if(kartyFlop && !kartaTurn) {
                 rozgrywka.ruchGracza( i );
-                System.out.println("ruch graczy po nas do bb");
+                historia.append( rozgrywka.doHistorii );
+//                System.out.println("ruch graczy po nas do bb");
                 iloscRuchowNaTurn--;
                 if(iloscRuchowNaTurn<1)
                     pierwszyObrotTurn=false;
             }
-            if(kartaR==null && kartaT!=null && kartaF1!=null){
+            if(!kartaRiver && kartaTurn && kartyFlop){
                 rozgrywka.ruchGracza( i );
-                System.out.println("ruch graczy po nas do bb");
+                historia.append( rozgrywka.doHistorii );
+//                System.out.println("ruch graczy po nas do bb");
                 iloscRuchowNaRiver--;
                 if(iloscRuchowNaRiver<1)
                     pierwszyObrotRiver=false;
@@ -1098,26 +1142,26 @@ public class PanelStolik extends JPanel implements ActionListener {
     }
 
     private void ruchGraczyPoSmallBlindDoNas() {
-        if(kartaF1!=null){
+        if(kartyFlop){
             pierwszyObrot=true;
         }
 
         if (rozgrywka.getPobierzBlind() == 0 ) {
-            for (int i = 1; i <rozgrywka.getGracze().size(); i++) {
+            for (int i = 5; i <rozgrywka.getGracze().size(); i++) {
                 if (rozgrywka.getGracze().get(5).getKartyWRece().size() != 0)  {
                     rozgrywka.ruchGracza(5);
                     historia.append( rozgrywka.doHistorii );
-                    System.out.println("pierwszy if w ruchach graczy po small blind");
-                    if(kartaF1==null){
+//                    System.out.println("pierwszy if w ruchach graczy po small blind");
+                    if(!kartyFlop){
                         iloscRuchowNaFlopie--;
                     }
-                    if(kartaF1!=null && kartaT==null) {
+                    if(kartyFlop && !kartaTurn) {
                         iloscRuchowNaTurn--;
                     }
-                    if(kartaR==null && kartaT!=null && kartaF1!=null){
+                    if(!kartaRiver && kartaTurn && kartyFlop){
                         iloscRuchowNaRiver--;
                     }
-                    if(kartaR!=null && kartaT!=null && kartaF1!=null){
+                    if(kartaRiver && kartaTurn && kartyFlop){
                         iloscRuchowOstatnia--;
                     }
                     repaint();
@@ -1129,17 +1173,17 @@ public class PanelStolik extends JPanel implements ActionListener {
                 if (rozgrywka.getGracze().get(i).getKartyWRece().size() != 0)  {
                     rozgrywka.ruchGracza(i);
                     historia.append( rozgrywka.doHistorii );
-                    System.out.println("pierwszy if w ruchach graczy po small blind =2");
-                    if(kartaF1==null){
+//                    System.out.println("pierwszy if w ruchach graczy po small blind =2");
+                    if(!kartyFlop){
                         iloscRuchowNaFlopie--;
                     }
-                    if(kartaF1!=null && kartaT==null) {
+                    if(kartyFlop && !kartaTurn) {
                         iloscRuchowNaTurn--;
                     }
-                    if(kartaR==null && kartaT!=null && kartaF1!=null){
+                    if(!kartaRiver && kartaTurn && kartyFlop){
                         iloscRuchowNaRiver--;
                     }
-                    if(kartaR!=null && kartaT!=null && kartaF1!=null){
+                    if(kartaRiver && kartaTurn && kartyFlop){
                         iloscRuchowOstatnia--;
                     }
                     repaint();
@@ -1151,17 +1195,17 @@ public class PanelStolik extends JPanel implements ActionListener {
                 if (rozgrywka.getGracze().get(i).getKartyWRece().size() != 0)  {
                     rozgrywka.ruchGracza(i);
                     historia.append( rozgrywka.doHistorii );
-                    System.out.println("pierwszy if w ruchach graczy po small blind =3");
-                    if(kartaF1==null){
+//                    System.out.println("pierwszy if w ruchach graczy po small blind =3");
+                    if(!kartyFlop){
                         iloscRuchowNaFlopie--;
                     }
-                    if(kartaF1!=null && kartaT==null) {
+                    if(kartyFlop && !kartaTurn) {
                         iloscRuchowNaTurn--;
                     }
-                    if(kartaR==null && kartaT!=null && kartaF1!=null){
+                    if(!kartaRiver && kartaTurn && kartyFlop){
                         iloscRuchowNaRiver--;
                     }
-                    if(kartaR!=null && kartaT!=null && kartaF1!=null){
+                    if(kartaRiver && kartaTurn && kartyFlop){
                         iloscRuchowOstatnia--;
                     }
                     repaint();
@@ -1174,7 +1218,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                 if (rozgrywka.getGracze().get(i).getKartyWRece().size() != 0)  {
                     rozgrywka.ruchGracza(i);
                     historia.append( rozgrywka.doHistorii );
-                    System.out.println("pierwszy if w ruchach graczy po small blind =4");
+//                    System.out.println("pierwszy if w ruchach graczy po small blind =4");
                     if(kartaF1==null){
                         iloscRuchowNaFlopie--;
                     }
@@ -1196,17 +1240,17 @@ public class PanelStolik extends JPanel implements ActionListener {
                 if (rozgrywka.getGracze().get(i).getKartyWRece().size() != 0)  {
                     rozgrywka.ruchGracza(i);
                     historia.append( rozgrywka.doHistorii );
-                    System.out.println("pierwszy if w ruchach graczy po small blind pobierz blind =5");
-                    if(kartaF1==null){
+//                    System.out.println("pierwszy if w ruchach graczy po small blind pobierz blind =5");
+                    if(!kartyFlop){
                         iloscRuchowNaFlopie--;
                     }
-                    if(kartaF1!=null && kartaT==null) {
+                    if(kartyFlop && !kartaTurn) {
                         iloscRuchowNaTurn--;
                     }
-                    if(kartaR==null && kartaT!=null && kartaF1!=null){
+                    if(!kartaRiver && kartaTurn && kartyFlop){
                         iloscRuchowNaRiver--;
                     }
-                    if(kartaR!=null && kartaT!=null && kartaF1!=null){
+                    if(kartaRiver && kartaTurn && kartyFlop){
                         iloscRuchowOstatnia--;
                     }
                     repaint();
@@ -1218,28 +1262,28 @@ public class PanelStolik extends JPanel implements ActionListener {
                 if (rozgrywka.getGracze().get(i).getKartyWRece().size() != 0 ) {
                     rozgrywka.ruchGracza(i);
                     historia.append( rozgrywka.doHistorii );
-                    System.out.println("trzeci if w ruchach graczy po small blind =1");
+//                    System.out.println("trzeci if w ruchach graczy po small blind =1");
 
-                    if(kartaF1==null){
+                    if(!kartyFlop){
                         iloscRuchowNaFlopie--;
                     }
-                    if(kartaF1!=null && kartaT==null) {
+                    if(kartyFlop && !kartaTurn) {
                         iloscRuchowNaTurn--;
                     }
-                    if(kartaR==null && kartaT!=null && kartaF1!=null){
+                    if(!kartaRiver && kartaTurn && kartyFlop){
                         iloscRuchowNaRiver--;
                     }
-                    if(kartaR!=null && kartaT!=null && kartaF1!=null){
+                    if(kartaRiver && kartaTurn && kartyFlop){
                         iloscRuchowOstatnia--;
                     }
                     repaint();
                 }
                 if(i==5){
-                    if(kartaT==null){
+                    if(!kartaTurn){
                         sprawdzeniePlusEwWylozenieKartNaStolTURN();
-                    }else if(kartaT!= null && kartaR==null){
+                    }else if(kartaTurn && !kartaRiver){
                         sprawdzeniePlusEwWylozenieKartNaStolRiver();
-                    }else if(kartaT !=null & kartaR !=null){
+                    }else if(kartaTurn & kartaRiver){
                         sprawdzenieIPokazanieKart();
                     }
                 }
@@ -1260,8 +1304,8 @@ public class PanelStolik extends JPanel implements ActionListener {
 //        }
 
 
-        System.out.println(iloscRuchowNaTurn + "    ilość ruchów na turn");
-        System.out.println(iloscRuchowNaRiver + "    ilość ruchów na river");
+//        System.out.println(iloscRuchowNaTurn + "    ilość ruchów na turn");
+//        System.out.println(iloscRuchowNaRiver + "    ilość ruchów na river");
         licytacjaWGrze=false;
 
 //        else {
@@ -1314,7 +1358,7 @@ public class PanelStolik extends JPanel implements ActionListener {
             }
 
             koniecRozdania();
-            System.out.println("no kurwa mija koniec rozdania");
+//            System.out.println("no kurwa mija koniec rozdania");
 //            noweRozdanie();
             repaint();
         }else
@@ -1325,8 +1369,8 @@ public class PanelStolik extends JPanel implements ActionListener {
     private void sprawdzeniePoNaszymRuchuIRuchyGraczyFLOP()  {
         Gracz naszGracz = rozgrywka.getGracze().get(0);
         isLicytacjaWGrzeFlop=true;
-
-        if (kartaF1 == null) {
+        drugaLicytacja=true;
+                if (!kartyFlop) {
 
 //            for (int i = 0; i < (rozgrywka.getPobierzBlind()+1); i++) {
 //                wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
@@ -1375,18 +1419,18 @@ public class PanelStolik extends JPanel implements ActionListener {
 //                    }
 //                }
 //            }
-            while (isLicytacjaWGrzeFlop){
-                for (int i = 0; i <= rozgrywka.getPobierzBlind(); i++) {
-                    wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza( wartoscTmp );
-                    if (rozgrywka.getGracze().get( i ).getKartyWRece().size() != 0) {
-                        if (i == 0) {
-                            if (rozgrywka.getPobierzBlind() == 0) {
-                                sprawdzeniePlusEwWylozenieKartNaStolFLOP();
-                            }
+                    while (isLicytacjaWGrzeFlop){
+                        for (int i = 0; i <= rozgrywka.getPobierzBlind(); i++) {
+                            wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza( wartoscTmp );
+                            if (rozgrywka.getGracze().get( i ).getKartyWRece().size() != 0) {
+                                if (i == 0) {
+                                    if (rozgrywka.getPobierzBlind() == 0) {
+                                    sprawdzeniePlusEwWylozenieKartNaStolFLOP();
+                                    }
 
-                        } else {
+                                } else {
 
-                            if (pierwszyObrot == true) {
+                                    if (pierwszyObrot == true) {
 
 //                            if(i == rozgrywka.getPobierzBlind()){
 //                                if((rozgrywka.getGracze().get(i).getPulaZetonowGracza() ==wartoscTmp )) {
@@ -1398,65 +1442,74 @@ public class PanelStolik extends JPanel implements ActionListener {
 //                                iloscRuchowNaFlopie--;
 //                                repaint();
 //                            }else{
-                                rozgrywka.ruchGracza( i );
-                                System.out.println( "ruch raczy po naszym ruchu i ruchy graczy flop" );
-                                iloscRuchowNaFlopie--;
-                                repaint();
+                                        rozgrywka.ruchGracza( i );
+                                        historia.append( rozgrywka.doHistorii );
+//                                        System.out.println( "ruch raczy po naszym ruchu i ruchy graczy flop pierwszy obrot true" );
+                                        iloscRuchowNaFlopie--;
+                                        repaint();
 
-                                if (iloscRuchowNaFlopie < 1) {
-                                    pierwszyObrot = false;
+//                                if (iloscRuchowNaFlopie < 1) {
+//                                    pierwszyObrot = false;
+//                                }
+
+
+                                    } else if (pierwszyObrot == false) {
+                                        if ((rozgrywka.getGracze().get( i ).getPulaZetonowGracza() == wartoscTmp)) {
+//                                            sprawdzeniePlusEwWylozenieKartNaStolFLOP();
+//                                            repaint();
+                                        } else {
+                                            rozgrywka.ruchGracza( i );
+                                            historia.append( rozgrywka.doHistorii );
+                                            iloscRuchowNaFlopie--;
+//                                            System.out.println( "ruch raczy po naszym ruchu i ruchy graczy flop pierwszy obrot false" );
+                                            repaint();
+                                        }
+
+                                    }
                                 }
 
+                                if (i == rozgrywka.getPobierzBlind() && pierwszyObrot)
+                                    sprawdzeniePlusEwWylozenieKartNaStolFLOP();
+                                    isLicytacjaWGrzeFlop=false;
 
-                            } else if (pierwszyObrot == false) {
-                                if ((rozgrywka.getGracze().get( i ).getPulaZetonowGracza() == wartoscTmp)) {
-                                    sprawdzeniePlusEwWylozenieKartNaStolFLOP();
-                                    repaint();
-                                } else {
-                                    rozgrywka.ruchGracza( i );
-                                    iloscRuchowNaFlopie--;
-                                    System.out.println( "ruch raczy po naszym ruchu i ruchy graczy flop" );
-                                    sprawdzeniePlusEwWylozenieKartNaStolFLOP();
-                                    repaint();
-                                }
 
                             }
                         }
+                        sprawdzeniePlusEwWylozenieKartNaStolFLOP();
+                        repaint();
+                    }
 
-
+                    sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
+                    if(iloscRuchowNaFlopie<1) {
+                        pierwszyObrot = false;
                     }
                 }
-        }
-
-                sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
-                if(iloscRuchowNaFlopie<1) {
-                    pierwszyObrot = false;
-                }
-            }
 
         sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
         repaint();
+        if(drugaLicytacja) {
+            if (!kartyFlop) {
+                for (int i = rozgrywka.getPobierzBlind() + 1; i < rozgrywka.getGracze().size(); i++) {
+                    wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza( wartoscTmp );
+                    if (rozgrywka.getGracze().get( i ).getKartyWRece().size() != 0 && rozgrywka.getGracze().get( i ).getPulaZetonowGracza() < wartoscTmp) {
 
-        if (kartaF1 == null) {
-            for (int i = rozgrywka.getPobierzBlind() + 1; i < rozgrywka.getGracze().size(); i++) {
-                wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
-                if (rozgrywka.getGracze().get(i).getKartyWRece().size() != 0 && rozgrywka.getGracze().get( i ).getPulaZetonowGracza()<wartoscTmp) {
+                        rozgrywka.ruchGracza( i );
+                        historia.append( rozgrywka.doHistorii );
+//                        System.out.println( "czyzby to bylo tutaj" );
 
-                    rozgrywka.ruchGracza(i);
-                    historia.append( rozgrywka.doHistorii );
-                    System.out.println("czyzby to bylo tutaj");
+                        iloscRuchowNaFlopie--;
 
-                    iloscRuchowNaFlopie--;
+                        repaint();
+                        if (iloscRuchowNaFlopie < 1) {
+                            pierwszyObrot = false;
+                        }
 
-
-                    repaint();
-                    if(iloscRuchowNaFlopie<1){
-                        pierwszyObrot=false;
+                    } else {
+                        drugaLicytacja = false;
                     }
 
-                    sprawdzeniePlusEwWylozenieKartNaStolFLOP();
-                }else
-                    sprawdzeniePlusEwWylozenieKartNaStolFLOP();
+                }
+                sprawdzeniePlusEwWylozenieKartNaStolFLOP();
             }
         }
         sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
@@ -1469,7 +1522,7 @@ public class PanelStolik extends JPanel implements ActionListener {
     private void sprawdzeniePoNaszymRuchuIRuchyGraczyTURN() {
         Gracz naszGracz = rozgrywka.getGracze().get(0);
 
-        if (kartaT == null) {
+        if (!kartaTurn) {
 
             for (int i = 0; i <=rozgrywka.getPobierzBlind(); i++) {
                 wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
@@ -1486,8 +1539,9 @@ public class PanelStolik extends JPanel implements ActionListener {
                                     sprawdzeniePlusEwWylozenieKartNaStolTURN();
                                 }else {
                                     rozgrywka.ruchGracza( i );
+                                    historia.append( rozgrywka.doHistorii );
                                     iloscRuchowNaTurn--;
-                                    System.out.println("ruch gracza w sprawdzeniu po naszym ruchu");
+//                                    System.out.println("ruch gracza w sprawdzeniu po naszym ruchu");
                                     if(iloscRuchowNaTurn<1){
                                         pierwszyObrotTurn=false;
                                     }
@@ -1495,8 +1549,9 @@ public class PanelStolik extends JPanel implements ActionListener {
                                 }
                             }else{
                                 rozgrywka.ruchGracza( i );
+                                historia.append( rozgrywka.doHistorii );
                                 iloscRuchowNaTurn--;
-                                System.out.println("ruch gracza w sprawdzeniu po naszym ruchu");
+//                                System.out.println("ruch gracza w sprawdzeniu po naszym ruchu");
                                 if (iloscRuchowNaTurn < 1) {
                                     pierwszyObrotTurn = false;
 
@@ -1511,8 +1566,9 @@ public class PanelStolik extends JPanel implements ActionListener {
                     if (kartaT == null && pierwszyObrotTurn==false) {
                         if(rozgrywka.getGracze().get( i ).getPulaZetonowGracza()<wartoscTmp) {
                             rozgrywka.ruchGracza( i );
+                            historia.append( rozgrywka.doHistorii );
                             iloscRuchowNaTurn--;
-                            System.out.println("ruch gracza w sprawdzeniu po naszym ruchu");
+//                            System.out.println("ruch gracza w sprawdzeniu po naszym ruchu");
                             if (iloscRuchowNaTurn < 1) {
                                 pierwszyObrotTurn = false;
                             }
@@ -1522,8 +1578,9 @@ public class PanelStolik extends JPanel implements ActionListener {
                         }
                     }else if (pierwszyObrotTurn && i == rozgrywka.getPobierzBlind()) {
                         rozgrywka.ruchGracza( i );
+                        historia.append( rozgrywka.doHistorii );
                         iloscRuchowNaTurn--;
-                        System.out.println("ruch gracza w sprawdzeniu po naszym ruchu");
+//                        System.out.println("ruch gracza w sprawdzeniu po naszym ruchu");
                         if(iloscRuchowNaTurn<1){
                             pierwszyObrotTurn=false;
                         }
@@ -1538,31 +1595,33 @@ public class PanelStolik extends JPanel implements ActionListener {
             }
         }
 
-        if (kartaT == null) {
+        if (!kartaTurn) {
             for (int i = rozgrywka.getPobierzBlind() + 1; i < rozgrywka.getGracze().size(); i++) {
-                if (rozgrywka.getGracze().get(i).getKartyWRece().size() != 0 && kartaT == null ) {
+                wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
+                if (rozgrywka.getGracze().get(i).getKartyWRece().size() != 0 ) {
                     if(!pierwszyObrotTurn && rozgrywka.getGracze().get( i ).getPulaZetonowGracza()<wartoscTmp) {
                         rozgrywka.ruchGracza( i );
+                        historia.append( rozgrywka.doHistorii );
                         iloscRuchowNaTurn--;
-                        System.out.println("ruch gracza w sprawdzeniu po naszym ruchu drugi if");
+//                        System.out.println("ruch gracza w sprawdzeniu po naszym ruchu drugi if");
                         repaint();
                         if (iloscRuchowNaTurn < 1) {
                             pierwszyObrotTurn = false;
                         }
-                        sprawdzeniePlusEwWylozenieKartNaStolTURN();
+
                     }else if (pierwszyObrotTurn){
                         rozgrywka.ruchGracza( i );
-                        System.out.println("ruch gracza w sprawdzeniu po naszym ruchu drugi if");
+//                        System.out.println("ruch gracza w sprawdzeniu po naszym ruchu drugi if");
                         iloscRuchowNaTurn--;
                         repaint();
                         if (iloscRuchowNaTurn < 1) {
                             pierwszyObrotTurn = false;
                         }
                     }else if (!pierwszyObrotTurn && rozgrywka.getGracze().get( i ).getPulaZetonowGracza()==wartoscTmp){
-                        sprawdzeniePlusEwWylozenieKartNaStolTURN();
+
                     }
                 }
-            }
+            }sprawdzeniePlusEwWylozenieKartNaStolTURN();
 
         }
         sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
@@ -1573,7 +1632,7 @@ public class PanelStolik extends JPanel implements ActionListener {
     private void sprawdzeniePoNaszymRuchuIRuchyGraczyRiver() //throws InterruptedException, SQLException, ClassNotFoundException
     {
         Gracz naszGracz = rozgrywka.getGracze().get(0);
-        if (kartaR == null) {
+        if (!kartaRiver) {
 
             for (int i = 0; i <= rozgrywka.getPobierzBlind(); i++) {
                 wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza( wartoscTmp );
@@ -1592,7 +1651,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                                 sprawdzeniePlusEwWylozenieKartNaStolRiver();
                             }else {
                                 rozgrywka.ruchGracza( i );
-                                System.out.println( "ruch raczy po naszym ruchu i ruchy graczy river" );
+//                                System.out.println( "ruch raczy po naszym ruchu i ruchy graczy river" );
 
                                 repaint();
                                 sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
@@ -1605,7 +1664,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                                 sprawdzeniePlusEwWylozenieKartNaStolRiver();
                             } else
                                 rozgrywka.ruchGracza( i );
-                            System.out.println( "ruch raczy po naszym ruchu i ruchy graczy river" );
+//                            System.out.println( "ruch raczy po naszym ruchu i ruchy graczy river" );
                             iloscRuchowNaRiver--;
                             sprawdzeniePlusEwWylozenieKartNaStolRiver();
                         }
@@ -1620,19 +1679,19 @@ public class PanelStolik extends JPanel implements ActionListener {
             sprawdzeniePlusEwWylozenieKartNaStolRiver();
         }
 
-        if (kartaR == null) {
+        if (!kartaRiver) {
             for (int i = rozgrywka.getPobierzBlind() + 1; i < rozgrywka.getGracze().size(); i++) {
                 wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza( wartoscTmp );
                 if (rozgrywka.getGracze().get(i).getKartyWRece().size() != 0 ) {
                     if(!pierwszyObrotRiver && rozgrywka.getGracze().get( i ).getPulaZetonowGracza()<wartoscTmp) {
                         rozgrywka.ruchGracza( i );
-                        System.out.println("ruch raczy po naszym ruchu i ruchy graczy river");
+//                        System.out.println("ruch raczy po naszym ruchu i ruchy graczy river");
                         iloscRuchowNaRiver--;
                         repaint();
                         sprawdzeniePlusEwWylozenieKartNaStolRiver();
                     }else if (pierwszyObrotRiver){
                         rozgrywka.ruchGracza( i );
-                        System.out.println("ruch raczy po naszym ruchu i ruchy graczy river");
+//                        System.out.println("ruch raczy po naszym ruchu i ruchy graczy river");
                         iloscRuchowNaRiver--;
                         repaint();
                     }else if (!pierwszyObrotRiver && rozgrywka.getGracze().get( i ).getPulaZetonowGracza()==wartoscTmp){
@@ -1651,7 +1710,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 
     private void sprawdzeniePoNaszymRuchuIRuchyGraczyOstatniaLicytacja()  {
         Gracz naszGracz = rozgrywka.getGracze().get(0);
-        if (kartaF1 != null && kartaT != null && kartaR != null) {
+        if (kartyFlop && kartaTurn && kartaRiver) {
 
 
             for (int i = 0; i <= rozgrywka.getPobierzBlind(); i++) {
@@ -1668,7 +1727,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                                     sprawdzenieIPokazanieKart();
                                 }else
                                     rozgrywka.ruchGracza( i );
-                                System.out.println("ruch raczy po naszym ruchu i ruchy graczy ostatnia");
+//                                System.out.println("ruch raczy po naszym ruchu i ruchy graczy ostatnia");
                                 iloscRuchowOstatnia--;
                                 if (iloscRuchowOstatnia < 1) {
                                     pierwszyObrotOstatnia = false;
@@ -1676,7 +1735,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                                 sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
                             } else {
                                 rozgrywka.ruchGracza( i );
-                                System.out.println("ruch raczy po naszym ruchu i ruchy graczy ostatnia");
+//                                System.out.println("ruch raczy po naszym ruchu i ruchy graczy ostatnia");
                                 iloscRuchowOstatnia--;
                                 if (iloscRuchowOstatnia < 1) {
                                     pierwszyObrotOstatnia = false;
@@ -1706,11 +1765,11 @@ public class PanelStolik extends JPanel implements ActionListener {
             }sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
         }
 
-        if (kartaR != null) {
+        if (kartyFlop && kartaTurn && kartaRiver) {
             for (int i = rozgrywka.getPobierzBlind() + 1; i < rozgrywka.getGracze().size(); i++) {
                 if (rozgrywka.getGracze().get(i).getKartyWRece().size() != 0 && i != 0 && kartaR == null && rozgrywka.getGracze().get( i ).getPulaZetonowGracza()<wartoscTmp) {
                     rozgrywka.ruchGracza(i);
-                    System.out.println("ruch raczy po naszym ruchu i ruchy graczy ostatnia");
+//                    System.out.println("ruch raczy po naszym ruchu i ruchy graczy ostatnia");
                     iloscRuchowOstatnia--;
                     if (iloscRuchowOstatnia < 1) {
                         pierwszyObrotOstatnia = false;
@@ -1810,7 +1869,7 @@ public class PanelStolik extends JPanel implements ActionListener {
         historia.append( rozgrywka.getGracze().get( 0 ).getNick() + " zrobił CHECK/CALL\n" );
         System.out.println("ZROBILEM ruch");
 
-        if (kartaF1 == null) {
+        if (!kartyFlop) {
 
             if (naszGracz.getPulaZetonowGracza() < wartoscTmp) {
                 naszGracz.setIloscZetonow(naszGracz.getIloscZetonow() - wartoscTmp + naszGracz.getPulaZetonowGracza());
@@ -1823,7 +1882,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 
 
 
-        } else if (kartaT == null && kartaF1 != null) {
+        } else if (!kartaTurn   && kartyFlop) {
 
             if (naszGracz.getPulaZetonowGracza() < wartoscTmp) {
                 naszGracz.setIloscZetonow(naszGracz.getIloscZetonow() - wartoscTmp + naszGracz.getPulaZetonowGracza());
@@ -1837,7 +1896,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 
 
 
-        } else if (kartaR == null && kartaT != null && kartaF1 != null) {
+        } else if (!kartaRiver && kartaTurn && kartyFlop) {
 
             if (naszGracz.getPulaZetonowGracza() < wartoscTmp) {
                 naszGracz.setIloscZetonow(naszGracz.getIloscZetonow() - wartoscTmp + naszGracz.getPulaZetonowGracza());
@@ -1847,7 +1906,7 @@ public class PanelStolik extends JPanel implements ActionListener {
             }
             iloscRuchowNaRiver--;
             System.out.println(iloscRuchowNaRiver + "  po wcisnieciu check");
-        } else if (kartaR != null && kartaT != null && kartaF1 != null) {
+        } else if (kartaRiver && kartaTurn && kartyFlop) {
 
             if (naszGracz.getPulaZetonowGracza() < wartoscTmp) {
                 naszGracz.setIloscZetonow(naszGracz.getIloscZetonow() - wartoscTmp + naszGracz.getPulaZetonowGracza());
@@ -1859,6 +1918,59 @@ public class PanelStolik extends JPanel implements ActionListener {
         }
 
     }
+
+    private void naszRuchFold(Gracz naszGracz) {
+
+
+        if (rozgrywka.getGracze().get( 0 ).getKartyWRece().size()!=0) {
+            wartoscTmp = rozgrywka.getGracze().get( 0 ).getPulaZetonowGracza();
+
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern( ("yyyy-MM-dd HH:mm:ss") );
+
+            rozgrywka.setLineBaza( "[" + LocalDateTime.now().format( dateTimeFormatter ) + "] " + rozgrywka.getGracze().get( 0 ).getNick() + " wykonał fold." );
+
+            rozgrywka.getGracze().get( 0 ).getKartyWRece().removeAll( rozgrywka.getGracze().get( 0 ).getKartyWRece() );
+
+            try {
+                new BazaDanych( rozgrywka.getMe() );
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            historia.append( rozgrywka.getGracze().get( 0 ).getNick() + " zrobił FOLD\n" );
+            System.out.println( "ZROBILEM ruch" );
+
+            bet.setVisible( false );
+            check.setVisible( false );
+
+            if (kartaF1 == null) {
+                iloscRuchowNaFlopie--;
+            }
+            if (kartaT == null && kartaF1 != null) {
+                iloscRuchowNaTurn--;
+            }
+            if (kartaR == null && kartaT != null && kartaF1 == null) {
+                iloscRuchowNaRiver--;
+            }
+            if (kartaR != null && kartaT != null && kartaF1 == null) {
+                iloscRuchowOstatnia--;
+            }
+            repaint();
+            licytacjaWGrze=false;
+        }
+            if (kartaF1==null){
+                System.out.println("zrobiłem fold przed flopem");
+            }else if (kartaT == null) {
+                System.out.println("zrobiłem fold przed flopem");
+            }
+            else if (kartaR == null) {
+                System.out.println("zrobiłem fold przed flopem");
+            }
+            else if (kartaR != null && kartaT != null && kartaF1 == null) {
+                System.out.println("zrobiłem fold przed flopem");
+            }
+        }
 
 
 
@@ -1945,7 +2057,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 
 
             for (Gracz g : rozgrywka.getGracze()) {
-                if (g.getKartyWRece().size() != 0) {
+                if (g.getKartyWRece().size() != 0 && g.getIloscZetonow()>0) {
 
                     if (g.getPulaZetonowGracza() != wartoscTmp && g.getKartyWRece().size() != 0) {
                         czyGraczeWlozyliTakaSamaIloscZetonowDoPuli = false;
@@ -1953,35 +2065,44 @@ public class PanelStolik extends JPanel implements ActionListener {
                     }
                 }
             }
-            if(!czyGraczeWlozyliTakaSamaIloscZetonowDoPuli){
-                if(kartaF1==null){
-                    for(int i = (rozgrywka.getPobierzBlind()+1); i <rozgrywka.getGracze().size();i++ ){
-                        wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
-                        if(rozgrywka.getGracze().get( i ).getKartyWRece().size() != 0 && rozgrywka.getGracze().get( i ).getPulaZetonowGracza() < wartoscTmp){
-                            rozgrywka.ruchGracza( i );
-                            iloscRuchowNaFlopie--;
-                            sprawdzeniePlusEwWylozenieKartNaStolFLOP();
-                        }
-                    }
-                }
-            }
+//            if(!czyGraczeWlozyliTakaSamaIloscZetonowDoPuli){
+//                if(!kartyFlop){
+//                    for(int i = (rozgrywka.getPobierzBlind()+1); i <rozgrywka.getGracze().size();i++ ){
+//                        wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
+//                        if(rozgrywka.getGracze().get( i ).getKartyWRece().size() != 0 && rozgrywka.getGracze().get( i ).getPulaZetonowGracza() < wartoscTmp){
+//                            rozgrywka.ruchGracza( i );
+//                            System.out.println("jak to się kurwa tutaj wzielo?");
+//                            iloscRuchowNaFlopie--;
+//                            sprawdzeniePlusEwWylozenieKartNaStolFLOP();
+//                        }
+//                    }
+//                }
+//            }
             sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
-            if (czyZostalJedenGracz == false) {
+            if (!czyZostalJedenGracz) {
                 if (czyGraczeWlozyliTakaSamaIloscZetonowDoPuli) {
 
                     System.out.print("POKAZUJE KARTY");
+                    historia.append( "Pokazuje karty flop\n");
 
                     kartaF1 = new ImageIcon(zapiszObrazDlaKartStol(0)).getImage();
                     kartaF2 = new ImageIcon(zapiszObrazDlaKartStol(1)).getImage();
                     kartaF3 = new ImageIcon(zapiszObrazDlaKartStol(2)).getImage();
+                    System.out.println(kartyFlop + " sprawdzenie wartosci kartyFlop w sprawdzeniu po naszym ruchu");
+
 
                     dodajZetonyGraczyDoPuli();
 
-                    repaint();
+                    kartyFlop = true;
+                    System.out.println(kartyFlop + " sprawdzenie wartosci kartyFlop w sprawdzeniu po naszym ruchu");
 
+
+                    repaint();
 
                     pierwszyObrotTurn = true;
                     czyGraczeWlozyliTakaSamaIloscZetonowDoPuli = false;
+                    isLicytacjaWGrzeFlop=false;
+                    drugaLicytacja=false;
 
                     if(rozgrywka.getPobierzBlind()==0){
                         sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
@@ -2036,6 +2157,7 @@ public class PanelStolik extends JPanel implements ActionListener {
         licytacjaWGrze=false;
 
 
+
     }
 
     private void sprawdzeniePlusEwWylozenieKartNaStolTURN() {
@@ -2048,7 +2170,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 
             for (Gracz g : rozgrywka.getGracze()) {
 
-                if (g.getKartyWRece().size() != 0) {
+                if (g.getKartyWRece().size() != 0 && g.getIloscZetonow()>0) {
 
                     if (g.getPulaZetonowGracza() != wartoscTmp && g.getKartyWRece().size() != 0) {
                         czyGraczeWlozyliTakaSamaIloscZetonowDoPuli = false;
@@ -2060,13 +2182,14 @@ public class PanelStolik extends JPanel implements ActionListener {
 
 
             sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
-            if (czyZostalJedenGracz == false) {
+            if (!czyZostalJedenGracz) {
                 if (czyGraczeWlozyliTakaSamaIloscZetonowDoPuli) {
 
                     System.out.println("POKAZUJE KARTY");
                     kartaT = new ImageIcon(zapiszObrazDlaKartStol(3)).getImage();
 
                     dodajZetonyGraczyDoPuli();
+                    kartaTurn = true;
 
                     repaint();
 
@@ -2110,7 +2233,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 
             for (Gracz g : rozgrywka.getGracze()) {
 
-                if (g.getKartyWRece().size() != 0) {
+                if (g.getKartyWRece().size() != 0 && g.getIloscZetonow()>0) {
 
                     if (g.getPulaZetonowGracza() != wartoscTmp && g.getKartyWRece().size() != 0) {
                         czyGraczeWlozyliTakaSamaIloscZetonowDoPuli = false;
@@ -2118,14 +2241,14 @@ public class PanelStolik extends JPanel implements ActionListener {
                 }
             }
             sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
-            if (czyZostalJedenGracz == false) {
+            if (!czyZostalJedenGracz) {
                 if (czyGraczeWlozyliTakaSamaIloscZetonowDoPuli) {
 
                     System.out.println("POKAZUJE KARTY");
                     kartaR = new ImageIcon(zapiszObrazDlaKartStol(4)).getImage();
 
                     dodajZetonyGraczyDoPuli();
-
+                    kartaRiver = true;
                     repaint();
 
                     czyGraczeWlozyliTakaSamaIloscZetonowDoPuli = false;
@@ -2167,7 +2290,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 
             for (Gracz g : rozgrywka.getGracze()) {
 
-                if (g.getKartyWRece().size() != 0) {
+                if (g.getKartyWRece().size() != 0 && g.getIloscZetonow()>0) {
 
                     if (g.getPulaZetonowGracza() != wartoscTmp && g.getKartyWRece().size() != 0) {
 //                        System.out.println("Sprawdzenie " + g.getNick());
@@ -2178,7 +2301,7 @@ public class PanelStolik extends JPanel implements ActionListener {
             }
             sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
             if (czyGraczeWlozyliTakaSamaIloscZetonowDoPuli) {
-                if (czyZostalJedenGracz == false) {
+                if (!czyZostalJedenGracz) {
                     dodajZetonyGraczyDoPuli();
                     repaint();
                     System.out.println("Gracze pokazuja karty");
@@ -2200,7 +2323,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                     licytacjaWGrze = false;
                     czyGraczeWlozyliTakaSamaIloscZetonowDoPuli = false;
 
-                } else if (czyZostalJedenGracz == true) {
+                } else if (czyZostalJedenGracz) {
                     koniecRozdania();
 //                    noweRozdanie();
                 }
@@ -2575,8 +2698,15 @@ public class PanelStolik extends JPanel implements ActionListener {
         pierwszyObrotTurn = true;
         pierwszyObrotRiver = true;
         pierwszyObrotOstatnia = true;
+        kartyFlop = false;
+        kartaTurn = false;
+        kartaRiver = false;
 //        numerGracza();
 //        System.out.println(numerGracza + "   numer gracza, który powinien wykonać sój ruch");
+
+        bet.setVisible( true );
+        check.setVisible( true );
+
 
 
 
@@ -2628,13 +2758,25 @@ public class PanelStolik extends JPanel implements ActionListener {
         repaint();
         rozgrywka.usunKartyStol();
         repaint();
+        for(Gracz g : rozgrywka.getGracze()){
+            if(g.getIloscZetonow()<=0){
+                rozgrywka.getGracze().remove( g );
+                rozgrywka.setLiczbaGraczy( rozgrywka.getLiczbaGraczy()-1);
+                repaint();
+            }
+        }
 
         kartaF1 = null;
         kartaF2 = null;
         kartaF3 = null;
         kartaT = null;
         kartaR = null;
+        kartyFlop = false;
+        kartaTurn = false;
+        kartaRiver = false;
         repaint();
+
+
 
         graj.setVisible( true );
 
