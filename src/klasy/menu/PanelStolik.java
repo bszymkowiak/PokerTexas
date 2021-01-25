@@ -443,7 +443,7 @@ public class PanelStolik extends JPanel implements ActionListener {
         historia = new JTextArea();
         historia.setBounds( 10,840, 355,195);
         historia.setBorder(null);
-        historia.setFont(new Font("SansSerif", Font.BOLD, 18));
+        historia.setFont(new Font("SansSerif", Font.BOLD, 13));
         historia.setEditable(false);
         historia.setOpaque(false);
         historia.setForeground(Color.WHITE);
@@ -1364,8 +1364,10 @@ public class PanelStolik extends JPanel implements ActionListener {
         if (iloscGraczyWGrze == 1) {
             czyZostalJedenGracz = true;
             System.out.println("został jeden gracz. Koniec rozdania");
+
             for (Gracz d : rozgrywka.getGracze()) {
                 if (d.getKartyWRece().size() != 0) {
+                    historia.append(d.getNick() + " wygrał i zdobył: " + rozgrywka.pulaGlowna);
                     d.setIloscZetonow( d.getIloscZetonow() + rozgrywka.pulaGlowna );
                     repaint();
                 }
@@ -1880,7 +1882,7 @@ public class PanelStolik extends JPanel implements ActionListener {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        historia.append( rozgrywka.getGracze().get( 0 ).getNick() + " zrobił CHECK/CALL\n" );
+        historia.append( rozgrywka.getGracze().get( 0 ).getNick() + " check.\n" );
         System.out.println("ZROBILEM ruch");
 
         if (!kartyFlop) {
@@ -1935,6 +1937,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 
     private void naszRuchFold(Gracz naszGracz) {
 
+        historia.append(rozgrywka.getGracze().get(0).getNick() + " fold.");
 
         if (rozgrywka.getGracze().get( 0 ).getKartyWRece().size()!=0) {
             wartoscTmp = rozgrywka.getGracze().get( 0 ).getPulaZetonowGracza();
@@ -2338,6 +2341,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                     czyGraczeWlozyliTakaSamaIloscZetonowDoPuli = false;
 
                 } else if (czyZostalJedenGracz) {
+
                     koniecRozdania();
 //                    noweRozdanie();
                 }
