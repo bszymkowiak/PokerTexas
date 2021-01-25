@@ -11,6 +11,9 @@ import klasy.stoper.Stoper;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.text.Document;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -74,6 +77,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 
 
     boolean pierwszaTura = true;
+    private JScrollPane scroll;
 
 
     String kolorRewers;
@@ -136,7 +140,6 @@ public class PanelStolik extends JPanel implements ActionListener {
     public void setRozgrywka(Rozgrywka rozgrywka) {
         this.rozgrywka = rozgrywka;
     }
-
 
     public Image zapiszObrazDlaKartStol(int i) {
 
@@ -439,11 +442,24 @@ public class PanelStolik extends JPanel implements ActionListener {
 
         historia = new JTextArea();
         historia.setBounds( 10,840, 355,195);
-        historia.setBorder( obramowanie );
+        historia.setBorder(null);
         historia.setFont(new Font("SansSerif", Font.BOLD, 18));
-        historia.setLineWrap( true );
-        historia.setWrapStyleWord( true );
-        add(historia);
+        historia.setEditable(false);
+        historia.setOpaque(false);
+        historia.setForeground(Color.WHITE);
+//        add(historia);
+
+        scroll = new JScrollPane(historia);
+        scroll.getViewport().setOpaque(false);
+        scroll.setOpaque(false);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scroll.setBounds(10,840, 355,195);
+        scroll.setBorder(null);
+
+        add(scroll);
+
+
+
 
 
 
@@ -467,8 +483,6 @@ public class PanelStolik extends JPanel implements ActionListener {
 //        add( lobby );
 
     }
-
-
 
     private void przyciskBetAkcja() {
         bet.addActionListener(new ActionListener() {
