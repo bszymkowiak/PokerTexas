@@ -6,23 +6,18 @@ import klasy.BazaDanych;
 import klasy.Gracz;
 import klasy.Rozgrywka;
 import klasy.karty.TaliaKart;
-import klasy.stoper.Stoper;
+import klasy.menu.panelKoncowy.PanelKoncowy;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.TitledBorder;
-import javax.swing.text.Document;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.DataOutput;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -202,6 +197,11 @@ public class PanelStolik extends JPanel implements ActionListener {
         dodajZetonSmallBlind(g);
         dodajZetonBibBlind(g);
         dodajZetonDealer(g);
+
+        if (rozgrywka.getGracze().size() == 1) {
+            stolik.window.dispose();
+            new PanelKoncowy(me);
+        }
 
 
     }
