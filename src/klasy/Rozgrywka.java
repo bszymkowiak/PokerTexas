@@ -52,7 +52,7 @@ public class Rozgrywka extends Gracz {
     private Stoper stoper = new Stoper();
 
 
-    public int pulaGlowna;
+    private int pulaGlowna;
     int maxWartosc = 0;
 
     private String lineBaza;
@@ -111,6 +111,14 @@ public class Rozgrywka extends Gracz {
 
     public void setKtoraRunda(int ktoraRunda) {
         this.ktoraRunda = ktoraRunda;
+    }
+
+    public int getPulaGlowna() {
+        return pulaGlowna;
+    }
+
+    public void setPulaGlowna(int pulaGlowna) {
+        this.pulaGlowna = pulaGlowna;
     }
 
     private ArrayList<String> imionaGraczy = new ArrayList<>();
@@ -313,7 +321,8 @@ public class Rozgrywka extends Gracz {
         }
 
         if (!czyRozdalemBlind) {
-            ktoBlind = rand.nextInt(gracze.size());
+//            ktoBlind = rand.nextInt(gracze.size());
+            ktoBlind = 5;
             malyBlind = 10;
             duzyBlind = 20;
             czyRozdalemBlind = true;
@@ -411,6 +420,7 @@ public class Rozgrywka extends Gracz {
         Random rand = new Random();
         int liczba = rand.nextInt(3);
 
+//        int liczba = 0;
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm:ss"));
 
 
@@ -423,6 +433,7 @@ public class Rozgrywka extends Gracz {
                     komputerFold( i );
                     lineBaza = ("[" + LocalDateTime.now().format( dateTimeFormatter ) + "] " + gracze.get( i ).getNick() + " wykonał/a fold.");
                     doHistorii = gracze.get( i ).getNick() + " wykonał/a FOLD \n";
+
                 } else if (liczba == 1) {
                     if(gracze.get( i ).getIloscZetonow() == 0){
                     }
