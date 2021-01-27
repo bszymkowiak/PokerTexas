@@ -6,6 +6,8 @@ import klasy.BazaDanych;
 import klasy.Gracz;
 import klasy.Rozgrywka;
 import klasy.karty.TaliaKart;
+import klasy.menu.panelKoncowy.PanelKoncowy;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -322,6 +324,11 @@ public class PanelStolik extends JPanel implements ActionListener {
         dodajZetonSmallBlind(g);
         dodajZetonBibBlind(g);
         dodajZetonDealer(g);
+
+        if (rozgrywka.getGracze().size() == 1) {
+            stolik.window.dispose();
+            new PanelKoncowy(me);
+        }
 
     }
 
