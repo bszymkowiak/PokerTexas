@@ -241,7 +241,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 
                         iloscRuchowNaTurn--;
                         System.out.println("ILOSC RUCHOW NA TURN : " + iloscRuchowNaTurn);
-                        if(iloscRuchowNaTurn < 2){
+                        if(iloscRuchowNaTurn < 1){
                             pierwszyObrotTurn = false;
                             sprawdzeniePlusEwWylozenieKartNaStolTURN();
                         }
@@ -279,7 +279,7 @@ public class PanelStolik extends JPanel implements ActionListener {
 //                        sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
 
                         iloscRuchowNaRiver--;
-                        if(iloscRuchowNaRiver < 2){
+                        if(iloscRuchowNaRiver < 1){
                             pierwszyObrotRiver = false;
                             sprawdzeniePlusEwWylozenieKartNaStolRiver();
                         }
@@ -315,7 +315,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                         historia.append(rozgrywka.doHistorii);
 //                        sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
                         iloscRuchowOstatnia--;
-                        if(iloscRuchowOstatnia < 2){
+                        if(iloscRuchowOstatnia < 1){
                             pierwszyObrotOstatnia = false;
 //                            sprawdzenieIPokazanieKart();
                             System.out.println("Powinno wykonać sprawwdzenie kart");
@@ -1320,7 +1320,7 @@ public class PanelStolik extends JPanel implements ActionListener {
             repaint();
         }else if (iloscGraczyWGrze > 1 ) {
             System.out.println("Zostało więcej niz jeden gracz");
-
+            System.out.println(iloscGraczyWGrze);
             czyZostalJedenGracz = false;
         }
         repaint();
@@ -2162,6 +2162,8 @@ public class PanelStolik extends JPanel implements ActionListener {
                     sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
                     iloscRuchowNaTurn = iloscGraczyWGrze;
 
+                    wartoscTmp = 0;
+                    System.out.println(wartoscTmp + " sprawdzamy wartosc tmp po wyłożeniu kart");
                 }
             }
         }
