@@ -321,8 +321,7 @@ public class Rozgrywka extends Gracz {
         }
 
         if (!czyRozdalemBlind) {
-//            ktoBlind = rand.nextInt(gracze.size());
-            ktoBlind = 5;
+            ktoBlind = rand.nextInt(gracze.size());
             malyBlind = 10;
             duzyBlind = 20;
             czyRozdalemBlind = true;
@@ -451,7 +450,7 @@ public class Rozgrywka extends Gracz {
                     }
                 }
 
-                // new BazaDanych(me);
+//                 new BazaDanych(me);
 
             }
         }

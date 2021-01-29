@@ -5,10 +5,11 @@ import java.sql.*;
 public class BazaDanych {
 
     final String JDBC_DRIVER = "org.postgresql.Driver";
-    final String URL = "jdbc:postgresql://localhost/PokerTexas";
+    final String URL = "jdbc:postgresql://localhost:5433/PokerTexas";
 
     final String USER = "postgres";
-    final String PASS = "postgres";
+    final String PASS = "7AsfG4,.2980";
+//    final String PASS = "postgres";
 
     Statement stmt;
     Connection conn;
