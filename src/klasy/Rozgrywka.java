@@ -961,6 +961,7 @@ public class Rozgrywka extends Gracz {
                     checkStraightFlush(g);
                     System.out.println(g.listaTmp);
                     System.out.println(g.getNick() + "\n " + g.listaTmp);
+                    g.listaTmp.removeAll(g.listaTmp);
 
                 }
                 if (!g.isCzyStraightFlush() && !g.isCzyRoyalFlush()) {
@@ -1201,7 +1202,6 @@ public class Rozgrywka extends Gracz {
 
         Comparator<Karta> comparatorKartaWartosc = Comparator.comparing(Karta::getWartosc).reversed();
 
-        g.kartyWRece.addAll(getKartyStol());
         g.kartyWRece.sort(comparatorKartaWartosc);
         ArrayList<Karta> kartyWReceCopy = new ArrayList<>(g.kartyWRece);
 
@@ -1232,6 +1232,8 @@ public class Rozgrywka extends Gracz {
 //        System.out.println(kartyWReceCopy);
 
         kartyWReceCopy.sort(comparatorKartaWartosc);
+        kartyWReceCopy.removeAll(kartyWReceCopy);
+
 
 //        System.out.println("Lista tmp cała, razem z high card");
 //        System.out.println(listaTmp);
@@ -1249,6 +1251,7 @@ public class Rozgrywka extends Gracz {
         boolean tmp = false;
 
         g.kartyWRece.sort(comparatorKartaWartosc);
+        System.out.println(g.kartyWRece);
         ArrayList<Karta> kartyWReceCopy = new ArrayList<>(g.kartyWRece);
 //        System.out.println("Karty po sortowaniu.");
 //        System.out.println(kartyWReceCopy);
@@ -2124,10 +2127,6 @@ public class Rozgrywka extends Gracz {
         wynikSprawdzenieDlaOnePair();
 
         wynikSprawdzenieDlaHighCard();
-
-
-
-
 
     }
 
