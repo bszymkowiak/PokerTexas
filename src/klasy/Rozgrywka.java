@@ -961,7 +961,6 @@ public class Rozgrywka extends Gracz {
                     checkStraightFlush(g);
                     System.out.println(g.listaTmp);
                     System.out.println(g.getNick() + "\n " + g.listaTmp);
-                    g.listaTmp.removeAll(g.listaTmp);
 
                 }
                 if (!g.isCzyStraightFlush() && !g.isCzyRoyalFlush()) {
@@ -1129,6 +1128,8 @@ public class Rozgrywka extends Gracz {
 
     private void checkStraightFlush(Gracz g) {
 
+        System.out.println(g.kartyWRece);
+
         System.out.println("Sprawdzam Straight Flush");
 
         Comparator<Karta> comparatorKartaWartosc = Comparator.comparing(Karta::getWartosc);
@@ -1204,9 +1205,14 @@ public class Rozgrywka extends Gracz {
 
         g.kartyWRece.sort(comparatorKartaWartosc);
         ArrayList<Karta> kartyWReceCopy = new ArrayList<>(g.kartyWRece);
+        System.out.println(g.kartyWRece);
 
         for (int i = 0; i < 3; i++) {
             for (int j = 14; j > 2; j--) {
+//                g.kartyWRece.get(i).getWartosc().getWartosc() == j &&
+//                        g.kartyWRece.get(i + 1).getWartosc().getWartosc() == j &&
+//                        g.kartyWRece.get(i + 2).getWartosc().getWartosc() == j &&
+//                        g.kartyWRece.get(i + 3).getWartosc().getWartosc() == j;
                 if (czyFourOfAKind(g, j, i)) {
                     System.out.println("sprawdzam \n i = " + i + "\n j = " + j);
                     g.listaTmp.add(kartyWReceCopy.get(i));
@@ -1232,7 +1238,6 @@ public class Rozgrywka extends Gracz {
 //        System.out.println(kartyWReceCopy);
 
         kartyWReceCopy.sort(comparatorKartaWartosc);
-        kartyWReceCopy.removeAll(kartyWReceCopy);
 
 
 //        System.out.println("Lista tmp cała, razem z high card");
@@ -2082,6 +2087,27 @@ public class Rozgrywka extends Gracz {
 
     public void sprawdzanieKart() {
 
+        System.out.println("---------------------------------------");
+        System.out.println("WYSWIETLAM KARTY STOL");
+        System.out.println(kartyStol);
+        System.out.println("---------------------------------------");
+        System.out.println("---------------------------------------");
+
+        for (Gracz g : gracze) {
+            if (g.getKartyWRece().size() != 0) {
+                g.getKartyWRece().addAll(kartyStol);
+            }
+        }
+
+        for (Gracz g : gracze) {
+            System.out.println(g.getNick());
+            System.out.println(g.getKartyWRece());
+        }
+
+        System.out.println("---------------------------------------");
+
+
+
         royalFlushCounter = 0;
         straightFlushCounter = 0;
         fourOfAKindCounter = 0;
@@ -2127,6 +2153,11 @@ public class Rozgrywka extends Gracz {
         wynikSprawdzenieDlaOnePair();
 
         wynikSprawdzenieDlaHighCard();
+
+        for (Gracz g : gracze) {
+            System.out.println(g.getNick());
+            System.out.println(g.getKartyWRece());
+        }
 
     }
 
