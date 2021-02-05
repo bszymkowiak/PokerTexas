@@ -417,7 +417,8 @@ public class Rozgrywka extends Gracz {
     {
 
         Random rand = new Random();
-        int liczba = rand.nextInt(3);
+//        int liczba = rand.nextInt(3);
+        int liczba = 1;
         int wartoscKart;
 
         wartoscKart = gracze.get(i).kartyWRece.get(0).getWartosc().getWartosc() + gracze.get(i).kartyWRece.get(1).getWartosc().getWartosc();
@@ -1299,10 +1300,6 @@ public class Rozgrywka extends Gracz {
 
             }
         }
-//
-//        System.out.println();
-//        System.out.println("KARTY");
-//        System.out.println(listaTmp);
 
         if (!g.isCzyFullHouse()) {
             g.listaTmp.removeAll(g.listaTmp);
@@ -1508,17 +1505,14 @@ public class Rozgrywka extends Gracz {
 //        System.out.println("PIERWSZA PARA");
 //        System.out.println(listaTmp + "\n");
 
-        boolean ostatniTest = true;
-
         for (int i = 0; i < (kartyWReceCopy.size() - 1); i++) {
-            if (kartyWReceCopy.get(i).getWartosc().getWartosc() == kartyWReceCopy.get(i + 1).getWartosc().getWartosc() && tmp && ostatniTest) {
+            if (kartyWReceCopy.get(i).getWartosc().getWartosc() == kartyWReceCopy.get(i + 1).getWartosc().getWartosc() && tmp) {
                 g.listaTmp.add(kartyWReceCopy.get(i));
                 g.listaTmp.add(kartyWReceCopy.get(i + 1));
                 kartyWReceCopy.remove(i + 1);
                 kartyWReceCopy.remove(i);
                 g.listaTmp.add(kartyWReceCopy.get(0));
                 twoPairCounter++;
-                ostatniTest = false;
                 tmp = true;
                 g.setCzyTwoPair(true);
             }
@@ -1882,6 +1876,7 @@ public class Rozgrywka extends Gracz {
             for (Gracz g : gracze) {
                 if (g.isCzyOnePair()) {
                     playersWithOnePair.add(g);
+                    System.out.println(g.getKartyWRece() + "SPRAWDZAM TUTAJ ILE MAJA KART W RECE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + g.getNick());
                 }
             }
 
@@ -1974,7 +1969,10 @@ public class Rozgrywka extends Gracz {
 
                         if (temp >= 1) {
                             for (Gracz g : gracze) {
-
+                                System.out.println(g.getNick() + " MA TYLE KART W RECE : !!!!!!!!!!! " + g.listaTmp.size());
+                                System.out.println("-----------------------------------");
+                                System.out.println(g.listaTmp);
+                                System.out.println("----------------------------------");
                                 if (g.listaTmp.get(4).getWartosc().getWartosc() == maxWartosc && g.isCzyOnePair()) {
                                     g.setPulaZetonowGracza(g.getPulaZetonowGracza() + (pulaGlowna / temp));
                                     System.out.println("Masz najwyzsza pare " + g.getNick());
@@ -2171,6 +2169,17 @@ public class Rozgrywka extends Gracz {
 
         for (Gracz g : gracze) {
             g.listaTmp.removeAll(g.listaTmp);
+            g.setCzyRoyalFlush(false);
+            g.setCzyStraightFlush(false);
+            g.setCzyFourOfAKind(false);
+            g.setCzyFullHouse(false);
+            g.setCzyFlush(false);
+            g.setCzyStraight(false);
+            g.setCzyThreeOfAKind(false);
+            g.setCzyTwoPair(false);
+            g.setCzyOnePair(false);
+            g.setCzyHighCard(false);
+
         }
 
     }

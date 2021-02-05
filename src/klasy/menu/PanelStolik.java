@@ -2173,6 +2173,8 @@ public class PanelStolik extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
+        koniecRozdania();
+
         graj.setVisible(false);
 
         if (!pierwszaTura) {
@@ -2190,7 +2192,6 @@ public class PanelStolik extends JPanel implements ActionListener {
             gracz5k1 = new ImageIcon(kolorRewers).getImage();
             gracz5k2 = new ImageIcon(kolorRewers).getImage();
 
-            koniecRozdania();
         }
 
         noweRozdanie();
