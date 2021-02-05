@@ -418,6 +418,13 @@ public class Rozgrywka extends Gracz {
 
         Random rand = new Random();
         int liczba = rand.nextInt(3);
+        int wartoscKart;
+
+        wartoscKart = gracze.get(i).kartyWRece.get(0).getWartosc().getWartosc() + gracze.get(i).kartyWRece.get(1).getWartosc().getWartosc();
+
+
+
+
 
 //        int liczba = 0;
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm:ss"));
@@ -1538,8 +1545,7 @@ public class Rozgrywka extends Gracz {
 
         g.kartyWRece.sort(comparatorKartaWartosc);
         ArrayList<Karta> kartyWReceCopy = new ArrayList<>(g.kartyWRece);
-//        System.out.println("KARTY PO SORTOWANIU");
-//        System.out.println(kartyWReceCopy + "\n");
+
 
         for (int i = 0; i < (kartyWReceCopy.size() - 1); i++) {
             if (kartyWReceCopy.get(i).getWartosc().getWartosc() == kartyWReceCopy.get(i + 1).getWartosc().getWartosc() && !tmp) {
@@ -1578,6 +1584,7 @@ public class Rozgrywka extends Gracz {
         g.listaTmp.add(g.kartyWRece.get(2));
         g.listaTmp.add(g.kartyWRece.get(3));
         g.listaTmp.add(g.kartyWRece.get(4));
+        g.setCzyHighCard(true);
         highCardCounter++;
 
 
@@ -1655,7 +1662,7 @@ public class Rozgrywka extends Gracz {
                     if (g.getWartoscKartGracza() == maxWartosc && g.isCzyThreeOfAKind()) {
                         g.setIloscZetonow(g.getIloscZetonow() + pulaGlowna);
                         System.out.println("Brawo, masz Trójkę i wygrywasz! " + g.getNick());
-                        wygranaGracza="Brawo, masz Trójkę i wygrywasz! " + g.getNick();
+                        wygranaGracza = "Brawo, masz Trójkę i wygrywasz! " + g.getNick();
                     }
                 }
             } else if (temp > 1) {
@@ -1703,7 +1710,7 @@ public class Rozgrywka extends Gracz {
                         for (Gracz g : gracze) {
                             if (g.listaTmp.get(4).getWartosc().getWartosc() == maxWartosc && g.isCzyThreeOfAKind()) {
                                 g.setPulaZetonowGracza(g.getPulaZetonowGracza() + (pulaGlowna / temp));
-                                System.out.println("Brawo, wygrałeś bo masz fulla: " + g.getNick());
+                                System.out.println("Brawo, wygrałeś bo masz trójkę: " + g.getNick());
                                 wygranaGracza="Brawo, masz Trójkę i wygrywasz! " + g.getNick();
                             }
                         }
@@ -1752,7 +1759,7 @@ public class Rozgrywka extends Gracz {
             if (temp == 1) {
 
                 for (Gracz g : gracze) {
-                    if (g.listaTmp.get(0).getWartosc().getWartosc() == maxWartosc) {
+                    if (g.listaTmp.get(0).getWartosc().getWartosc() == maxWartosc && g.isCzyHighCard()) {
                         g.setIloscZetonow(g.getIloscZetonow() + pulaGlowna);
                         System.out.println("Brawo, masz najwyzsza karte i wygrywasz : " + g.getNick()); // dla 1 karty
                         wygranaGracza="Brawo, masz najwyzsza karte i wygrywasz : " + g.getNick();
@@ -1778,7 +1785,7 @@ public class Rozgrywka extends Gracz {
                 }
                 if (temp == 1) {
                     for (Gracz g : gracze) {
-                        if (g.listaTmp.get(1).getWartosc().getWartosc() == maxWartosc) {
+                        if (g.listaTmp.get(1).getWartosc().getWartosc() == maxWartosc && g.isCzyHighCard()) {
                             g.setIloscZetonow(g.getIloscZetonow() + pulaGlowna);
                             System.out.println("Brawo, masz najwyzsza karte i wygrywasz : " + g.getNick());
                             wygranaGracza="Brawo, masz najwyzsza karte i wygrywasz : " + g.getNick();
@@ -1803,7 +1810,7 @@ public class Rozgrywka extends Gracz {
                     }
                     if (temp == 1) {
                         for (Gracz g : gracze) {
-                            if (g.listaTmp.get(2).getWartosc().getWartosc() == maxWartosc) {
+                            if (g.listaTmp.get(2).getWartosc().getWartosc() == maxWartosc && g.isCzyHighCard()) {
                                 g.setIloscZetonow(g.getIloscZetonow() + pulaGlowna);
                                 System.out.println("Brawo, masz najwyzsza karte i wygrywasz : " + g.getNick());
                                 wygranaGracza="Brawo, masz najwyzsza karte i wygrywasz : " + g.getNick();
@@ -1828,7 +1835,7 @@ public class Rozgrywka extends Gracz {
                         }
                         if (temp == 1) {
                             for (Gracz g : gracze) {
-                                if (g.listaTmp.get(3).getWartosc().getWartosc() == maxWartosc) {
+                                if (g.listaTmp.get(3).getWartosc().getWartosc() == maxWartosc && g.isCzyHighCard()) {
                                     g.setIloscZetonow(g.getIloscZetonow() + pulaGlowna);
                                     System.out.println("Brawo, masz najwyzsza karte i wygrywasz : " + g.getNick());
                                     wygranaGracza="Brawo, masz najwyzsza karte i wygrywasz : " + g.getNick();
@@ -1853,7 +1860,7 @@ public class Rozgrywka extends Gracz {
                             }
                             if (temp >= 1) {
                                 for (Gracz g : gracze) {
-                                    if (g.listaTmp.get(4).getWartosc().getWartosc() == maxWartosc) {
+                                    if (g.listaTmp.get(4).getWartosc().getWartosc() == maxWartosc && g.isCzyHighCard()) {
                                         g.setPulaZetonowGracza(g.getPulaZetonowGracza() + (pulaGlowna / temp));
                                         System.out.println("Brawo, masz najwyzsza karte i wygrywasz : " + g.getNick());
                                         wygranaGracza="Brawo, masz najwyzsza karte i wygrywasz : " + g.getNick();
@@ -2024,7 +2031,9 @@ public class Rozgrywka extends Gracz {
             } else if (temp > 1) {
 
                 for (Gracz g : gracze) {
-                    g.setWartoscKartGracza(g.listaTmp.get(2).getWartosc().getWartosc() + g.listaTmp.get(3).getWartosc().getWartosc());
+                    if (g.isCzyTwoPair()) {
+                        g.setWartoscKartGracza(g.listaTmp.get(2).getWartosc().getWartosc() + g.listaTmp.get(3).getWartosc().getWartosc());
+                    }
                 }
                 temp = 0;
 
@@ -2091,6 +2100,10 @@ public class Rozgrywka extends Gracz {
         System.out.println("WYSWIETLAM KARTY STOL");
         System.out.println(kartyStol);
         System.out.println("---------------------------------------");
+        for (Gracz g : gracze) {
+            System.out.println(g.listaTmp.size());
+
+        }
         System.out.println("---------------------------------------");
 
         for (Gracz g : gracze) {
@@ -2154,9 +2167,10 @@ public class Rozgrywka extends Gracz {
 
         wynikSprawdzenieDlaHighCard();
 
+        doHistorii = wygranaGracza;
+
         for (Gracz g : gracze) {
-            System.out.println(g.getNick());
-            System.out.println(g.getKartyWRece());
+            g.listaTmp.removeAll(g.listaTmp);
         }
 
     }
