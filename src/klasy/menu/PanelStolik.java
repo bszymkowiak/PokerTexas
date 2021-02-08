@@ -164,8 +164,9 @@ public class PanelStolik extends JPanel implements ActionListener {
 
     private void ruchGracza(JButton nastepnyGracz) {
         nastepnyGracz.addActionListener(e -> {
-            wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
 
+            naszGracz = rozgrywka.getGracze().get(0);
+            wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
 
             if (!kartyFlop) {
 
@@ -816,6 +817,9 @@ public class PanelStolik extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                naszRuchBet(naszGracz);
+                repaint();
+
             }
         });
     }
@@ -906,6 +910,9 @@ public class PanelStolik extends JPanel implements ActionListener {
     }
 
     private void naszRuchBet(Gracz naszGracz) {
+
+        naszGracz = rozgrywka.getGracze().get(0);
+
         wartoscTmp = rozgrywka.getGracze().get(0).getPulaZetonowGracza();
 
         wartoscTmp = najwyzszaWartoscPostawionychZetonowGracza(wartoscTmp);
@@ -923,7 +930,10 @@ public class PanelStolik extends JPanel implements ActionListener {
         }
         historia.append(rozgrywka.getGracze().get(0).getNick() + " zrobił bet \n");
         System.out.println("Zrobiłem Bet");
+
         if (!kartyFlop) {
+            System.out.println(naszGracz.getPulaZetonowGracza() + " PULA ZETONOW GRACZA");
+            System.out.println(wartoscTmp + " WARTOSC TMP");
             if (naszGracz.getPulaZetonowGracza() <= wartoscTmp) {
                 naszGracz.setIloscZetonow(naszGracz.getIloscZetonow() - (wartoscTmp + rozgrywka.getDuzyBlind()) + naszGracz.getPulaZetonowGracza());
                 naszGracz.setPulaZetonowGracza((wartoscTmp + rozgrywka.getDuzyBlind()));
@@ -938,7 +948,7 @@ public class PanelStolik extends JPanel implements ActionListener {
             }
 
 
-        } else if (kartaT == null && kartaF1 != null) {
+        } else if (!kartaTurn) {
 
             if (naszGracz.getPulaZetonowGracza() <= wartoscTmp) {
                 naszGracz.setIloscZetonow(naszGracz.getIloscZetonow() - (wartoscTmp + rozgrywka.getDuzyBlind()) + naszGracz.getPulaZetonowGracza());
@@ -948,26 +958,30 @@ public class PanelStolik extends JPanel implements ActionListener {
             }
             iloscRuchowNaTurn--;
 
-        } else if (kartaR == null && kartaT != null && kartaF1 != null) {
+        } else if (!kartaRiver) {
 
             if (naszGracz.getPulaZetonowGracza() <= wartoscTmp) {
                 naszGracz.setIloscZetonow(naszGracz.getIloscZetonow() - (wartoscTmp + rozgrywka.getDuzyBlind()) + naszGracz.getPulaZetonowGracza());
                 naszGracz.setPulaZetonowGracza((wartoscTmp + rozgrywka.getDuzyBlind()));
-                repaint();
                 repaint();
             }
             iloscRuchowNaRiver--;
-        } else if (kartaR != null && kartaT != null && kartaF1 != null) {
+        }
+        if (kartyFlop && kartaTurn && kartaRiver) {
 
             if (naszGracz.getPulaZetonowGracza() <= wartoscTmp) {
                 naszGracz.setIloscZetonow(naszGracz.getIloscZetonow() - (wartoscTmp + rozgrywka.getDuzyBlind()) + naszGracz.getPulaZetonowGracza());
                 naszGracz.setPulaZetonowGracza((wartoscTmp + rozgrywka.getDuzyBlind()));
-                repaint();
                 repaint();
             }
             iloscRuchowOstatnia--;
         }
 
+        check.setVisible(false);
+        bet.setVisible(false);
+        fold.setVisible(false);
+        nastepnyGracz.setVisible(true);
+        ruchGraczaTmp++;
 
     }
 

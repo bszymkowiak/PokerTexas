@@ -10,7 +10,7 @@ public class Gracz {
     private int iloscZetonow;
     protected ArrayList<Karta> kartyWRece = new ArrayList<>();
     protected int blind;
-    int pulaZetonowGracza;
+    int pulaZetonowGracza = 0;
 
 
     private int wartoscKartGracza;
