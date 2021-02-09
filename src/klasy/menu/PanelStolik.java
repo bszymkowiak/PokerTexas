@@ -5,6 +5,7 @@ import enumy.Wartosc;
 import klasy.BazaDanych;
 import klasy.Gracz;
 import klasy.Rozgrywka;
+import klasy.karty.Karta;
 import klasy.karty.TaliaKart;
 import klasy.menu.panelKoncowy.PanelKoncowy;
 
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 
 public class PanelStolik extends JPanel implements ActionListener {
     private File imageFile;
@@ -1840,6 +1842,12 @@ public class PanelStolik extends JPanel implements ActionListener {
         kartaTurn = false;
         kartaRiver = false;
         iloscRuchowNaFlopie = rozgrywka.getGracze().size();
+
+        Comparator<Karta> comparatorKartaWartosc = Comparator.comparing(Karta::getWartosc).reversed();
+
+        rozgrywka.setSprawdzJakiUkladRaz(true);
+
+        rozgrywka.sprawdzamIleGraczyMaDanyUklad(comparatorKartaWartosc);
 
         koniecGry = false;
 
