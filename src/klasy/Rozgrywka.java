@@ -48,6 +48,7 @@ public class Rozgrywka extends Gracz {
     private int highCardCounter;
     public String doHistorii;
     public String wygranaGracza;
+    private boolean sprawdzJakiUkladRaz;
 
     private Stoper stoper = new Stoper();
 
@@ -154,7 +155,7 @@ public class Rozgrywka extends Gracz {
     public void wyswietlGraczy() {
 
         for (Gracz g : gracze) {
-            System.out.println(g);
+//            System.out.println(g);
         }
     }
 
@@ -213,7 +214,7 @@ public class Rozgrywka extends Gracz {
 
 
         } catch (FileNotFoundException fileNotFoundException) {
-            System.out.println("Brak pliku.");
+//            System.out.println("Brak pliku.");
         }
 
         return losoweImie;
@@ -310,6 +311,14 @@ public class Rozgrywka extends Gracz {
 
     public void setStoper(Stoper stoper) {
         this.stoper = stoper;
+    }
+
+    public boolean isSprawdzJakiUkladRaz() {
+        return sprawdzJakiUkladRaz;
+    }
+
+    public void setSprawdzJakiUkladRaz(boolean sprawdzJakiUkladRaz) {
+        this.sprawdzJakiUkladRaz = sprawdzJakiUkladRaz;
     }
 
     public void rozdajBlind() {
@@ -416,28 +425,35 @@ public class Rozgrywka extends Gracz {
     public void ruchGracza(int i){
 
         Random rand = new Random();
-        int liczba = rand.nextInt(10);
-//        int liczba = 1;
-        int wartoscKart;
-
-        wartoscKart = gracze.get(i).kartyWRece.get(0).getWartosc().getWartosc() + gracze.get(i).kartyWRece.get(1).getWartosc().getWartosc();
+        int liczba;
 
 
-//        int liczba = 0;
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm:ss"));
 
+        if (gracze.get(i).isCzyRoyalFlush() || gracze.get(i).isCzyStraightFlush() ||
+                gracze.get(i).isCzyFourOfAKind() || gracze.get(i).isCzyFullHouse()) {
+            liczba = rand.nextInt(7) + 5;
+        } else if (gracze.get(i).isCzyFlush() || gracze.get(i).isCzyStraight()) {
+            liczba = rand.nextInt(6) + 4;
+        } else if (gracze.get(i).isCzyThreeOfAKind() || gracze.get(i).isCzyTwoPair()) {
+            liczba = rand.nextInt(6) + 2;
+        } else if (gracze.get(i).isCzyOnePair()) {
+            liczba = rand.nextInt(4) + 2;
+        } else {
+            liczba = rand.nextInt(3) + 1;
+        }
 
         if (gracze.get(i).kartyWRece.size() != 0) {
             if (gracze.get( i ).getIloscZetonow() == 0) {
                 gracze.get( i ).setIloscZetonow( 0 );
             } else {
-                if (liczba >= 0 && liczba <= 2) {
+                if (liczba > 0 && liczba <= 2) {
 
                     komputerFold( i );
                     lineBaza = ("[" + LocalDateTime.now().format( dateTimeFormatter ) + "] " + gracze.get( i ).getNick() + " wykonał/a fold.");
                     doHistorii = gracze.get( i ).getNick() + " wykonał/a FOLD \n";
 
-                } else if (liczba > 2 && liczba <= 7 ) {
+                } else if (liczba > 2 && liczba <= 5 ) {
                     if(gracze.get( i ).getIloscZetonow() == 0){
                     }
                     else {
@@ -445,7 +461,7 @@ public class Rozgrywka extends Gracz {
                         lineBaza = ("[" + LocalDateTime.now().format( dateTimeFormatter ) + "] " + gracze.get( i ).getNick() + " wykonał/a check.");
                         doHistorii = gracze.get( i ).getNick() + " wykonał/a CHECK/CALL \n";
                     }
-                } else if (liczba > 7 && liczba <= 10) {
+                } else if (liczba > 5 && liczba <= 7) {
                     if (gracze.get( i ).getIloscZetonow() == 0) {
                     } else {
                         komputerBet( i );
@@ -949,67 +965,6 @@ public class Rozgrywka extends Gracz {
         }
     }
 
-    private void sprawdzamIleGraczyMaDanyUklad(Comparator<Karta> comparatorKartaWartosc) {
-
-        for (Gracz g : gracze) {
-            g.kartyWRece.sort(comparatorKartaWartosc);
-            System.out.println();
-            System.out.println();
-            System.out.println(g.getNick());
-            System.out.println();
-
-            if (g.kartyWRece.size() != 0) {
-                checkRoyalFlush(g);
-
-                if (!g.isCzyRoyalFlush()) {
-                    checkStraightFlush(g);
-                    System.out.println(g.listaTmp);
-                    System.out.println(g.getNick() + "\n " + g.listaTmp);
-
-                }
-                if (!g.isCzyStraightFlush() && !g.isCzyRoyalFlush()) {
-                    checkFourOfAKind(g);
-                    System.out.println(g.getNick() + "\n " + g.listaTmp);
-                }
-                if (!g.isCzyFourOfAKind() && !g.isCzyStraightFlush() && !g.isCzyRoyalFlush()) {
-                    checkFullHouse(g);
-                    System.out.println(g.getNick() + "\n " + g.listaTmp);
-
-                }
-                if (!g.isCzyFullHouse() && !g.isCzyFourOfAKind() && !g.isCzyStraightFlush() && !g.isCzyRoyalFlush()) {
-                    checkFlush(g);
-                    System.out.println(g.getNick() + "\n " + g.listaTmp);
-                }
-                if (!g.isCzyFlush() && !g.isCzyFullHouse() && !g.isCzyFourOfAKind() && !g.isCzyStraightFlush() && !g.isCzyRoyalFlush()) {
-                    checkStraight(g);
-                    System.out.println(g.getNick() + "\n " + g.listaTmp);
-
-                }
-
-                if (!g.isCzyStraight() && !g.isCzyFlush() && !g.isCzyFullHouse() && !g.isCzyFourOfAKind() && !g.isCzyStraightFlush() && !g.isCzyRoyalFlush()) {
-                    checkThreeOfAKind(g);
-                    System.out.println(g.getNick() + "\n " + g.listaTmp);
-
-                }
-
-                if (!g.isCzyThreeOfAKind() && !g.isCzyStraight() && !g.isCzyFlush() && !g.isCzyFullHouse() && !g.isCzyFourOfAKind() && !g.isCzyStraightFlush() && !g.isCzyRoyalFlush()) {
-                    checkTwoPair(g);
-                    System.out.println(g.getNick() + "\n " + g.listaTmp);
-
-                }
-                if (!g.isCzyTwoPair() && !g.isCzyThreeOfAKind() && !g.isCzyStraight() && !g.isCzyFlush() && !g.isCzyFullHouse() && !g.isCzyFourOfAKind() && !g.isCzyStraightFlush() && !g.isCzyRoyalFlush()) {
-                    checkOnePair(g);
-                    System.out.println(g.listaTmp);
-
-                }
-                if (!g.isCzyOnePair() && !g.isCzyTwoPair() && !g.isCzyThreeOfAKind() && !g.isCzyStraight() && !g.isCzyFlush() && !g.isCzyFullHouse() && !g.isCzyFourOfAKind() && !g.isCzyStraightFlush() && !g.isCzyRoyalFlush()) {
-                    checkHighCard(g);
-                    System.out.println(g.listaTmp);
-                }
-            }
-        }
-    }
-
     private void wynikSprawdzeniaDlaStraightFlush() {
 
         if (royalFlushCounter == 0 && straightFlushCounter == 1) {
@@ -1077,7 +1032,7 @@ public class Rozgrywka extends Gracz {
 
     private void checkRoyalFlush(Gracz g) {
 
-        System.out.println("Sprawdzam RoyalFlush");
+//        System.out.println("Sprawdzam RoyalFlush");
 
         Comparator<Karta> comparatorKartaWartosc = Comparator.comparing(Karta::getWartosc).reversed();
 
@@ -1132,7 +1087,7 @@ public class Rozgrywka extends Gracz {
 
     private void checkStraightFlush(Gracz g) {
 
-        System.out.println(g.kartyWRece);
+//        System.out.println(g.kartyWRece);
 
         System.out.println("Sprawdzam Straight Flush");
 
@@ -1209,7 +1164,7 @@ public class Rozgrywka extends Gracz {
 
         g.kartyWRece.sort(comparatorKartaWartosc);
         ArrayList<Karta> kartyWReceCopy = new ArrayList<>(g.kartyWRece);
-        System.out.println(g.kartyWRece);
+//        System.out.println(g.kartyWRece);
 
         for (int i = 0; i < 3; i++) {
             for (int j = 14; j > 2; j--) {
@@ -1218,7 +1173,7 @@ public class Rozgrywka extends Gracz {
 //                        g.kartyWRece.get(i + 2).getWartosc().getWartosc() == j &&
 //                        g.kartyWRece.get(i + 3).getWartosc().getWartosc() == j;
                 if (czyFourOfAKind(g, j, i)) {
-                    System.out.println("sprawdzam \n i = " + i + "\n j = " + j);
+//                    System.out.println("sprawdzam \n i = " + i + "\n j = " + j);
                     g.listaTmp.add(kartyWReceCopy.get(i));
                     g.listaTmp.add(kartyWReceCopy.get(i + 1));
                     g.listaTmp.add(kartyWReceCopy.get(i + 2));
@@ -1522,9 +1477,9 @@ public class Rozgrywka extends Gracz {
 
     private void checkOnePair(Gracz g) {
 
-        System.out.println("Sprawdzam jedną parę gracza: " + g.getNick());
-        System.out.println("TO SA JEJ KARTY W RECE " + g.kartyWRece);
-        System.out.println("TO SA KARTY W LISCIE TMP : " + g.listaTmp);
+//        System.out.println("Sprawdzam jedną parę gracza: " + g.getNick());
+//        System.out.println("TO SA JEJ KARTY W RECE " + g.kartyWRece);
+//        System.out.println("TO SA KARTY W LISCIE TMP : " + g.listaTmp);
         Comparator<Karta> comparatorKartaWartosc = Comparator.comparing(Karta::getWartosc).reversed();
 
         boolean tmp = false;
@@ -1820,7 +1775,7 @@ public class Rozgrywka extends Gracz {
             for (Gracz g : gracze) {
                 if (g.isCzyOnePair()) {
                     playersWithOnePair.add(g);
-                    System.out.println(g.getKartyWRece() + "SPRAWDZAM TUTAJ ILE MAJA KART W RECE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + g.getNick());
+//                    System.out.println(g.getKartyWRece() + "SPRAWDZAM TUTAJ ILE MAJA KART W RECE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + g.getNick());
                 }
             }
 
@@ -1912,20 +1867,24 @@ public class Rozgrywka extends Gracz {
                         }
 
                         if (temp >= 1) {
-                            for (Gracz g : gracze) {
-                                System.out.println(g.getNick() + " MA TYLE KART W RECE : !!!!!!!!!!! " + g.listaTmp.size());
-                                System.out.println("-----------------------------------");
-                                System.out.println(g.listaTmp);
-                                System.out.println("----------------------------------");
-                                if (g.listaTmp.get(4).getWartosc().getWartosc() == maxWartosc && g.isCzyOnePair() && g.listaTmp.size() >= 5) {
-                                    g.setIloscZetonow(g.getIloscZetonow() + (pulaGlowna / temp));
-                                    System.out.println("Masz najwyzsza pare " + g.getNick());
-                                    wygranaGracza="Masz najwyzsza pare " + g.getNick();
+                            for (int i = 0; i < gracze.size(); i++) {
+//                                System.out.println(gracze.get(i).getNick() + " MA TYLE KART W RECE : !!!!!!!!!!! " + gracze.get(i).listaTmp.size());
+//                                System.out.println("-----------------------------------");
+//                                System.out.println(gracze.get(i).listaTmp);
+//                                System.out.println("----------------------------------");
+
+                                if (gracze.get(i).listaTmp.size() < 5) {
+                                    i++;
+                                } else if (gracze.get(i).listaTmp.get(4).getWartosc().getWartosc() == maxWartosc && gracze.get(i).isCzyOnePair() && gracze.get(i).listaTmp.size() >= 5) {
+                                    gracze.get(i).setIloscZetonow(gracze.get(i).getIloscZetonow() + (pulaGlowna / temp));
+                                    System.out.println("Masz najwyzsza pare " + gracze.get(i).getNick());
+                                    wygranaGracza = "Masz najwyzsza pare " + gracze.get(i).getNick();
                                     break;
 
                                 }
 
                             }
+
                         }
 
 
@@ -2089,31 +2048,138 @@ public class Rozgrywka extends Gracz {
         }
     }
 
-    public void sprawdzanieKart() {
+    public void sprawdzamIleGraczyMaDanyUklad(Comparator<Karta> comparatorKartaWartosc) {
 
-        System.out.println("---------------------------------------");
-        System.out.println("WYSWIETLAM KARTY STOL");
-        System.out.println(kartyStol);
-        System.out.println("---------------------------------------");
         for (Gracz g : gracze) {
-            System.out.println(g.listaTmp.size());
+
+            if (sprawdzJakiUkladRaz) {
+//                System.out.println("JESTEM TUTAJ ?");
+                g.kartyWReceTmp.addAll(g.kartyWRece);
+                g.kartyWRece.addAll(kartyStol);
+            }
+
+
+            g.kartyWRece.sort(comparatorKartaWartosc);
+//            System.out.println();
+//            System.out.println();
+//            System.out.println(g.getNick());
+//            System.out.println();
+
+            if (g.kartyWRece.size() != 0) {
+                checkRoyalFlush(g);
+
+                if (!g.isCzyRoyalFlush()) {
+                    checkStraightFlush(g);
+//                    System.out.println(g.listaTmp);
+//                    System.out.println(g.getNick() + "\n " + g.listaTmp);
+
+                }
+                if (!g.isCzyStraightFlush() && !g.isCzyRoyalFlush()) {
+                    checkFourOfAKind(g);
+//                    System.out.println(g.getNick() + "\n " + g.listaTmp);
+                }
+                if (!g.isCzyFourOfAKind() && !g.isCzyStraightFlush() && !g.isCzyRoyalFlush()) {
+                    checkFullHouse(g);
+//                    System.out.println(g.getNick() + "\n " + g.listaTmp);
+
+                }
+                if (!g.isCzyFullHouse() && !g.isCzyFourOfAKind() && !g.isCzyStraightFlush() && !g.isCzyRoyalFlush()) {
+                    checkFlush(g);
+//                    System.out.println(g.getNick() + "\n " + g.listaTmp);
+                }
+                if (!g.isCzyFlush() && !g.isCzyFullHouse() && !g.isCzyFourOfAKind() && !g.isCzyStraightFlush() && !g.isCzyRoyalFlush()) {
+                    checkStraight(g);
+//                    System.out.println(g.getNick() + "\n " + g.listaTmp);
+
+                }
+
+                if (!g.isCzyStraight() && !g.isCzyFlush() && !g.isCzyFullHouse() && !g.isCzyFourOfAKind() && !g.isCzyStraightFlush() && !g.isCzyRoyalFlush()) {
+                    checkThreeOfAKind(g);
+//                    System.out.println(g.getNick() + "\n " + g.listaTmp);
+
+                }
+
+                if (!g.isCzyThreeOfAKind() && !g.isCzyStraight() && !g.isCzyFlush() && !g.isCzyFullHouse() && !g.isCzyFourOfAKind() && !g.isCzyStraightFlush() && !g.isCzyRoyalFlush()) {
+                    checkTwoPair(g);
+//                    System.out.println(g.getNick() + "\n " + g.listaTmp);
+
+                }
+                if (!g.isCzyTwoPair() && !g.isCzyThreeOfAKind() && !g.isCzyStraight() && !g.isCzyFlush() && !g.isCzyFullHouse() && !g.isCzyFourOfAKind() && !g.isCzyStraightFlush() && !g.isCzyRoyalFlush()) {
+                    checkOnePair(g);
+//                    System.out.println(g.listaTmp);
+
+                }
+                if (!g.isCzyOnePair() && !g.isCzyTwoPair() && !g.isCzyThreeOfAKind() && !g.isCzyStraight() && !g.isCzyFlush() && !g.isCzyFullHouse() && !g.isCzyFourOfAKind() && !g.isCzyStraightFlush() && !g.isCzyRoyalFlush()) {
+                    checkHighCard(g);
+//                    System.out.println(g.listaTmp);
+                }
+            }
+//            System.out.println("=========================================================");
+//            System.out.println("===========TUTAJ SPRAWDZAM JAKIE MAM KARTY W RECE PO CHECKOWANIU====================");
+
+            if (sprawdzJakiUkladRaz) {
+                g.listaTmp.removeAll(g.listaTmp);
+                g.kartyWRece.removeAll(g.kartyWRece);
+                g.kartyWRece.addAll(g.kartyWReceTmp);
+                g.kartyWReceTmp.removeAll(g.kartyWReceTmp);
+
+            }
 
         }
-        System.out.println("---------------------------------------");
+        sprawdzJakiUkladRaz = false;
+    }
+
+    public void sprawdzanieKart() {
+
+        for (Gracz g : gracze) {
+            System.out.println("=====================================================");
+            System.out.println("=====================================================");
+            System.out.println(g.getNick());
+            System.out.println("=====================================================");
+            System.out.println(g.getKartyWRece());
+            System.out.println("=====================================================");
+            System.out.println(g.listaTmp);
+            System.out.println("=====================================================");
+            System.out.println("=====================================================");
+            System.out.println("=====================================================");
+
+
+
+        }
+
+//        System.out.println("---------------------------------------");
+//        System.out.println("WYSWIETLAM KARTY STOL");
+//        System.out.println(kartyStol);
+//        System.out.println("---------------------------------------");
+        for (Gracz g : gracze) {
+//            System.out.println(g.listaTmp.size());
+
+        }
+//        System.out.println("---------------------------------------");
 
         for (Gracz g : gracze) {
             if (g.getKartyWRece().size() != 0) {
+//                System.out.println(g.kartyWRece);
                 g.getKartyWRece().addAll(kartyStol);
             }
         }
 
         for (Gracz g : gracze) {
-            System.out.println(g.getNick());
-            System.out.println(g.getKartyWRece());
+//            System.out.println(g.getNick());
+//            System.out.println(g.getKartyWRece());
+            g.setCzyRoyalFlush(false);
+            g.setCzyStraightFlush(false);
+            g.setCzyFourOfAKind(false);
+            g.setCzyFullHouse(false);
+            g.setCzyFlush(false);
+            g.setCzyStraight(false);
+            g.setCzyThreeOfAKind(false);
+            g.setCzyTwoPair(false);
+            g.setCzyOnePair(false);
+            g.setCzyHighCard(false);
         }
 
-        System.out.println("---------------------------------------");
-
+//        System.out.println("---------------------------------------");
 
 
         royalFlushCounter = 0;

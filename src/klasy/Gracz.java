@@ -26,6 +26,7 @@ public class Gracz {
     private boolean czyOnePair;
     private boolean czyHighCard;
     protected ArrayList<Karta> listaTmp = new ArrayList<>();
+    ArrayList<Karta> kartyWReceTmp = new ArrayList<>();
 
     public Gracz() {
     }
@@ -38,6 +39,14 @@ public class Gracz {
     public int getWartoscKartGracza() {
 
         return wartoscKartGracza;
+    }
+
+    public ArrayList<Karta> getListaTmp() {
+        return listaTmp;
+    }
+
+    public void setListaTmp(ArrayList<Karta> listaTmp) {
+        this.listaTmp = listaTmp;
     }
 
     public void setWartoscKartGracza(int wartoscKartGracza) {
