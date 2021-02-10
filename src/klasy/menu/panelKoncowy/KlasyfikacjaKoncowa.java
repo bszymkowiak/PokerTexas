@@ -41,7 +41,7 @@ public class KlasyfikacjaKoncowa extends JPanel {
 
     private void dodajTlo() {
 
-        imageFile = new File("zdjecia\\tloszare.jpg");
+        imageFile = new File("zdjecia\\koniecGry.jpg");
 
         try {
             image = ImageIO.read(imageFile);

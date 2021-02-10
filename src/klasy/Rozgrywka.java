@@ -402,7 +402,10 @@ public class Rozgrywka extends Gracz {
         wartoscTmp += duzyBlind;
         roznica = wartoscTmp - gracze.get( i ).getIloscZetonow();
 
-        if((gracze.get( i ).getIloscZetonow() - wartoscTmp) <0){
+        if ((gracze.get(i).getIloscZetonow() - duzyBlind) < 0) {
+            gracze.get( i ).setPulaZetonowGracza( gracze.get( i ).getPulaZetonowGracza() + gracze.get( i ).getIloscZetonow());
+            gracze.get( i ).setIloscZetonow( 0 );
+        } else if((gracze.get( i ).getIloscZetonow() - wartoscTmp) <0){
             gracze.get(i).setPulaZetonowGracza(gracze.get( i ).getIloscZetonow());
             gracze.get(i).setIloscZetonow(0);
         }else {
