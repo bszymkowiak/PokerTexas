@@ -373,7 +373,6 @@ public class Rozgrywka extends Gracz {
     public void komputerCheck(int i) {
 
         int wartoscTmp = gracze.get(i).getPulaZetonowGracza();
-        int roznica = duzyBlind - gracze.get( i ).getIloscZetonow();
 
         System.out.println(gracze.get(i).getNick() + " wykonuje check.");
 
@@ -384,8 +383,8 @@ public class Rozgrywka extends Gracz {
         }
 
         if((gracze.get( i ).getIloscZetonow() - duzyBlind) <0){
-            gracze.get(i).setIloscZetonow(gracze.get(i).getIloscZetonow() - roznica + gracze.get(i).getPulaZetonowGracza());
-            gracze.get(i).setPulaZetonowGracza(roznica);
+            gracze.get(i).setPulaZetonowGracza(gracze.get(i).getIloscZetonow()  + gracze.get(i).getPulaZetonowGracza());
+            gracze.get(i).setPulaZetonowGracza(0);
         }else {
             if (gracze.get( i ).getPulaZetonowGracza() < wartoscTmp && gracze.get( i ).getKartyWRece().size() != 0) {
                 gracze.get( i ).setIloscZetonow( gracze.get( i ).getIloscZetonow() - wartoscTmp + gracze.get( i ).getPulaZetonowGracza() );
@@ -400,7 +399,6 @@ public class Rozgrywka extends Gracz {
         System.out.println(gracze.get(i).getNick() + " wykonuje bet.");
 
         int wartoscTmp = gracze.get(i).getPulaZetonowGracza();
-        int roznica;
 
         for (Gracz g : gracze) {
             if (g.getPulaZetonowGracza() >= wartoscTmp) {
@@ -409,7 +407,6 @@ public class Rozgrywka extends Gracz {
         }
 
         wartoscTmp += duzyBlind;
-        roznica = wartoscTmp - gracze.get( i ).getIloscZetonow();
 
         if ((gracze.get(i).getIloscZetonow() - duzyBlind) < 0) {
             gracze.get( i ).setPulaZetonowGracza( gracze.get( i ).getPulaZetonowGracza() + gracze.get( i ).getIloscZetonow());
@@ -445,6 +442,7 @@ public class Rozgrywka extends Gracz {
         } else {
             liczba = rand.nextInt(3) + 1;
         }
+
 
         if (gracze.get(i).kartyWRece.size() != 0) {
             if (gracze.get( i ).getIloscZetonow() == 0) {
@@ -543,7 +541,7 @@ public class Rozgrywka extends Gracz {
             if (temp > 1) {
                 for (Gracz g : gracze) {
                     if (g.getWartoscKartGracza() == maxWartosc && g.isCzyStraight()) {
-                        g.setPulaZetonowGracza(g.getPulaZetonowGracza() + (pulaGlowna / temp));
+                        g.setIloscZetonow(g.getIloscZetonow() + (pulaGlowna / temp));
                         System.out.println("BRAWO, masz Straighta i wygrywasz razem z innymi : " + g.getNick());
                         wygranaGracza="BRAWO, wygrywasz bo masz Straighta: " + g.getNick();
                     }
