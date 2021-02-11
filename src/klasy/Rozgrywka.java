@@ -372,10 +372,10 @@ public class Rozgrywka extends Gracz {
 
     public void komputerCheck(int i) {
 
-        int wartoscTmp = gracze.get(i).getPulaZetonowGracza();
+        int wartoscTmp = gracze.get( i ).getPulaZetonowGracza();
 
 
-        System.out.println(gracze.get(i).getNick() + " wykonuje check.");
+        System.out.println( gracze.get( i ).getNick() + " wykonuje check." );
 
         for (Gracz g : gracze) {
             if (g.getPulaZetonowGracza() >= wartoscTmp && g.getKartyWRece().size() != 0) {
@@ -384,26 +384,18 @@ public class Rozgrywka extends Gracz {
         }
 
 
-        if((gracze.get( i ).getIloscZetonow() - duzyBlind) <0){
-            gracze.get(i).setPulaZetonowGracza(gracze.get(i).getIloscZetonow()  + gracze.get(i).getPulaZetonowGracza());
-            gracze.get(i).setPulaZetonowGracza(0);
-        }else {
+        if ((gracze.get( i ).getIloscZetonow() - duzyBlind) < 0) {
+            gracze.get( i ).setPulaZetonowGracza( gracze.get( i ).getIloscZetonow() + gracze.get( i ).getPulaZetonowGracza() );
+            gracze.get( i ).setPulaZetonowGracza( 0 );
+        } else {
             if (gracze.get( i ).getPulaZetonowGracza() < wartoscTmp && gracze.get( i ).getKartyWRece().size() != 0) {
                 gracze.get( i ).setIloscZetonow( gracze.get( i ).getIloscZetonow() - wartoscTmp + gracze.get( i ).getPulaZetonowGracza() );
                 gracze.get( i ).setPulaZetonowGracza( wartoscTmp );
 
-        if ((gracze.get(i).getIloscZetonow() - duzyBlind) < 0) {
-            gracze.get(i).setIloscZetonow(gracze.get(i).getIloscZetonow() - roznica + gracze.get(i).getPulaZetonowGracza());
-            gracze.get(i).setPulaZetonowGracza(roznica);
-        } else {
-            if (gracze.get(i).getPulaZetonowGracza() < wartoscTmp && gracze.get(i).getKartyWRece().size() != 0) {
-                gracze.get(i).setIloscZetonow(gracze.get(i).getIloscZetonow() - wartoscTmp + gracze.get(i).getPulaZetonowGracza());
-                gracze.get(i).setPulaZetonowGracza(wartoscTmp);
-
+                }
             }
         }
 
-    }
 
     public void komputerBet(int i) {
 
