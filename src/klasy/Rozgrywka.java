@@ -52,7 +52,6 @@ public class Rozgrywka extends Gracz {
 
     private Stoper stoper = new Stoper();
 
-
     private int pulaGlowna;
     int maxWartosc = 0;
 
@@ -221,6 +220,8 @@ public class Rozgrywka extends Gracz {
 
     }
 
+    //Same metody rozdania Kart
+
     public ArrayList<Karta> rozdajFlop() {
 
         taliaKart.getTaliaKart().remove(0);
@@ -285,6 +286,9 @@ public class Rozgrywka extends Gracz {
 
         return kartyStol;
     }
+
+
+
 
     public void setTaliaKart(TaliaKart taliaKart) {
         this.taliaKart = taliaKart;
@@ -434,13 +438,13 @@ public class Rozgrywka extends Gracz {
 
         if (gracze.get(i).isCzyRoyalFlush() || gracze.get(i).isCzyStraightFlush() ||
                 gracze.get(i).isCzyFourOfAKind() || gracze.get(i).isCzyFullHouse()) {
-            liczba = rand.nextInt(7) + 5;
+            liczba = rand.nextInt(3) + 5;
         } else if (gracze.get(i).isCzyFlush() || gracze.get(i).isCzyStraight()) {
-            liczba = rand.nextInt(6) + 4;
+            liczba = rand.nextInt(3) + 4;
         } else if (gracze.get(i).isCzyThreeOfAKind() || gracze.get(i).isCzyTwoPair()) {
-            liczba = rand.nextInt(6) + 2;
+            liczba = rand.nextInt(5) + 2;
         } else if (gracze.get(i).isCzyOnePair()) {
-            liczba = rand.nextInt(4) + 2;
+            liczba = rand.nextInt(3) + 2;
         } else {
             liczba = rand.nextInt(3) + 1;
         }
