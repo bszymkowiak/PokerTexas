@@ -1,5 +1,6 @@
 package klasy.menu.panelKoncowy;
 
+import klasy.Rozgrywka;
 import klasy.menu.PanelStolik;
 
 import javax.swing.*;
@@ -11,12 +12,14 @@ public class PanelKoncowy extends JPanel {
 
     private PanelKoncowy me;
     private PanelStolik panelStolik;
+    private Rozgrywka rozgrywka;
 
     private JFrame window;
 
     public PanelKoncowy(PanelStolik panelStolik) {
 
         this.panelStolik = panelStolik;
+        setRozgrywka(panelStolik.getRozgrywka());
         me = this;
 
         dodajTlo();
@@ -37,6 +40,19 @@ public class PanelKoncowy extends JPanel {
 
     }
 
+    public Rozgrywka getRozgrywka() {
+        return rozgrywka;
+    }
 
+    public void setRozgrywka(Rozgrywka rozgrywka) {
+        this.rozgrywka = rozgrywka;
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+
+
+
+    }
 }
 

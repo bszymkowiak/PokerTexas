@@ -297,6 +297,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                         }
                         repaint();
                         historia.append(rozgrywka.doHistorii);
+                        repaint();
 //                        sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
 
                         iloscRuchowNaRiver--;
@@ -347,6 +348,8 @@ public class PanelStolik extends JPanel implements ActionListener {
                         }
                         repaint();
                         historia.append(rozgrywka.doHistorii);
+                        repaint();
+
 //                        sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
                         iloscRuchowOstatnia--;
                         if (iloscRuchowOstatnia < 1) {
@@ -366,6 +369,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                         }
                         repaint();
                         historia.append(rozgrywka.doHistorii);
+                        repaint();
 //                        sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
 
                         sprawdzenieIPokazanieKart();
@@ -1664,7 +1668,7 @@ public class PanelStolik extends JPanel implements ActionListener {
                     }
 
                     rozgrywka.sprawdzanieKart();
-                    historia.append(rozgrywka.doHistorii);
+                    historia.append(rozgrywka.doHistorii + "\n");
 
                     nastepnyGracz.setVisible(false);
                     graj.setVisible(true);
