@@ -176,7 +176,13 @@ public class PanelStolik extends JPanel implements ActionListener {
                 if (pierwszyObrot) {
 
                     if (rozgrywka.getGracze().get(ruchGraczaTmp).getKartyWRece().size() != 0) {
-                        rozgrywka.ruchGracza(ruchGraczaTmp);
+                        try {
+                            rozgrywka.ruchGracza(ruchGraczaTmp);
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        } catch (ClassNotFoundException classNotFoundException) {
+                            classNotFoundException.printStackTrace();
+                        }
                         historia.append(rozgrywka.doHistorii);
                         repaint();
 //                        sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
@@ -193,7 +199,13 @@ public class PanelStolik extends JPanel implements ActionListener {
 
                     if (rozgrywka.getGracze().get(ruchGraczaTmp).getKartyWRece().size() != 0 && rozgrywka.getGracze().get(ruchGraczaTmp).getPulaZetonowGracza() < wartoscTmp) {
 
-                        rozgrywka.ruchGracza(ruchGraczaTmp);
+                        try {
+                            rozgrywka.ruchGracza(ruchGraczaTmp);
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        } catch (ClassNotFoundException classNotFoundException) {
+                            classNotFoundException.printStackTrace();
+                        }
                         historia.append(rozgrywka.doHistorii);
                         repaint();
                         sprawdzeniePlusEwWylozenieKartNaStolFLOP();
@@ -223,7 +235,13 @@ public class PanelStolik extends JPanel implements ActionListener {
 
                 if (pierwszyObrotTurn) {
                     if (rozgrywka.getGracze().get(ruchGraczaTmp).getKartyWRece().size() != 0) {
-                        rozgrywka.ruchGracza(ruchGraczaTmp);
+                        try {
+                            rozgrywka.ruchGracza(ruchGraczaTmp);
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        } catch (ClassNotFoundException classNotFoundException) {
+                            classNotFoundException.printStackTrace();
+                        }
                         historia.append(rozgrywka.doHistorii);
                         repaint();
 //                        sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
@@ -237,7 +255,13 @@ public class PanelStolik extends JPanel implements ActionListener {
 
                 } else {
                     if (rozgrywka.getGracze().get(ruchGraczaTmp).getKartyWRece().size() != 0 && rozgrywka.getGracze().get(ruchGraczaTmp).getPulaZetonowGracza() < wartoscTmp) {
-                        rozgrywka.ruchGracza(ruchGraczaTmp);
+                        try {
+                            rozgrywka.ruchGracza(ruchGraczaTmp);
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        } catch (ClassNotFoundException classNotFoundException) {
+                            classNotFoundException.printStackTrace();
+                        }
                         historia.append(rozgrywka.doHistorii);
                         repaint();
 //                        sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
@@ -262,7 +286,13 @@ public class PanelStolik extends JPanel implements ActionListener {
 
                 if (pierwszyObrotRiver) {
                     if (rozgrywka.getGracze().get(ruchGraczaTmp).getKartyWRece().size() != 0) {
-                        rozgrywka.ruchGracza(ruchGraczaTmp);
+                        try {
+                            rozgrywka.ruchGracza(ruchGraczaTmp);
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        } catch (ClassNotFoundException classNotFoundException) {
+                            classNotFoundException.printStackTrace();
+                        }
                         repaint();
                         historia.append(rozgrywka.doHistorii);
 //                        sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
@@ -276,7 +306,13 @@ public class PanelStolik extends JPanel implements ActionListener {
 
                 } else {
                     if (rozgrywka.getGracze().get(ruchGraczaTmp).getKartyWRece().size() != 0 && rozgrywka.getGracze().get(ruchGraczaTmp).getPulaZetonowGracza() < wartoscTmp) {
-                        rozgrywka.ruchGracza(ruchGraczaTmp);
+                        try {
+                            rozgrywka.ruchGracza(ruchGraczaTmp);
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        } catch (ClassNotFoundException classNotFoundException) {
+                            classNotFoundException.printStackTrace();
+                        }
                         historia.append(rozgrywka.doHistorii);
                         repaint();
 //                        sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
@@ -300,7 +336,13 @@ public class PanelStolik extends JPanel implements ActionListener {
 
                 if (pierwszyObrotOstatnia) {
                     if (rozgrywka.getGracze().get(ruchGraczaTmp).getKartyWRece().size() != 0) {
-                        rozgrywka.ruchGracza(ruchGraczaTmp);
+                        try {
+                            rozgrywka.ruchGracza(ruchGraczaTmp);
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        } catch (ClassNotFoundException classNotFoundException) {
+                            classNotFoundException.printStackTrace();
+                        }
                         repaint();
                         historia.append(rozgrywka.doHistorii);
 //                        sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
@@ -313,7 +355,13 @@ public class PanelStolik extends JPanel implements ActionListener {
 
                 } else {
                     if (rozgrywka.getGracze().get(ruchGraczaTmp).getKartyWRece().size() != 0 && rozgrywka.getGracze().get(ruchGraczaTmp).getPulaZetonowGracza() < wartoscTmp) {
-                        rozgrywka.ruchGracza(ruchGraczaTmp);
+                        try {
+                            rozgrywka.ruchGracza(ruchGraczaTmp);
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        } catch (ClassNotFoundException classNotFoundException) {
+                            classNotFoundException.printStackTrace();
+                        }
                         repaint();
                         historia.append(rozgrywka.doHistorii);
 //                        sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
@@ -1155,13 +1203,13 @@ public class PanelStolik extends JPanel implements ActionListener {
 
         rozgrywka.setLineBaza("[" + LocalDateTime.now().format(dateTimeFormatter) + "] " + rozgrywka.getGracze().get(0).getNick() + " wykonał/a check.");
 
-//        try {
-//            new BazaDanych( rozgrywka.getMe() );
-//        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            new BazaDanych( rozgrywka.getMe() );
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         historia.append(rozgrywka.getGracze().get(0).getNick() + " check.\n");
         System.out.println("ZROBILEM ruch");
 
@@ -1341,7 +1389,7 @@ public class PanelStolik extends JPanel implements ActionListener {
             if (!czyZostalJedenGracz) {
                 if (czyGraczeWlozyliTakaSamaIloscZetonowDoPuliFlop) {
 
-                    System.out.print("POKAZUJE KARTY");
+                    System.out.println("POKAZUJE KARTY");
                     historia.append("Pokazuje karty flop\n");
 
                     kartaF1 = new ImageIcon(zapiszObrazDlaKartStol(0)).getImage();
@@ -1420,7 +1468,6 @@ public class PanelStolik extends JPanel implements ActionListener {
                 if (czyGraczeWlozyliTakaSamaIloscZetonowDoPuliTurn) {
 
                     System.out.println("POKAZUJE KARTY");
-                    System.out.println("to tutaj cos sie odpierdala");
                     historia.append("Pokazuje karte Turn\n");
                     kartaT = new ImageIcon(zapiszObrazDlaKartStol(3)).getImage();
 
