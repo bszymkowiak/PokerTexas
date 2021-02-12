@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+
 public class Rozgrywka extends Gracz {
 
     private TaliaKart taliaKart = new TaliaKart();
@@ -368,8 +369,22 @@ public class Rozgrywka extends Gracz {
 
     public ArrayList<Karta> komputerFold(int i) {
 
-        gracze.get(i).kartyWRece.removeAll(gracze.get(i).kartyWRece);
-        System.out.println(gracze.get(i).getNick() + " wykonuje fold.");
+        int wartoscTmp = gracze.get(i).getPulaZetonowGracza();
+
+        for (Gracz g : gracze) {
+            if (g.getPulaZetonowGracza() >= wartoscTmp && g.getKartyWRece().size() != 0) {
+                wartoscTmp = g.getPulaZetonowGracza();
+            }
+        }
+
+        if (wartoscTmp == gracze.get(i).getPulaZetonowGracza()) {
+            System.out.println("UDALO SIE ");
+            komputerCheck(i);
+        } else {
+            gracze.get(i).kartyWRece.removeAll(gracze.get(i).kartyWRece);
+            System.out.println(gracze.get(i).getNick() + " wykonuje fold.");
+        }
+
 
         return gracze.get(i).kartyWRece;
     }
@@ -430,7 +445,7 @@ public class Rozgrywka extends Gracz {
 
     }
 
-    public void ruchGracza(int i) {
+    public void ruchGracza(int i) throws SQLException, ClassNotFoundException {
 
         Random rand = new Random();
         int liczba;
@@ -457,6 +472,8 @@ public class Rozgrywka extends Gracz {
             } else {
                 if (liczba > 0 && liczba <= 2) {
 
+
+
                     komputerFold(i);
                     lineBaza = ("[" + LocalDateTime.now().format(dateTimeFormatter) + "] " + gracze.get(i).getNick() + " wykonał/a fold.");
                     doHistorii = gracze.get(i).getNick() + " wykonał/a FOLD \n";
@@ -477,7 +494,7 @@ public class Rozgrywka extends Gracz {
                     }
                 }
 
-//                 new BazaDanych(me);
+                 new BazaDanych(me);
 
             }
         }
