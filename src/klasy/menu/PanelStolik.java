@@ -56,6 +56,8 @@ public class PanelStolik extends JPanel implements ActionListener {
     private Image smallBlind;
     private Image bigBlind;
     private Image dealer;
+    private Image ruch;
+
     private int wartoscTmp;
 
     private boolean pierwszyObrot;
@@ -399,7 +401,6 @@ public class PanelStolik extends JPanel implements ActionListener {
                 bet.setVisible(true);
                 fold.setVisible(true);
                 check.setVisible(true);
-                System.out.println("czy tutaj sie wyswietla pokazanie naszych przyciskow ruchu");
             }
 
         }
@@ -510,6 +511,7 @@ public class PanelStolik extends JPanel implements ActionListener {
         dodajZetonSmallBlind(g);
         dodajZetonBibBlind(g);
         dodajZetonDealer(g);
+        dodajZnacznikRuchu( g );
 
         if (rozgrywka.getGracze().size() == 1) {
             stolik.window.dispose();
@@ -1032,8 +1034,6 @@ public class PanelStolik extends JPanel implements ActionListener {
 //            noweRozdanie();
             repaint();
         } else if (iloscGraczyWGrze > 1) {
-            System.out.println("Zostało więcej niz jeden gracz");
-            System.out.println(iloscGraczyWGrze);
             czyZostalJedenGracz = false;
         }
         repaint();
@@ -1337,7 +1337,6 @@ public class PanelStolik extends JPanel implements ActionListener {
 //            }
             sprawdzenieCzyZostalJedenGraczPrzedPokazaniemKart();
 
-            System.out.println("SPRAWDZAM CZY ZOSTAL JEDEN GRACZ TYLK) W JEDNYM PRZYPADKU !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + czyZostalJedenGracz);
             if (!czyZostalJedenGracz) {
                 if (czyGraczeWlozyliTakaSamaIloscZetonowDoPuliFlop) {
 
@@ -1378,12 +1377,10 @@ public class PanelStolik extends JPanel implements ActionListener {
                     wartoscTmp = 0;
 
                     if (ruchGraczaTmp == 0) {
-                        System.out.println("czy jestem tutaj");
                         fold.setVisible(true);
                         check.setVisible(true);
                         bet.setVisible(true);
                         nastepnyGracz.setVisible(false);
-                        System.out.println(" nie no kurwa to sie pokazuje tutaj  sie wyswietla pokazanie naszych przyciskow ruchu");
 
                         ruchGraczaTmp = 0;
 
@@ -1978,6 +1975,44 @@ public class PanelStolik extends JPanel implements ActionListener {
         return new ImageIcon(dealer);
     }
 
+    private void dodajZnacznikRuchu (Graphics g) {
+
+        if (ruchGraczaTmp == 0) {
+
+                g.drawImage(ruch, 1292, 849, null);
+
+        } else if (ruchGraczaTmp == 1) {
+
+                g.drawImage(ruch, 564, 849, null);
+
+        } else if (ruchGraczaTmp == 2) {
+
+                g.drawImage(ruch, 217, 506, null);
+
+        } else if (ruchGraczaTmp == 3) {
+
+                g.drawImage(ruch, 565, 162, null);
+
+
+        } else if (ruchGraczaTmp == 4) {
+
+                g.drawImage(ruch, 1291, 162, null);
+
+        }else if (ruchGraczaTmp == 5) {
+
+                g.drawImage(ruch, 1639, 506, null);
+
+        }
+
+    }
+
+    private ImageIcon ktoryGraczRobiRuch (){
+
+            ruch = new ImageIcon( "zdjecia\\znacznikRuchu2.jpg").getImage();
+            return new ImageIcon(ruch);
+
+    }
+
     private void dodajIloscPostawionychZetonowGracza0(Graphics g) {
         if (rozgrywka.getGracze().get(0).getPulaZetonowGracza() > 0) {
             var iloscZetonowPostawionych = " " + (rozgrywka.getGracze().get(0).getPulaZetonowGracza() + betB) + "$";
@@ -2055,6 +2090,8 @@ public class PanelStolik extends JPanel implements ActionListener {
         }
 
         dodajZdjecieDealer();
+        ktoryGraczRobiRuch();
+
 
         pierwszyObrot = true;
         pierwszyObrotTurn = true;
