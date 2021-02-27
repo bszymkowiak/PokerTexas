@@ -6,9 +6,7 @@ public class BazaDanych {
 
     final String JDBC_DRIVER = "org.postgresql.Driver";
     final String URL = "jdbc:postgresql://localhost/PokerTexas";
-
     final String USER = "postgres";
-//    final String PASS = "7AsfG4,.2980";
     final String PASS = "postgres";
 
     Statement stmt;
